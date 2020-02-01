@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pivot:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pivot="http://www.eclipse.org/ocl/2015/Pivot"
+    xsi:schemaLocation="http://www.eclipse.org/ocl/2015/Pivot java://org.eclipse.ocl.pivot.PivotPackage" name="OclTestmodel.ecore.oclas" externalURI="platform:/resource/CrossEcore/model/OclTestmodel.ecore.oclas">
+  <ownedPackages xmi:id="P.ocltestmodel" name="ocltestmodel" URI="http://www.example.org/OclTestmodel" nsPrefix="ocltestmodel">
+    <ownedClasses xmi:id="T.ocltestmodel.MyClass" name="MyClass" superClasses="http://www.eclipse.org/ocl/2015/Library.oclas#T.ocl.OclElement">
+      <ownedProperties xmi:id="p.ocltestmodel.MyClass.orderedset" name="orderedset" type="#//@ownedPackages.1/@ownedClasses.0" opposite="#//@ownedPackages.0/@ownedClasses.0/@ownedProperties.6"/>
+      <ownedProperties xmi:id="p.ocltestmodel.MyClass.set" name="set" type="#//@ownedPackages.1/@ownedClasses.1" opposite="#//@ownedPackages.0/@ownedClasses.0/@ownedProperties.7"/>
+      <ownedProperties xmi:id="p.ocltestmodel.MyClass.sequence" name="sequence" type="#//@ownedPackages.1/@ownedClasses.2" opposite="#//@ownedPackages.0/@ownedClasses.0/@ownedProperties.9"/>
+      <ownedProperties xmi:id="p.ocltestmodel.MyClass.bag" name="bag" type="#//@ownedPackages.1/@ownedClasses.3" opposite="#//@ownedPackages.0/@ownedClasses.0/@ownedProperties.8"/>
+      <ownedProperties xmi:id="p.ocltestmodel.MyClass.orderedset_select" name="orderedset_select" type="#//@ownedPackages.1/@ownedClasses.1"
+          isDerived="true" opposite="#//@ownedPackages.0/@ownedClasses.0/@ownedProperties.10">
+        <ownedExpression xsi:type="pivot:ExpressionInOCL" body="orderedset->select(true)"/>
+      </ownedProperties>
+      <ownedProperties xmi:id="p.ocltestmodel.MyClass.orderedset_at" name="orderedset_at" isRequired="false" type="#T.ocltestmodel.MyClass"
+          isDerived="true" opposite="#//@ownedPackages.0/@ownedClasses.0/@ownedProperties.11">
+        <ownedExpression xsi:type="pivot:ExpressionInOCL" body="orderedset->at(1)"/>
+      </ownedProperties>
+      <ownedProperties name="MyClass" type="#//@ownedPackages.1/@ownedClasses.3" isImplicit="true" opposite="#p.ocltestmodel.MyClass.orderedset"/>
+      <ownedProperties name="MyClass" type="#//@ownedPackages.1/@ownedClasses.3" isImplicit="true" opposite="#p.ocltestmodel.MyClass.set"/>
+      <ownedProperties name="MyClass" type="#//@ownedPackages.1/@ownedClasses.3" isImplicit="true" opposite="#p.ocltestmodel.MyClass.bag"/>
+      <ownedProperties name="MyClass" type="#//@ownedPackages.1/@ownedClasses.3" isImplicit="true" opposite="#p.ocltestmodel.MyClass.sequence"/>
+      <ownedProperties name="MyClass" type="#//@ownedPackages.1/@ownedClasses.3" isImplicit="true" opposite="#p.ocltestmodel.MyClass.orderedset_select"/>
+      <ownedProperties name="MyClass" type="#//@ownedPackages.1/@ownedClasses.3" isImplicit="true" opposite="#p.ocltestmodel.MyClass.orderedset_at"/>
+    </ownedClasses>
+  </ownedPackages>
+  <ownedPackages xmi:id="P.$$" name="$$" URI="http://www.eclipse.org/ocl/2015/Orphanage" nsPrefix="orphanage">
+    <ownedClasses xsi:type="pivot:OrderedSetType" name="OrderedSet" superClasses="#//@ownedPackages.1/@ownedClasses.4 #//@ownedPackages.1/@ownedClasses.5"
+        elementType="#T.ocltestmodel.MyClass">
+      <ownedBindings>
+        <ownedSubstitutions actual="#T.ocltestmodel.MyClass" formal="http://www.eclipse.org/ocl/2015/Library.oclas#t.ocl..OrderedSetT"/>
+      </ownedBindings>
+    </ownedClasses>
+    <ownedClasses xsi:type="pivot:SetType" name="Set" superClasses="#//@ownedPackages.1/@ownedClasses.5" elementType="#T.ocltestmodel.MyClass">
+      <ownedBindings>
+        <ownedSubstitutions actual="#T.ocltestmodel.MyClass" formal="http://www.eclipse.org/ocl/2015/Library.oclas#t.ocl..SetT"/>
+      </ownedBindings>
+    </ownedClasses>
+    <ownedClasses xsi:type="pivot:SequenceType" name="Sequence" superClasses="#//@ownedPackages.1/@ownedClasses.4" elementType="#T.ocltestmodel.MyClass">
+      <ownedBindings>
+        <ownedSubstitutions actual="#T.ocltestmodel.MyClass" formal="http://www.eclipse.org/ocl/2015/Library.oclas#t.ocl..SequenceT"/>
+      </ownedBindings>
+    </ownedClasses>
+    <ownedClasses xsi:type="pivot:BagType" name="Bag" superClasses="#//@ownedPackages.1/@ownedClasses.6" elementType="#T.ocltestmodel.MyClass">
+      <ownedBindings>
+        <ownedSubstitutions actual="#T.ocltestmodel.MyClass" formal="http://www.eclipse.org/ocl/2015/Library.oclas#t.ocl..BagT"/>
+      </ownedBindings>
+    </ownedClasses>
+    <ownedClasses xsi:type="pivot:CollectionType" name="OrderedCollection" superClasses="#//@ownedPackages.1/@ownedClasses.6" elementType="#T.ocltestmodel.MyClass">
+      <ownedBindings>
+        <ownedSubstitutions actual="#T.ocltestmodel.MyClass" formal="http://www.eclipse.org/ocl/2015/Library.oclas#t.ocl..OrderedCollectionT"/>
+      </ownedBindings>
+    </ownedClasses>
+    <ownedClasses xsi:type="pivot:CollectionType" name="UniqueCollection" superClasses="#//@ownedPackages.1/@ownedClasses.6" elementType="#T.ocltestmodel.MyClass">
+      <ownedBindings>
+        <ownedSubstitutions actual="#T.ocltestmodel.MyClass" formal="http://www.eclipse.org/ocl/2015/Library.oclas#t.ocl..UniqueCollectionT"/>
+      </ownedBindings>
+    </ownedClasses>
+    <ownedClasses xsi:type="pivot:CollectionType" name="Collection" superClasses="http://www.eclipse.org/ocl/2015/Library.oclas#T.ocl.OclAny"
+        elementType="#T.ocltestmodel.MyClass">
+      <ownedBindings>
+        <ownedSubstitutions actual="#T.ocltestmodel.MyClass" formal="http://www.eclipse.org/ocl/2015/Library.oclas#t.ocl..CollectionT"/>
+      </ownedBindings>
+    </ownedClasses>
+  </ownedPackages>
+</pivot:Model>

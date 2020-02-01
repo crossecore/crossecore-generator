@@ -1,0 +1,588 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="ocltypes" nsURI="http://www.example.org/ocltypes" nsPrefix="ocltypes">
+  <eClassifiers xsi:type="ecore:EClass" name="Test">
+    <eTypeParameters name="MyGenericType"/>
+    <eOperations name="primitiveToPrimitive" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="x" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    </eOperations>
+    <eOperations name="genericToGeneric">
+      <eGenericType eTypeParameter="#//Test/MyGenericType"/>
+      <eParameters name="x">
+        <eGenericType eTypeParameter="#//Test/MyGenericType"/>
+      </eParameters>
+    </eOperations>
+    <eOperations name="collectionGenericTypeTocollectionGenericType">
+      <eGenericType eClassifier="#//Collection">
+        <eTypeArguments eTypeParameter="#//Test/MyGenericType"/>
+      </eGenericType>
+      <eParameters name="xx">
+        <eGenericType eClassifier="#//Collection">
+          <eTypeArguments eTypeParameter="#//Test/MyGenericType"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="wildcard">
+      <eGenericType eClassifier="#//Collection">
+        <eTypeArguments/>
+      </eGenericType>
+    </eOperations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="OclAny" abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="OclExpression" abstract="true" interface="true">
+    <eTypeParameters name="T2"/>
+    <eOperations name="signature" eType="#//OclAny">
+      <eParameters name="element">
+        <eGenericType eTypeParameter="#//OclExpression/T2"/>
+      </eParameters>
+    </eOperations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="OclBoolExpression" abstract="true" interface="true">
+    <eTypeParameters name="T2"/>
+    <eOperations name="signature" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="element">
+        <eGenericType eTypeParameter="#//OclBoolExpression/T2"/>
+      </eParameters>
+    </eOperations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Collection" abstract="true" interface="true">
+    <eTypeParameters name="T"/>
+    <eOperations name="add" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="element">
+        <eGenericType eTypeParameter="#//Collection/T"/>
+      </eParameters>
+    </eOperations>
+    <eOperations name="remove" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="element">
+        <eGenericType eTypeParameter="#//Collection/T"/>
+      </eParameters>
+    </eOperations>
+    <eOperations name="equals" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="c">
+        <eGenericType eClassifier="#//Collection">
+          <eTypeArguments eTypeParameter="#//Collection/T"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="notEquals" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="c">
+        <eGenericType eClassifier="#//Collection">
+          <eTypeArguments eTypeParameter="#//Collection/T"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="size" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eOperations name="includes" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="element">
+        <eGenericType eTypeParameter="#//Collection/T"/>
+      </eParameters>
+    </eOperations>
+    <eOperations name="excludes" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="element">
+        <eGenericType eTypeParameter="#//Collection/T"/>
+      </eParameters>
+    </eOperations>
+    <eOperations name="count" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+      <eParameters name="element">
+        <eGenericType eTypeParameter="#//Collection/T"/>
+      </eParameters>
+    </eOperations>
+    <eOperations name="includesAll" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="c2">
+        <eGenericType eClassifier="#//Collection">
+          <eTypeArguments eTypeParameter="#//Collection/T"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="excludesAll" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="c2">
+        <eGenericType eClassifier="#//Collection">
+          <eTypeArguments eTypeParameter="#//Collection/T"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="isEmpty" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eOperations name="notEmpty" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eOperations name="max">
+      <eGenericType eTypeParameter="#//Collection/T"/>
+    </eOperations>
+    <eOperations name="min">
+      <eGenericType eTypeParameter="#//Collection/T"/>
+    </eOperations>
+    <eOperations name="sum">
+      <eGenericType eTypeParameter="#//Collection/T"/>
+    </eOperations>
+    <eOperations name="asSet">
+      <eGenericType eClassifier="#//Set">
+        <eTypeArguments eTypeParameter="#//Collection/T"/>
+      </eGenericType>
+    </eOperations>
+    <eOperations name="asOrderedSet">
+      <eGenericType eClassifier="#//OrderedSet">
+        <eTypeArguments eTypeParameter="#//Collection/T"/>
+      </eGenericType>
+    </eOperations>
+    <eOperations name="asSequence">
+      <eGenericType eClassifier="#//Sequence">
+        <eTypeArguments eTypeParameter="#//Collection/T"/>
+      </eGenericType>
+    </eOperations>
+    <eOperations name="asBag">
+      <eGenericType eClassifier="#//Bag">
+        <eTypeArguments eTypeParameter="#//Collection/T"/>
+      </eGenericType>
+    </eOperations>
+    <eOperations name="flatten">
+      <eGenericType eClassifier="#//Collection">
+        <eTypeArguments/>
+      </eGenericType>
+    </eOperations>
+    <eOperations name="any">
+      <eGenericType eTypeParameter="#//Collection/T"/>
+      <eParameters name="expr">
+        <eGenericType eClassifier="#//OclBoolExpression">
+          <eTypeArguments/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="closure">
+      <eGenericType eClassifier="#//Collection">
+        <eTypeArguments/>
+      </eGenericType>
+      <eParameters name="expr">
+        <eGenericType eClassifier="#//OclExpression">
+          <eTypeArguments eTypeParameter="#//Collection/T"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="collect">
+      <eGenericType eClassifier="#//Collection">
+        <eTypeArguments/>
+      </eGenericType>
+      <eParameters name="expr">
+        <eGenericType eClassifier="#//OclExpression">
+          <eTypeArguments eTypeParameter="#//Collection/T"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="exists" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="expr">
+        <eGenericType eClassifier="#//OclBoolExpression">
+          <eTypeArguments eTypeParameter="#//Collection/T"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="forAll" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="expr">
+        <eGenericType eClassifier="#//OclBoolExpression">
+          <eTypeArguments eTypeParameter="#//Collection/T"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="isUnique" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="expr">
+        <eGenericType eClassifier="#//OclExpression">
+          <eTypeArguments eTypeParameter="#//Collection/T"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="one" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="expr">
+        <eGenericType eClassifier="#//OclBoolExpression">
+          <eTypeArguments eTypeParameter="#//Collection/T"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="reject">
+      <eGenericType eClassifier="#//Collection">
+        <eTypeArguments/>
+      </eGenericType>
+      <eParameters name="expr">
+        <eGenericType eClassifier="#//OclBoolExpression">
+          <eTypeArguments eTypeParameter="#//Collection/T"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="select">
+      <eGenericType eClassifier="#//Collection">
+        <eTypeArguments/>
+      </eGenericType>
+      <eParameters name="expr">
+        <eGenericType eClassifier="#//OclBoolExpression">
+          <eTypeArguments eTypeParameter="#//Collection/T"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="sortedBy">
+      <eGenericType eClassifier="#//Collection">
+        <eTypeArguments/>
+      </eGenericType>
+      <eParameters name="expr">
+        <eGenericType eClassifier="#//OclExpression">
+          <eTypeArguments eTypeParameter="#//Collection/T"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Set">
+    <eTypeParameters name="T"/>
+    <eOperations name="add" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="element">
+        <eGenericType eTypeParameter="#//Set/T"/>
+      </eParameters>
+    </eOperations>
+    <eOperations name="remove" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="element">
+        <eGenericType eTypeParameter="#//Set/T"/>
+      </eParameters>
+    </eOperations>
+    <eOperations name="union">
+      <eGenericType eClassifier="#//Set">
+        <eTypeArguments eTypeParameter="#//Set/T"/>
+      </eGenericType>
+      <eParameters name="s">
+        <eGenericType eClassifier="#//Set">
+          <eTypeArguments eTypeParameter="#//Set/T"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="union">
+      <eGenericType eClassifier="#//Bag">
+        <eTypeArguments eTypeParameter="#//Set/T"/>
+      </eGenericType>
+      <eParameters name="bag">
+        <eGenericType eClassifier="#//Bag">
+          <eTypeArguments eTypeParameter="#//Set/T"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="equals" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="c">
+        <eGenericType eClassifier="#//Set">
+          <eTypeArguments eTypeParameter="#//Set/T"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="intersection">
+      <eGenericType eClassifier="#//Set">
+        <eTypeArguments eTypeParameter="#//Set/T"/>
+      </eGenericType>
+      <eParameters name="s">
+        <eGenericType eClassifier="#//Set">
+          <eTypeArguments eTypeParameter="#//Set/T"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="intersection">
+      <eGenericType eClassifier="#//Set">
+        <eTypeArguments eTypeParameter="#//Set/T"/>
+      </eGenericType>
+      <eParameters name="s">
+        <eGenericType eClassifier="#//Bag">
+          <eTypeArguments eTypeParameter="#//Set/T"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="minus">
+      <eGenericType eClassifier="#//Set">
+        <eTypeArguments eTypeParameter="#//Set/T"/>
+      </eGenericType>
+      <eParameters name="s">
+        <eGenericType eClassifier="#//Set">
+          <eTypeArguments eTypeParameter="#//Set/T"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="including">
+      <eGenericType eClassifier="#//Set">
+        <eTypeArguments eTypeParameter="#//Set/T"/>
+      </eGenericType>
+      <eParameters name="element">
+        <eGenericType eTypeParameter="#//Set/T"/>
+      </eParameters>
+    </eOperations>
+    <eOperations name="excluding">
+      <eGenericType eClassifier="#//Set">
+        <eTypeArguments eTypeParameter="#//Set/T"/>
+      </eGenericType>
+      <eParameters name="element">
+        <eGenericType eTypeParameter="#//Set/T"/>
+      </eParameters>
+    </eOperations>
+    <eOperations name="symmetricDifference">
+      <eGenericType eTypeParameter="#//Set/T"/>
+      <eParameters name="s">
+        <eGenericType eClassifier="#//Set">
+          <eTypeArguments eTypeParameter="#//Set/T"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="count" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+      <eParameters name="element">
+        <eGenericType eTypeParameter="#//Set/T"/>
+      </eParameters>
+    </eOperations>
+    <eOperations name="flatten">
+      <eGenericType eClassifier="#//Set">
+        <eTypeArguments/>
+      </eGenericType>
+    </eOperations>
+    <eGenericSuperTypes eClassifier="#//Collection">
+      <eTypeArguments eTypeParameter="#//Set/T"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="OrderedSet">
+    <eTypeParameters name="T"/>
+    <eOperations name="add" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="element">
+        <eGenericType eTypeParameter="#//OrderedSet/T"/>
+      </eParameters>
+    </eOperations>
+    <eOperations name="remove" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="element">
+        <eGenericType eTypeParameter="#//OrderedSet/T"/>
+      </eParameters>
+    </eOperations>
+    <eOperations name="append">
+      <eGenericType eClassifier="#//OrderedSet">
+        <eTypeArguments eTypeParameter="#//OrderedSet/T"/>
+      </eGenericType>
+      <eParameters name="element">
+        <eGenericType eTypeParameter="#//OrderedSet/T"/>
+      </eParameters>
+    </eOperations>
+    <eOperations name="prepend">
+      <eGenericType eClassifier="#//OrderedSet">
+        <eTypeArguments eTypeParameter="#//OrderedSet/T"/>
+      </eGenericType>
+      <eParameters name="element">
+        <eGenericType eTypeParameter="#//OrderedSet/T"/>
+      </eParameters>
+    </eOperations>
+    <eOperations name="insertAt">
+      <eGenericType eClassifier="#//OrderedSet">
+        <eTypeArguments eTypeParameter="#//OrderedSet/T"/>
+      </eGenericType>
+      <eParameters name="index" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      <eParameters name="element">
+        <eGenericType eTypeParameter="#//OrderedSet/T"/>
+      </eParameters>
+    </eOperations>
+    <eOperations name="subOrderedSet">
+      <eGenericType eClassifier="#//OrderedSet">
+        <eTypeArguments eTypeParameter="#//OrderedSet/T"/>
+      </eGenericType>
+      <eParameters name="lower" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      <eParameters name="upper" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    </eOperations>
+    <eOperations name="at">
+      <eGenericType eTypeParameter="#//OrderedSet/T"/>
+      <eParameters name="i" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    </eOperations>
+    <eOperations name="indexOf" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+      <eParameters name="obj">
+        <eGenericType eTypeParameter="#//OrderedSet/T"/>
+      </eParameters>
+    </eOperations>
+    <eOperations name="first">
+      <eGenericType eTypeParameter="#//OrderedSet/T"/>
+    </eOperations>
+    <eOperations name="last">
+      <eGenericType eTypeParameter="#//OrderedSet/T"/>
+    </eOperations>
+    <eOperations name="reverse">
+      <eGenericType eClassifier="#//OrderedSet">
+        <eTypeArguments eTypeParameter="#//OrderedSet/T"/>
+      </eGenericType>
+    </eOperations>
+    <eOperations name="sum">
+      <eGenericType eTypeParameter="#//OrderedSet/T"/>
+    </eOperations>
+    <eGenericSuperTypes eClassifier="#//Collection">
+      <eTypeArguments eTypeParameter="#//OrderedSet/T"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Bag">
+    <eTypeParameters name="T"/>
+    <eOperations name="equals" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="c">
+        <eGenericType eClassifier="#//Bag">
+          <eTypeArguments eTypeParameter="#//Bag/T"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="union">
+      <eGenericType eClassifier="#//Bag">
+        <eTypeArguments eTypeParameter="#//Bag/T"/>
+      </eGenericType>
+      <eParameters name="bag">
+        <eGenericType eClassifier="#//Bag">
+          <eTypeArguments eTypeParameter="#//Bag/T"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="union">
+      <eGenericType eClassifier="#//Bag">
+        <eTypeArguments eTypeParameter="#//Bag/T"/>
+      </eGenericType>
+      <eParameters name="s">
+        <eGenericType eClassifier="#//Set">
+          <eTypeArguments eTypeParameter="#//Bag/T"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="intersection">
+      <eGenericType eClassifier="#//Set">
+        <eTypeArguments eTypeParameter="#//Bag/T"/>
+      </eGenericType>
+      <eParameters name="s">
+        <eGenericType eClassifier="#//Set">
+          <eTypeArguments eTypeParameter="#//Bag/T"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="intersection">
+      <eGenericType eClassifier="#//Bag">
+        <eTypeArguments eTypeParameter="#//Bag/T"/>
+      </eGenericType>
+      <eParameters name="s">
+        <eGenericType eClassifier="#//Bag">
+          <eTypeArguments eTypeParameter="#//Bag/T"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="including">
+      <eGenericType eClassifier="#//Bag">
+        <eTypeArguments eTypeParameter="#//Bag/T"/>
+      </eGenericType>
+      <eParameters name="element">
+        <eGenericType eTypeParameter="#//Bag/T"/>
+      </eParameters>
+    </eOperations>
+    <eOperations name="excluding">
+      <eGenericType eClassifier="#//Bag">
+        <eTypeArguments eTypeParameter="#//Bag/T"/>
+      </eGenericType>
+      <eParameters name="element">
+        <eGenericType eTypeParameter="#//Bag/T"/>
+      </eParameters>
+    </eOperations>
+    <eOperations name="count" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+      <eParameters name="element">
+        <eGenericType eTypeParameter="#//Bag/T"/>
+      </eParameters>
+    </eOperations>
+    <eOperations name="flatten">
+      <eGenericType eClassifier="#//Set">
+        <eTypeArguments/>
+      </eGenericType>
+    </eOperations>
+    <eGenericSuperTypes eClassifier="#//Collection">
+      <eTypeArguments eTypeParameter="#//Bag/T"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Sequence">
+    <eTypeParameters name="T"/>
+    <eOperations name="count" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+      <eParameters name="element">
+        <eGenericType eTypeParameter="#//Sequence/T"/>
+      </eParameters>
+    </eOperations>
+    <eOperations name="equals" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="c">
+        <eGenericType eClassifier="#//Sequence">
+          <eTypeArguments eTypeParameter="#//Sequence/T"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="union">
+      <eGenericType eClassifier="#//Sequence">
+        <eTypeArguments eTypeParameter="#//Sequence/T"/>
+      </eGenericType>
+      <eParameters name="s">
+        <eGenericType eClassifier="#//Sequence">
+          <eTypeArguments eTypeParameter="#//Sequence/T"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="flatten">
+      <eGenericType eClassifier="#//Sequence">
+        <eTypeArguments/>
+      </eGenericType>
+    </eOperations>
+    <eOperations name="append">
+      <eGenericType eClassifier="#//Sequence">
+        <eTypeArguments eTypeParameter="#//Sequence/T"/>
+      </eGenericType>
+      <eParameters name="element">
+        <eGenericType eTypeParameter="#//Sequence/T"/>
+      </eParameters>
+    </eOperations>
+    <eOperations name="prepend">
+      <eGenericType eClassifier="#//Sequence">
+        <eTypeArguments eTypeParameter="#//Sequence/T"/>
+      </eGenericType>
+      <eParameters name="element">
+        <eGenericType eTypeParameter="#//Sequence/T"/>
+      </eParameters>
+    </eOperations>
+    <eOperations name="insertAt">
+      <eGenericType eClassifier="#//Sequence">
+        <eTypeArguments eTypeParameter="#//Sequence/T"/>
+      </eGenericType>
+      <eParameters name="index" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      <eParameters name="element">
+        <eGenericType eTypeParameter="#//Sequence/T"/>
+      </eParameters>
+    </eOperations>
+    <eOperations name="subSequence">
+      <eGenericType eClassifier="#//Sequence">
+        <eTypeArguments eTypeParameter="#//Sequence/T"/>
+      </eGenericType>
+      <eParameters name="lower" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      <eParameters name="upper" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    </eOperations>
+    <eOperations name="at">
+      <eGenericType eTypeParameter="#//Sequence/T"/>
+      <eParameters name="i" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    </eOperations>
+    <eOperations name="indexOf" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+      <eParameters name="obj">
+        <eGenericType eTypeParameter="#//Sequence/T"/>
+      </eParameters>
+    </eOperations>
+    <eOperations name="first">
+      <eGenericType eTypeParameter="#//Sequence/T"/>
+    </eOperations>
+    <eOperations name="last">
+      <eGenericType eTypeParameter="#//Sequence/T"/>
+    </eOperations>
+    <eOperations name="including">
+      <eGenericType eClassifier="#//Sequence">
+        <eTypeArguments eTypeParameter="#//Sequence/T"/>
+      </eGenericType>
+      <eParameters name="element">
+        <eGenericType eTypeParameter="#//Sequence/T"/>
+      </eParameters>
+    </eOperations>
+    <eOperations name="excluding">
+      <eGenericType eClassifier="#//Sequence">
+        <eTypeArguments eTypeParameter="#//Sequence/T"/>
+      </eGenericType>
+      <eParameters name="element">
+        <eGenericType eTypeParameter="#//Sequence/T"/>
+      </eParameters>
+    </eOperations>
+    <eOperations name="reverse">
+      <eGenericType eClassifier="#//Sequence">
+        <eTypeArguments eTypeParameter="#//Sequence/T"/>
+      </eGenericType>
+    </eOperations>
+    <eOperations name="sum">
+      <eGenericType eTypeParameter="#//Sequence/T"/>
+    </eOperations>
+    <eGenericSuperTypes eClassifier="#//Collection">
+      <eTypeArguments eTypeParameter="#//Sequence/T"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+</ecore:EPackage>

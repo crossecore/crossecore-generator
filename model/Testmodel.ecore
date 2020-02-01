@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="testmodel" nsURI="http://www.example.org/Testmodel" nsPrefix="testmodel">
+  <eClassifiers xsi:type="ecore:EClass" name="SuperInterface" abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SuperAbstractClass" abstract="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SuperClass"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SubInterface1" abstract="true" interface="true"
+      eSuperTypes="#//SuperInterface"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SubInterface2" abstract="true" interface="true"
+      eSuperTypes="#//SuperAbstractClass"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SubInterface3" abstract="true" interface="true"
+      eSuperTypes="#//SuperClass"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SubAbstractClass1" abstract="true" eSuperTypes="#//SuperInterface"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SubAbstractClass2" abstract="true" eSuperTypes="#//SuperAbstractClass"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SubAbstractClass3" abstract="true" eSuperTypes="#//SuperClass"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SubClass1" eSuperTypes="#//SuperInterface"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SubClass2" eSuperTypes="#//SuperAbstractClass"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SubClass3" eSuperTypes="#//SuperClass"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SubInterface4" abstract="true" interface="true"
+      eSuperTypes="#//SubInterface1 #//SubInterface2"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SubInterface5" abstract="true" interface="true"
+      eSuperTypes="#//SubInterface1 #//SubAbstractClass1"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SubInterface6" abstract="true" interface="true"
+      eSuperTypes="#//SubInterface1 #//SubClass1"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SubInterface7" abstract="true" interface="true"
+      eSuperTypes="#//SubAbstractClass1 #//SubClass1"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SubAbstractClass4" abstract="true" eSuperTypes="#//SubInterface1 #//SubInterface2"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SubAbstractClass5" abstract="true" eSuperTypes="#//SubInterface1 #//SubAbstractClass1"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SubAbstractClass6" abstract="true" eSuperTypes="#//SubInterface1 #//SubClass1"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SubAbstractClass7" abstract="true" eSuperTypes="#//SubAbstractClass1 #//SubClass1"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SubClass4" eSuperTypes="#//SubInterface1 #//SubInterface2"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SubClass5" eSuperTypes="#//SubInterface1 #//SubAbstractClass1"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SubClass6" eSuperTypes="#//SubInterface1 #//SubClass1"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SubClass7" eSuperTypes="#//SubAbstractClass1 #//SubClass1"/>
+  <eClassifiers xsi:type="ecore:EClass" name="A">
+    <eOperations name="aOp"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="a" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="B" eSuperTypes="#//A">
+    <eOperations name="bOp"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="b" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="C" eSuperTypes="#//B">
+    <eOperations name="aOp"/>
+    <eOperations name="bOp"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="c" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Source">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="zero_one_no_no" eType="#//Target"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="zero_many_no_no" ordered="false"
+        upperBound="-1" eType="#//Target"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="zero_one_no_yes" eType="#//Target"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="zero_many_no_yes" ordered="false"
+        upperBound="-1" eType="#//Target" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="one_one_no_no" eType="#//Target"
+        eOpposite="#//Target/one_one_no_no"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="one_many_no_no" ordered="false"
+        upperBound="-1" eType="#//Target" eOpposite="#//Target/one_many_no_no"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="many_many_no_no" ordered="false"
+        upperBound="-1" eType="#//Target" eOpposite="#//Target/many_many_no_no"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="one_many_no_yes" ordered="false"
+        upperBound="-1" eType="#//Target" containment="true" eOpposite="#//Target/one_many_no_yes"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="one_one_no_yes" eType="#//Target"
+        containment="true" eOpposite="#//Target/one_one_no_yes"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Target">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="one_one_no_no" eType="#//Source"
+        eOpposite="#//Source/one_one_no_no"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="one_many_no_no" eType="#//Source"
+        eOpposite="#//Source/one_many_no_no"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="many_many_no_no" ordered="false"
+        upperBound="-1" eType="#//Source" eOpposite="#//Source/many_many_no_no"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="one_many_no_yes" eType="#//Source"
+        eOpposite="#//Source/one_many_no_yes"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="one_one_no_yes" eType="#//Source"
+        eOpposite="#//Source/one_one_no_yes"/>
+  </eClassifiers>
+</ecore:EPackage>

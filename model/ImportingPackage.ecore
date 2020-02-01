@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="importingpackage" nsURI="importingpackage" nsPrefix="importingpackage">
+  <eAnnotations source="http://www.eclipse.org/OCL/Import">
+    <details key="importedpackage" value="ImportedPackage.ecore#/"/>
+  </eAnnotations>
+  <eClassifiers xsi:type="ecore:EClass" name="MyClass" eSuperTypes="ImportedPackage.ecore#//MyClass">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="enum" eType="#//MyEnum"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="myAttribute2" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="myReference2" eType="#//MyClass"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="opposite" upperBound="-1"
+        eType="#//Opposite"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="MyEnum">
+    <eLiterals name="one"/>
+    <eLiterals name="two"/>
+    <eLiterals name="three" value="3"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SuperClassA">
+    <eOperations name="operationOfSuperClassA"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AbstractClassA" abstract="true">
+    <eOperations name="operationOfAbstractClassA"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="InterfaceA" abstract="true" interface="true">
+    <eOperations name="operationOfInterfaceA"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ClassA">
+    <eOperations name="operationOfA"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="attributeOfA" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ClassB" eSuperTypes="#//InterfaceA">
+    <eOperations name="operationOfB"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="attributeOfB" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ClassC" eSuperTypes="#//AbstractClassA">
+    <eOperations name="operationOfC"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="attributeOfC" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ClassD" eSuperTypes="#//ClassA">
+    <eOperations name="operationOfC"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="attributeOfD" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ClassE" eSuperTypes="#//InterfaceA #//AbstractClassA">
+    <eOperations name="operationOfE"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="attributeOfE" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ClassF" eSuperTypes="#//InterfaceA #//ClassA">
+    <eOperations name="operationOfF"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="attributeOfF" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ClassG" eSuperTypes="#//AbstractClassA #//InterfaceA">
+    <eOperations name="operationOfG"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="attributeOfG" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ClassH" eSuperTypes="#//AbstractClassA #//ClassA">
+    <eOperations name="operationOfH"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="attributeOfH" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ClassI" eSuperTypes="#//ClassA #//InterfaceA">
+    <eOperations name="operationOfI"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="attributeOfI" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ClassJ" eSuperTypes="#//ClassA #//AbstractClassA">
+    <eOperations name="operationOfJ"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="attributeOfJ" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GrandParent">
+    <eOperations name="operationOfGrand"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="attributeOfGrandParent"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Parent" eSuperTypes="#//GrandParent">
+    <eOperations name="operationOfParent"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="attributeOfParent" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Child" eSuperTypes="#//Parent">
+    <eOperations name="operationOfChild"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="attributeOfChild" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MyClass2" eSuperTypes="#//InterfaceA ImportedPackage.ecore#//MyClass"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Opposite"/>
+</ecore:EPackage>
