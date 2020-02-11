@@ -405,22 +405,25 @@ class ModelBaseGenerator extends TypeScriptVisitor{
 		
 		//TODO consider the case that a non-primitive EParameter is an EDataType from Ecore Package
 
-
+		var sortedOperations = operations.sortBy[o|o.EParameters.size].reverse
 		var i = 0;				
 		'''
-			public «operations.get(0).name»(...args:Array<any>):any {
-				«FOR EOperation op:operations»
+			public «sortedOperations.get(0).name»(...args:Array<any>):any {
+				«FOR EOperation op:sortedOperations»
+					«IF op.EParameters.size>0»
 					if(
 						«{i = 0; ""}»
 						«FOR EParameter param:op.EParameters SEPARATOR " && "»
 							«IF #["boolean", "number", "string"].contains(tt.translateType(param.EType))»
 							typeof args[«i++»] === "«tt.translateType(param.EType)»"
 							«ELSE»
-							«tt.import_(param.EType.EPackage, id.EClassImpl(param.EType as EClass))»
-							args[«i++»] instanceof «id.EClassImpl(param.EType as EClass)»
+							args[«i++»] instanceof «tt.translateType(param.EType)»
 							«ENDIF»
 						«ENDFOR»
 					)
+					«ELSE»
+					else
+					«ENDIF»
 					{
 						return this.«id.caseOverloadedEOperation(op)»(«var pindex2=0»«FOR EParameter param: op.EParameters SEPARATOR ", "»args[«pindex2++»]«ENDFOR»);
 					}
