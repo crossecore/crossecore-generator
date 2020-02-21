@@ -18,24 +18,11 @@
  */
 package com.crossecore.java
 
-import com.crossecore.DependencyManager
-import com.crossecore.IdentifierProvider
-import com.crossecore.Utils
-import org.eclipse.emf.ecore.EAttribute
-import org.eclipse.emf.ecore.EClass
-import org.eclipse.emf.ecore.EClassifier
-import org.eclipse.emf.ecore.EDataType
-import org.eclipse.emf.ecore.EEnum
-import org.eclipse.emf.ecore.EPackage
-import org.eclipse.emf.ecore.EReference
-import org.eclipse.emf.ecore.EcorePackage
-import org.eclipse.emf.ecore.util.EcoreUtil
 import com.crossecore.EcoreVisitor
+import com.crossecore.IdentifierProvider
+import org.eclipse.emf.ecore.EPackage
 
 class GradleGenerator extends EcoreVisitor{
-	
-	private IdentifierProvider id = new JavaIdentifier();
-	
 	
 	new(){
 		super();
@@ -59,11 +46,17 @@ class GradleGenerator extends EcoreVisitor{
 		    }
 		}
 		
-		repositories.jcenter()
+		repositories {
+		  jcenter()
+		  maven{
+		  	url "https://oss.sonatype.org/content/repositories/snapshots/"
+		  }
+		}
 		
 		dependencies {
 			compile group: 'org.eclipse.emf', name: 'org.eclipse.emf.ecore', version: '2.18.0'
 			compile group: 'org.eclipse.emf', name: 'org.eclipse.emf.ecore.xmi', version: '2.16.0'
+			compile group: 'com.crossecore', name: 'com.crossecore.ocl', version: '0.1.0-SNAPSHOT'
 		}
 		'''
 	}

@@ -99,12 +99,12 @@ class ModelGenerator extends EcoreVisitor{
 		«ENDIF»
 		{
 			
-			public static Ocllib.QuickSet<«id.doSwitch(e)»> allInstances_ = new Ocllib.QuickSet<«id.doSwitch(e)»>(«id.doSwitch(e)».class);
+			public static com.crossecore.ocl.QuickSet<«id.doSwitch(e)»> allInstances_ = new com.crossecore.ocl.QuickSet<«id.doSwitch(e)»>(«id.doSwitch(e)».class);
 			
 				
-			public static Ocllib.QuickSet<«id.doSwitch(e)»> allInstances(){
+			public static com.crossecore.ocl.QuickSet<«id.doSwitch(e)»> allInstances(){
 				
-				Ocllib.QuickSet<«id.doSwitch(e)»> result = new Ocllib.QuickSet<«id.doSwitch(e)»>(«id.doSwitch(e)».class);
+				com.crossecore.ocl.QuickSet<«id.doSwitch(e)»> result = new com.crossecore.ocl.QuickSet<«id.doSwitch(e)»>(«id.doSwitch(e)».class);
 				result.addAll(«id.doSwitch(e)».allInstances_);
 				
 				«FOR s:closure»
@@ -114,7 +114,7 @@ class ModelGenerator extends EcoreVisitor{
 				return result;
 			}
 			
-			//public static Ocllib.QuickSet<«id.doSwitch(e)»> allInstances = new Ocllib.QuickSet<«id.doSwitch(e)»>(«id.doSwitch(e)».class);
+			//public static com.crossecore.ocl.QuickSet<«id.doSwitch(e)»> allInstances = new com.crossecore.ocl.QuickSet<«id.doSwitch(e)»>(«id.doSwitch(e)».class);
 			
 			«FOR EStructuralFeature feature:e.EStructuralFeatures»«doSwitch(feature)»«ENDFOR»
 			«FOR EOperation operation:e.EOperations»«doSwitch(operation)»«ENDFOR»

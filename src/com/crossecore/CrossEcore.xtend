@@ -350,7 +350,7 @@ class CrossEcore {
 		new com.crossecore.java.FactoryImplGenerator(base, "%sFactoryImpl.java", mypackage).write();
 		new com.crossecore.java.ValidatorGenerator(base, "%sValidator.java", mypackage).write();
 		new com.crossecore.java.GradleGenerator(base, "build.gradle", mypackage).write();	
-		
+		new com.crossecore.java.GradleSettingsGenerator(base, "settings.gradle", mypackage).write();	
 
 	}
 	

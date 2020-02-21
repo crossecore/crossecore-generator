@@ -16,14 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.crossecore.csharp
+package com.crossecore.java
 
+import com.crossecore.EcoreVisitor
 import org.eclipse.emf.ecore.EPackage
-import org.eclipse.emf.ecore.EClass
 
-class VisualStudioProjectGenerator extends CSharpVisitor{
-	
-	private CSharpIdentifier id = new CSharpIdentifier();
+class GradleSettingsGenerator extends EcoreVisitor{
 	
 	new(){
 		super();
@@ -34,20 +32,12 @@ class VisualStudioProjectGenerator extends CSharpVisitor{
 
 	}
 	
-	override caseEPackage(EPackage epackage) {
+	override caseEPackage(EPackage epackage){
+
 		'''
-		<Project Sdk="Microsoft.NET.Sdk">
-		  
-		  <PropertyGroup>
-		    <TargetFramework>netstandard2.0</TargetFramework>
-		  </PropertyGroup>
-		  
-		  <ItemGroup>
-		    <PackageReference Include="Com.Crossecore.Ecore" Version="0.1.0" />
-		  </ItemGroup>
-		
-		</Project>
+		rootProject.name = '«epackage.name»'
 		'''
 	}
+	
 	
 }

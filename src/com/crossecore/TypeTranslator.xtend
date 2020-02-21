@@ -64,7 +64,7 @@ abstract class TypeTranslator {
 	/**
 	 * Case 1: type is null => void
 	 * Case 2: type is EClass from EPackage => Use classifier name omitting namespace
-	 * Case 3: type is OCL collection => Use collection implementation from ocllib package
+	 * Case 3: type is OCL collection => Use collection implementation from com.crossecore.ocl package
 	 * Case 4: type.EClassifier is EJava_Class
 	 * 
 	 */

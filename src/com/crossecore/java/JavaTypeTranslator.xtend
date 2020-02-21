@@ -102,16 +102,16 @@ class JavaTypeTranslator extends TypeTranslator {
 		//TODO better use import statement 
 		
 		if(!unique && !ordered){
-			return "Ocllib.Bag"	
+			return "com.crossecore.ocl.Bag"	
 		}
 		else if(!unique && ordered){
-			return "Ocllib.Sequence"
+			return "com.crossecore.ocl.Sequence"
 		}
 		else if(unique && !ordered){
-			return "Ocllib.Set"
+			return "com.crossecore.ocl.Set"
 		}
 		else if(unique && ordered){
-			return "Ocllib.OrderedSet"
+			return "com.crossecore.ocl.OrderedSet"
 		}
 		
 	}
