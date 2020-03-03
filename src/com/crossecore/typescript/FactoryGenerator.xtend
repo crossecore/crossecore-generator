@@ -28,7 +28,9 @@ import com.crossecore.Utils
 class FactoryGenerator extends TypeScriptVisitor{
 	
 	private IdentifierProvider id = new TypeScriptIdentifier();
-	private ImportManager imports = new ImportManager(new TypeScriptTypeTranslator(id));
+	//private ImportManager imports = new ImportManager(new TypeScriptTypeTranslator(id));
+	private TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2();
+	
 	
 	new(){
 		super();
@@ -50,23 +52,10 @@ class FactoryGenerator extends TypeScriptVisitor{
 		}
 		'''
 		
-		var imports = 
-		'''
-		«IF !Utils.isEcoreEPackage(epackage)»
-		import {EFactory} from "ecore/EFactory";
-		«ENDIF»
-		«FOR String path : imports.fullyQualifiedImports»
-			«IF imports.getPackage(path).nsURI.equals(epackage.nsURI)»
-			import {«imports.getLocalName(path)»} from "./«imports.getLocalName(path)»";
-			«ELSE»
-			import {«imports.getLocalName(path)»} from "«path»";
-			«ENDIF»
-		«ENDFOR»
-		'''
 		
 		return 
 		'''
-		«imports»
+		«tt.printImports(epackage)»
 		«body»
 		'''
 	}
@@ -74,7 +63,7 @@ class FactoryGenerator extends TypeScriptVisitor{
 	
 	override caseEClass(EClass eclass){
 		if(!eclass.interface){
-			imports.filter(eclass)
+			tt.import_(eclass)
 			'''
 			 «id.createEClass(eclass)»():«id.doSwitch(eclass)»;
 			'''

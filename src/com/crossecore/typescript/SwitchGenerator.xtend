@@ -30,8 +30,9 @@ import com.crossecore.TypeTranslator
 class SwitchGenerator extends TypeScriptVisitor {
 	
 	private TypeScriptIdentifier id = new TypeScriptIdentifier();
-	private TypeTranslator t = new TypeScriptTypeTranslator(id);
-	private ImportManager imports = new ImportManager(t);
+	//private TypeTranslator t = new TypeScriptTypeTranslator(id);
+	//private ImportManager imports = new ImportManager(t);
+	private TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2();
 	
 	new(){
 		super();
@@ -44,11 +45,11 @@ class SwitchGenerator extends TypeScriptVisitor {
 	
 	
 	override caseEPackage(EPackage epackage){
-		imports.add(EcorePackage.eINSTANCE,"Switch");
-		imports.add(EcorePackage.eINSTANCE,"EPackage");
-		imports.add(EcorePackage.eINSTANCE,"EObject");
-		imports.add(epackage, id.EPackagePackage(epackage));
-		imports.add(epackage, id.EPackagePackageImpl(epackage));
+		tt.import_(EcorePackage.eINSTANCE,"Switch");
+		tt.import_(EcorePackage.eINSTANCE,"EPackage");
+		tt.import_(EcorePackage.eINSTANCE,"EObject");
+		tt.import_(epackage, id.EPackagePackage(epackage));
+		tt.import_(epackage, id.EPackagePackageImpl(epackage));
 		
 		var body = 
 		'''
@@ -84,27 +85,18 @@ class SwitchGenerator extends TypeScriptVisitor {
 		
 		'''
 		
-		var imports = 
-		'''
-		«FOR String path : imports.fullyQualifiedImports»
-			«IF imports.getPackage(path).nsURI.equals(epackage.nsURI)»
-			import {«imports.getLocalName(path)»} from "./«imports.getLocalName(path)»";
-			«ELSE»
-			import {«imports.getLocalName(path)»} from "«path»";
-			«ENDIF»
-		«ENDFOR»
-		'''
+
 		
 		return
 		'''
-		«imports»
+		«tt.printImports(epackage)»
 		«body»
 		'''
 	
 	}
 	
 	override caseEClass(EClass eclassifier){
-		imports.filter(eclassifier);
+		tt.import_(eclassifier);
 		'''
 		public case«id.doSwitch(eclassifier)»(object:«id.doSwitch(eclassifier)»):T {
 			return null;

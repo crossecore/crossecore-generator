@@ -41,6 +41,10 @@ class TSConfigGenerator extends TypeScriptVisitor{
 		  "compileOnSave": false,
 		  "compilerOptions": {
 		    "baseUrl": "./",
+		    "paths": {
+		      "ecore/*": ["node_modules/crossecore/lib/*"],
+		      "«epackage.name»/*": ["./*"]
+		    },    
 		    "outDir": "./dist/out-tsc",
 		    "sourceMap": true,
 		    "declaration": false,

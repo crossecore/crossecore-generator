@@ -37,9 +37,9 @@ import com.crossecore.TypeTranslator
 class PackageLiteralsGenerator extends TypeScriptVisitor{
 	
 	private TypeScriptIdentifier id = new TypeScriptIdentifier();
-	private TypeTranslator t = new TypeScriptTypeTranslator(id);
-	private ImportManager imports = new ImportManager(t);
-	
+	//private TypeTranslator t = new TypeScriptTypeTranslator(id);
+	//private ImportManager imports = new ImportManager(t);
+	private TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2();
 	
 	new(){
 		super();
@@ -61,7 +61,7 @@ class PackageLiteralsGenerator extends TypeScriptVisitor{
 		sortedEClasses.addAll(edatatypes);
 		
 	
-		//imports.add(epackage, id.EPackagePackageImpl(epackage));
+		//tt.import_(epackage, id.EPackagePackageImpl(epackage));
 		
 		var body = 
 		'''
@@ -72,19 +72,11 @@ class PackageLiteralsGenerator extends TypeScriptVisitor{
 		}
 		'''
 		
-		var imports = '''
-		«FOR String path : imports.fullyQualifiedImports»
-			«IF imports.getPackage(path).nsURI.equals(epackage.nsURI)»
-			import {«imports.getLocalName(path)»} from "./«imports.getLocalName(path)»";
-			«ELSE»
-			import {«imports.getLocalName(path)»} from "«path»";
-			«ENDIF»
-		«ENDFOR»
-		'''	
+
 		
 		return
 		'''
-		«imports»
+		«tt.printImports(epackage)»
 		«body»
 		'''
 		
@@ -92,7 +84,7 @@ class PackageLiteralsGenerator extends TypeScriptVisitor{
 	
 
 	override caseEClass(EClass eclass){
-		imports.add(EcorePackage.eINSTANCE,"EClass");
+		tt.import_(EcorePackage.eINSTANCE,"EClass");
 		'''
 			public static «id.literal(eclass)»:EClass = «id.EPackagePackageImpl(eclass.EPackage)».eINSTANCE.«id.getEClass(eclass)»();
 			
@@ -108,25 +100,25 @@ class PackageLiteralsGenerator extends TypeScriptVisitor{
 	
 	override caseEEnum(EEnum enumeration){
 		
-		imports.add(EcorePackage.eINSTANCE,"EEnum");
+		tt.import_(EcorePackage.eINSTANCE,"EEnum");
 		'''public static «id.literal(enumeration)»:EEnum = «id.EPackagePackageImpl(enumeration.EPackage)».eINSTANCE.«id.getEEnum(enumeration)»();'''
 	}
 		
 	
 	
 	override caseEDataType(EDataType edatatype){
-		imports.add(EcorePackage.eINSTANCE,"EDataType");
+		tt.import_(EcorePackage.eINSTANCE,"EDataType");
 		'''public static «id.literal(edatatype)»:EDataType = «id.EPackagePackageImpl(edatatype.EPackage)».eINSTANCE.«id.getEDataType(edatatype)»();'''
 		
 	}
 
 	override caseEReference(EReference ereference){
-		imports.add(EcorePackage.eINSTANCE,"EReference");
+		tt.import_(EcorePackage.eINSTANCE,"EReference");
 		'''public static «id.literal(ereference)»:EReference = «id.EPackagePackageImpl(ereference.EContainingClass.EPackage)».eINSTANCE.«id.getEReference(ereference)»();'''
 	}
 	
 	override caseEAttribute(EAttribute eattribute){
-		imports.add(EcorePackage.eINSTANCE,"EAttribute");			
+		tt.import_(EcorePackage.eINSTANCE,"EAttribute");			
 		'''public static «id.literal(eattribute)»:EAttribute = «id.EPackagePackageImpl(eattribute.EContainingClass.EPackage)».eINSTANCE.«id.getEAttribute(eattribute)»();'''
 	}
 	
@@ -149,8 +141,8 @@ class PackageLiteralsGenerator extends TypeScriptVisitor{
 
 		'''
 			public static «id.literal(eclassifier)»:number = «eclassifier.classifierID»;
-			public static «id.EClassifier_FEATURE_COUNT(eclassifier)»:number = «FOR EClass _super:eclassifier.ESuperTypes SEPARATOR ' + '  AFTER ' + '»«id.EPackagePackageLiterals(_super.EPackage)+"."+id.EClassifier_FEATURE_COUNT(_super)»«imports.add(_super.EPackage, id.EPackagePackageLiterals(_super.EPackage))»«ENDFOR»«eclassifier.EStructuralFeatures.size»;
-			public static «id.EClassifier_OPERATION_COUNT(eclassifier)»:number = «FOR EClass _super:eclassifier.ESuperTypes SEPARATOR ' + '  AFTER ' + '»«id.EPackagePackageLiterals(_super.EPackage) + "." +id.EClassifier_OPERATION_COUNT(_super)»«imports.add(_super.EPackage, id.EPackagePackageLiterals(_super.EPackage))»«ENDFOR»«eclassifier.EOperations.size»;
+			public static «id.EClassifier_FEATURE_COUNT(eclassifier)»:number = «FOR EClass _super:eclassifier.ESuperTypes SEPARATOR ' + '  AFTER ' + '»«id.EPackagePackageLiterals(_super.EPackage)+"."+id.EClassifier_FEATURE_COUNT(_super)»«tt.import_(_super.EPackage, id.EPackagePackageLiterals(_super.EPackage))»«ENDFOR»«eclassifier.EStructuralFeatures.size»;
+			public static «id.EClassifier_OPERATION_COUNT(eclassifier)»:number = «FOR EClass _super:eclassifier.ESuperTypes SEPARATOR ' + '  AFTER ' + '»«id.EPackagePackageLiterals(_super.EPackage) + "." +id.EClassifier_OPERATION_COUNT(_super)»«tt.import_(_super.EPackage, id.EPackagePackageLiterals(_super.EPackage))»«ENDFOR»«eclassifier.EOperations.size»;
 			
 			«FOR EStructuralFeature feature:eclassifier.EAllStructuralFeatures»
 				public static «id.literal(eclassifier,feature)»:number = «i++»;

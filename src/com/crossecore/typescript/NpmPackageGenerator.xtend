@@ -37,8 +37,6 @@ import java.util.ArrayList
 class NpmPackageGenerator extends TypeScriptVisitor{
 	
 	private TypeScriptIdentifier id = new TypeScriptIdentifier();
-	private TypeTranslator t = new TypeScriptTypeTranslator(id);
-	private ImportManager imports = new ImportManager(t);
 	
 	new(){
 		super();
@@ -61,8 +59,10 @@ class NpmPackageGenerator extends TypeScriptVisitor{
 		    "build": "tsc -p .",
 		    "test": "jest"
 		  },
+		  "main": "lib/index.js",
 		  "private": true,
 		  "dependencies": {
+		  	"crossecore": "^0.1.0"
 		  },
 		  "devDependencies": {
 		    "typescript": "~3.5.2",

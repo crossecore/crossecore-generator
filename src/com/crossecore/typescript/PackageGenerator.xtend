@@ -37,8 +37,9 @@ import java.util.ArrayList
 class PackageGenerator extends TypeScriptVisitor{
 	
 	private TypeScriptIdentifier id = new TypeScriptIdentifier();
-	private TypeTranslator t = new TypeScriptTypeTranslator(id);
-	private ImportManager imports = new ImportManager(t);
+	//private TypeTranslator t = new TypeScriptTypeTranslator(id);
+	//private ImportManager imports = new ImportManager(t);
+	private TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2();
 	
 	new(){
 		super();
@@ -58,7 +59,7 @@ class PackageGenerator extends TypeScriptVisitor{
 		var sortedEClasses = sortedEClasses_.filter[e| e.EPackage.equals(epackage)];
 		
 		
-		imports.add(EcorePackage.eINSTANCE,"EPackage");
+		tt.import_(EcorePackage.eINSTANCE,"EPackage");
 		var body = 
 		'''
 		export interface «id.EPackagePackage(epackage)» extends EPackage {
@@ -68,37 +69,28 @@ class PackageGenerator extends TypeScriptVisitor{
 		}
 		'''
 		
-		var imports = 
-		'''
-		«FOR String path : imports.fullyQualifiedImports»
-			«IF imports.getPackage(path).nsURI.equals(epackage.nsURI)»
-			import {«imports.getLocalName(path)»} from "./«imports.getLocalName(path)»";
-			«ELSE»
-			import {«imports.getLocalName(path)»} from "«path»";
-			«ENDIF»
-		«ENDFOR»
-		'''
+
 		
 		return 
 		'''
-		«imports»
+		«tt.printImports(epackage)»
 		«body»
 		'''
 	}
 	
 	override caseEEnum(EEnum enumeration){
-		imports.add(EcorePackage.eINSTANCE,"EEnum");
+		tt.import_(EcorePackage.eINSTANCE,"EEnum");
 		'''«id.getEEnum(enumeration)»():EEnum;'''
 	}
 	
 	override caseEDataType(EDataType datatype){
-		imports.add(EcorePackage.eINSTANCE,"EDataType");
+		tt.import_(EcorePackage.eINSTANCE,"EDataType");
 		'''«id.getEDataType(datatype)»():EDataType;'''
 	
 	}
 	
 	override caseEClass(EClass eclass){
-		imports.add(EcorePackage.eINSTANCE,"EClass");
+		tt.import_(EcorePackage.eINSTANCE,"EClass");
 		'''
 		«id.getEClass(eclass)»():EClass;
 		«FOR EReference ereference:eclass.EReferences»
@@ -113,13 +105,13 @@ class PackageGenerator extends TypeScriptVisitor{
 	}
 	
 	override caseEReference(EReference ereference){
-		imports.add(EcorePackage.eINSTANCE, "EReference");
+		tt.import_(EcorePackage.eINSTANCE, "EReference");
 		'''«id.getEReference(ereference)»():EReference;'''
 		
 	}
 	
 	override caseEAttribute(EAttribute eattribute){
-		imports.add(EcorePackage.eINSTANCE,"EAttribute");
+		tt.import_(EcorePackage.eINSTANCE,"EAttribute");
 		'''«id.getEAttribute(eattribute)»():EAttribute;'''
 		
 	}

@@ -34,8 +34,9 @@ class ModelImplGenerator extends TypeScriptVisitor{
 
 	private TypeScriptIdentifier id = new TypeScriptIdentifier();
 	private CSharpOCLVisitor ocl2csharp = new CSharpOCLVisitor();
-	private TypeTranslator t = new TypeScriptTypeTranslator(id);
-	private ImportManager imports = new ImportManager(t);
+	//private TypeTranslator t = new TypeScriptTypeTranslator(id);
+	private TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2();
+	//private ImportManager imports = new ImportManager(t);
 	
 	
 	new(){
@@ -53,7 +54,6 @@ class ModelImplGenerator extends TypeScriptVisitor{
 		
 		for(EClass eclass : sortedEClasses){
 			
-			imports.clear;
 			
 			var body = 	
 			'''
@@ -63,20 +63,11 @@ class ModelImplGenerator extends TypeScriptVisitor{
 			«doSwitch(eclass)»
 			'''
 			
-			var imports = 
-			'''
-			«FOR String path : imports.fullyQualifiedImports»
-				«IF imports.getPackage(path).nsURI.equals(epackage.nsURI)»
-				import {«imports.getLocalName(path)»} from "./«imports.getLocalName(path)»";
-				«ELSE»
-				import {«imports.getLocalName(path)»} from "«path»";
-				«ENDIF»
-			«ENDFOR»
-			'''
+			
 			
 			var contents =
 			'''
-			«imports»
+			«tt.printImports(epackage)»
 			«body»
 			'''
 			
@@ -99,9 +90,9 @@ class ModelImplGenerator extends TypeScriptVisitor{
 			//TODO what about allInstances on interfaces?
 			var closure = Utils.getSubclasses(e);
 			
-			imports.add(EcorePackage.eINSTANCE, "Set");
-			imports.filter(e);
-			imports.add(e.EPackage, id.EClassBase(e));
+			tt.import_(EcorePackage.eINSTANCE, "Set")
+			tt.import_(e);
+			tt.import_(e.EPackage, id.EClassBase(e));
 			
 			//TODO use importmanager
 			'''
@@ -125,9 +116,9 @@ class ModelImplGenerator extends TypeScriptVisitor{
 			//TODO what about allInstances on interfaces?
 			var closure = Utils.getSubclasses(e);
 			
-			imports.add(EcorePackage.eINSTANCE, "Set");
-			imports.filter(e);
-			imports.add(e.EPackage, id.EClassBase(e));
+			tt.import_(EcorePackage.eINSTANCE, "Set");
+			tt.import_(e);
+			tt.import_(e.EPackage, id.EClassBase(e));
 			
 			//TODO use importmanager
 			'''
@@ -143,7 +134,7 @@ class ModelImplGenerator extends TypeScriptVisitor{
 					«id.EClassImpl(e)».allInstances_.forEach(x => result.push(x));
 					
 					«FOR s:closure»
-					«imports.add(s.EPackage, id.EClassImpl(s))»
+					«tt.import_(s.EPackage, id.EClassImpl(s))»
 					«id.EClassImpl(s)».allInstances_.forEach(x => result.push(x));
 					«ENDFOR»
 					

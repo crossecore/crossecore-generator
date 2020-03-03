@@ -78,15 +78,19 @@ class TypeScriptTypeTranslator2 {
 			Arrays.sort(list);
 
 			for (String name : list) {
-
-				if (Utils.isEqual(epackage, self_)) {
-
-					result.append('''import {«name»} from "./«name»";''');
+				
+				result.append('''import {«name»} from "«epackage.name»/«name»";'''+"\n");
+				
+				/*
+				if(!Utils.isEqual(epackage,self_) && Utils.isEcoreEPackage(epackage)){
+					result.append('''import {«name»} from "crossecore";''');
 					result.append("\n");
-				} else {
+				}else{
 					result.append('''import {«name»} from "«epackage.name»/«name»";''');
-					result.append("\n");
+					result.append("\n");	
 				}
+				*/
+					
 			}
 
 		}
