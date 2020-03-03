@@ -1,3 +1,5 @@
+![Java CI](https://github.com/crossecore/crossecore-generator/workflows/Java%20CI/badge.svg?branch=master)
+
 # Build from source
 ```bash
 ./gradlew customFatJar
