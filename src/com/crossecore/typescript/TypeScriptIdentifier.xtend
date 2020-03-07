@@ -48,7 +48,7 @@ class TypeScriptIdentifier extends IdentifierProvider {
 	def caseOverloadedEOperation(EOperation eoperation){
 		//TODO move the translateType function to IdentifierProvider
 		
-		return '''«eoperation.name»_«FOR EParameter eparameter:eoperation.EParameters SEPARATOR '_'»«t.translateType(eparameter.EGenericType)»«ENDFOR»'''
+		return '''«eoperation.name»_«FOR EParameter eparameter:eoperation.EParameters SEPARATOR '_'»«eparameter.EType.name»«ENDFOR»'''
 	}
 	
 	private def String resolveEPackageMethodOverloadingConflict(String name){
