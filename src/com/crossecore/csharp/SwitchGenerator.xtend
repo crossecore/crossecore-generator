@@ -105,7 +105,7 @@ class SwitchGenerator extends CSharpVisitor {
 				var result = case«id.doSwitch(eclassifier)»(«id.variable(eclassifier)»);
 				
 				«FOR EClass supertype: sortedEClasses»
-				if (result == null) result = «id.doSwitch(supertype)»(«id.variable(eclassifier)»);
+				if (result == null) result = case«id.doSwitch(supertype)»(«id.variable(eclassifier)»);
 				«ENDFOR»
 				
 				if (result == null) result = defaultCase(theEObject);
