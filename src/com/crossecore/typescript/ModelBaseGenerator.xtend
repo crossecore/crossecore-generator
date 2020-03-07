@@ -117,29 +117,26 @@ class ModelBaseGenerator extends TypeScriptVisitor{
 			var referencesWithOppositeNonMany = new HashSet<EReference>();
 			
 			allReferences = new BasicEList<EReference>(e.EAllReferences);
-			allAttributes = new BasicEList<EAttribute>(e.EAllAttributes);
-
-
-			
 			if(e.ESuperTypes.length>0){
 				
-				if(!e.ESuperTypes.get(0).interface){
-					
-					var minus = e.ESuperTypes.get(0).EAllAttributes;
-					allAttributes.removeAll(minus); 
-					
-					var minus2 = e.ESuperTypes.get(0).EAllReferences;
-					allReferences.removeAll(minus2); 
-				}
-				
+				var minus = e.ESuperTypes.get(0).EAllReferences;
+				allReferences.removeAll(minus); 
 			}
+			
+			allAttributes = new BasicEList<EAttribute>(e.EAllAttributes);
+			if(e.ESuperTypes.length>0){
+				
+				var minus = e.ESuperTypes.get(0).EAllAttributes;
+				allAttributes.removeAll(minus); 
+			}
+
 			
 			var nonDirectSupertypes = new BasicEList<EClass>();
 			
 			if(e.ESuperTypes.size>1){
 				
 
-				nonDirectSupertypes.addAll(e.ESuperTypes.subList(1, e.ESuperTypes.size));
+				nonDirectSupertypes.addAll(e.ESuperTypes.subList(1, e.ESuperTypes.size).filter[c | !c.abstract && !c.interface])
 			}
 			
 			allEStructuralFeatures.addAll(allAttributes);
@@ -169,17 +166,8 @@ class ModelBaseGenerator extends TypeScriptVisitor{
 				//allAttributes.addAll(e.EAttributes);
 				//allReferences.addAll(e.EReferences);
 				
-				var inheritedOperations = new HashSet<String>();
-				for(EOperation op:e.EAllOperations){
-					inheritedOperations.add(op.name);
-				}
-				
-				for(EOperation op:e.EOperations){
-					
-					if(!inheritedOperations.contains(op)){
-						allOperations.add(op);
-					}
-				}
+				allOperations = new HashSet<EOperation>(e.EAllOperations);
+				allOperations.removeAll(Utils.getInheritedOperations(e));
 			}
 			else{
 				//EClass inherits from EObject, but do want to exclude the EOperations from EObject, because we want to use the implementation from BasicEObjectImpl
