@@ -223,7 +223,6 @@ class ModelBaseGenerator extends TypeScriptVisitor{
 				
 					«IF !referencesWithOpposite.empty»
 					public eInverseAdd(otherEnd:InternalEObject, featureID:number, msgs:NotificationChain): NotificationChain{
-						«IF !referencesWithOpposite.empty»
 						switch (featureID) {
 							«FOR EReference ref:referencesWithOpposite»
 								case «id.literalRef(e, ref)»:
@@ -243,14 +242,10 @@ class ModelBaseGenerator extends TypeScriptVisitor{
 									«ENDIF»
 							«ENDFOR»
 						}
-						«ENDIF»
-						//return this.«id.super_eInverseAddRef(e)»(otherEnd, featureID, msgs);
 						return super.eInverseAdd(otherEnd, featureID, msgs);
 					}
-					//public «id.super_eInverseAdd(e)» = this.eInverseAdd;
 					
 					public eInverseRemove(otherEnd:InternalEObject, featureID:number, msgs:NotificationChain):NotificationChain{
-						«IF !referencesWithOpposite.empty»
 						switch (featureID) {
 							«FOR EReference ref:referencesWithOpposite»
 								case «id.literalRef(e, ref)»:
@@ -261,12 +256,9 @@ class ModelBaseGenerator extends TypeScriptVisitor{
 									«ENDIF»
 							«ENDFOR»
 						}
-						«ENDIF»
-						//return this.«id.super_eInverseRemoveRef(e)»(otherEnd, featureID, msgs);
 						return super.eInverseRemove(otherEnd, featureID, msgs);
 					}
 					
-					//public «id.super_eInverseRemove(e)» = this.eInverseRemove;
 					«ENDIF»
 				
 					«IF !referencesSingle.empty»
