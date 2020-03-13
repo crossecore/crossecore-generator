@@ -24,6 +24,7 @@ import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EPackage
 import com.crossecore.Utils
+import org.eclipse.emf.ecore.EcorePackage
 
 class FactoryGenerator extends TypeScriptVisitor{
 	
@@ -43,7 +44,7 @@ class FactoryGenerator extends TypeScriptVisitor{
 
 	override caseEPackage (EPackage epackage){
 		
-		
+		tt.import_(EcorePackage.eINSTANCE, "EFactory");
 		var body = '''
 		export interface «id.EPackageFactory(epackage)» extends EFactory{
 			«FOR EClassifier classifier: epackage.EClassifiers»
