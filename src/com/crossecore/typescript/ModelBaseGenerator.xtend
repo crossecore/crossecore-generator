@@ -145,7 +145,7 @@ class ModelBaseGenerator extends TypeScriptVisitor{
 			
 			for(EReference ref:allReferences){
 				
-				if(!ref.many && !ref.derived){
+				if(!ref.many && ref.changeable){
 					referencesSingle.add(ref);
 				}
 				
@@ -232,8 +232,8 @@ class ModelBaseGenerator extends TypeScriptVisitor{
 											msgs = this.eBasicRemoveFromContainer(msgs);
 										}
 										«ELSE»
-										if (this.«id.privateEStructuralFeature(ref)» != null){
-											msgs = this.«id.privateEStructuralFeature(ref)».eInverseRemove(this, «id.literalRef(ref)», /*«id.doSwitch(ref.EType)»*/ null, msgs);
+										if (this.«ref.name» != null){
+											msgs = this.«ref.name».eInverseRemove(this, «id.literalRef(ref)», /*«id.doSwitch(ref.EType)»*/ null, msgs);
 										}
 										«ENDIF»
 										return this.«id.basicSetEReference(ref)»(otherEnd as «id.doSwitch(ref.EType)», msgs);
@@ -263,15 +263,15 @@ class ModelBaseGenerator extends TypeScriptVisitor{
 				
 					«IF !referencesSingle.empty»
 						«FOR EReference ref:referencesSingle»
-							«IF ref.EOpposite != null && ref.EOpposite.containment»
+							«IF ref.EOpposite !== null && ref.EOpposite.containment»
 							public «id.basicSetEReference(ref)»(newobj:«id.doSwitch(ref.EType)», msgs:NotificationChain):NotificationChain {
 									msgs = this.eBasicSetContainer(newobj, «id.literalRef(ref)», msgs);
 									return msgs;
 							}
 							«ELSE»
 							public «id.basicSetEReference(ref)»(newobj:«id.doSwitch(ref.EType)», msgs:NotificationChain):NotificationChain {
-								let oldobj = this.«id.privateEStructuralFeature(ref)»;
-								this.«id.privateEStructuralFeature(ref)» = newobj;
+								let oldobj = this.«ref.name»;
+								this.«ref.name» = newobj;
 								if (this.eNotificationRequired()) {
 									let notification = new ENotificationImpl(this, NotificationImpl.SET, «id.literalRef(ref)», oldobj, newobj);
 									if (msgs == null){
@@ -608,7 +608,7 @@ class ModelBaseGenerator extends TypeScriptVisitor{
 					«ELSE»
 					«var featureId = if(ereference.EOpposite!=null) id.literalRef(ereference.EOpposite) else "BasicEObjectImpl.EOPPOSITE_FEATURE_BASE - " + id.literalRef(ereference) »
 					«var featureClass = if(ereference.EOpposite!=null) '''«id.doSwitch(ereference.EOpposite.EType)»''' else "null"»
-					«var getcurrentvalue = if(ereference.EOpposite!=null && ereference.EOpposite.containment) '''this.eInternalContainer() as «id.doSwitch(ereference.EType)»''' else "this."+id.privateEStructuralFeature(ereference)»
+					«var getcurrentvalue = if(ereference.EOpposite!=null && ereference.EOpposite.containment) '''this.eInternalContainer() as «id.doSwitch(ereference.EType)»''' else "this."+ereference.name»
 					if (value != «getcurrentvalue») {
 						let msgs:NotificationChain = null;
 						if («getcurrentvalue» != null){
