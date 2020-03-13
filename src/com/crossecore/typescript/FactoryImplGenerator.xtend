@@ -49,6 +49,7 @@ class FactoryImplGenerator extends TypeScriptVisitor{
 		var eclasses = epackage.EClassifiers.filter[c|c instanceof EClass].map[c|c as EClass].filter[c|!c.interface && !c.abstract];
 		var edatatypes = epackage.EClassifiers.filter[c|c instanceof EDataType && (c as EDataType).serializable].map[c|c as EDataType];//TODO propagate serializable check
 		tt.import_(epackage, id.EPackageFactory(epackage));
+		tt.import_(epackage, id.EPackagePackageImpl(epackage));
 		tt.import_(EcorePackage.eINSTANCE, "EFactoryImpl");
 		tt.import_(EcorePackage.eINSTANCE, "AllInstances");
 		
