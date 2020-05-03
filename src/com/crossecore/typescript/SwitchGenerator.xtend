@@ -67,7 +67,7 @@ class SwitchGenerator extends TypeScriptVisitor {
 				return ePackage === «id.EPackageSwitch(epackage)».modelPackage;
 			}
 			
-			public doSwitch(classifierID:number, theEObject:EObject):T {
+			protected doSwitch3(classifierID:number, theEObject:EObject):T {
 				switch (classifierID) {
 					«FOR EClassifier eclassifier: epackage.EClassifiers»
 						«cases.doSwitch(eclassifier)»
