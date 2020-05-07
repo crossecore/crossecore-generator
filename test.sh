@@ -15,7 +15,6 @@ if ! [ -x "$(command -v gradle)" ]; then
   exit 1
 fi
 
-. .config
 
 ./gradlew customFatJar
 
