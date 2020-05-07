@@ -1,5 +1,20 @@
 #!/bin/bash
 
+if ! [ -x "$(command -v npm)" ]; then
+  echo 'Error: Please install npm.'
+  exit 1
+fi
+
+if ! [ -x "$(command -v dotnet)" ]; then
+  echo 'Error: Please install dotnet.'
+  exit 1
+fi
+
+if ! [ -x "$(command -v gradle)" ]; then
+  echo 'Error: Please install gradle build tool.'
+  exit 1
+fi
+
 . .config
 
 ./gradlew customFatJar
@@ -42,8 +57,8 @@ for file in Types UML2; do
             echo '    |  |/ __ \\   /  / __ \_';
             echo '/\__|  (____  /\_/  (____  /';
             echo '\______|    \/           \/ ';
-            #gradle wrapper
-            #./gradlew build
+            gradle wrapper
+            ./gradlew build
         elif [ $language == 'csharp' ]
         then
             echo '          _  _   ';
@@ -52,7 +67,7 @@ for file in Types UML2; do
             echo '\  \___ |  ||  | ';
             echo ' \___  >_  ~~  _\';
             echo '     \/  |_||_|  ';
-            #dotnet build --configuration Release
+            dotnet build --configuration Release
         elif [ $language == 'typescript' ]
         then
             echo '  __                                            .__        __   ';
