@@ -10,10 +10,21 @@ def buildTime() {
 
 plugins {
   id "org.xtext.xtend" version "2.0.8"
+  id 'jacoco'
+  id "de.undercouch.download" version "4.0.4"
+  //id 'de.jansauer.printcoverage' version '2.0.0'
+  //id 'antlr'
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+    }
 }
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
+
 
 sourceSets {
     main {
@@ -21,7 +32,15 @@ sourceSets {
             srcDir 'src'
         }
     }
+    test{
+        java{
+            srcDir 'test'
+        }
+        //antlr.srcDirs = ['test/antlr']
+    }
+     
 }
+
 
 
 compileJava.options.encoding = "UTF-8"
@@ -39,6 +58,15 @@ task customFatJar(type: Jar) {
 }
 
 repositories.jcenter()
+
+task downloadFiles(type: Download) {
+    src([
+        'https://raw.githubusercontent.com/antlr/grammars-v4/master/typescript/TypeScriptLexer.g4',
+        'https://raw.githubusercontent.com/antlr/grammars-v4/master/typescript/TypeScriptParser.g4'
+    ])
+    dest new File("./test/antlr")
+    overwrite true
+}
 
 
 dependencies {
@@ -68,11 +96,12 @@ dependencies {
     compile files('lib/org.eclipse.ocl.xtext.oclinecore_1.3.0.v20170522-1753.jar')
     compile files('lib/org.eclipse.ocl.xtext.oclstdlib_1.3.0.v20170522-1753.jar')
     
-
+    compile group: 'lpg.runtime', name: 'java', version: '2.0.17-v201004271640'
 
 	compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.11.0'
 	compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.0'
     
     testImplementation 'junit:junit:4.12'
-    compile group: 'lpg.runtime', name: 'java', version: '2.0.17-v201004271640'
+    compile group: 'org.antlr', name: 'antlr4-runtime', version: '4.8'
+    
 }

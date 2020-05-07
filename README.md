@@ -24,4 +24,18 @@ usage: crossecore
  -p <directory>   target path
 ```
 
+# Tests
+
+## Build Antlr Parsers and Lexers
+
+Download 
+* https://github.com/antlr/grammars-v4/blob/master/typescript/TypeScriptLexer.g4
+* https://github.com/antlr/grammars-v4/blob/master/typescript/TypeScriptParser.g4
+* https://github.com/antlr/grammars-v4/blob/master/typescript/Java/TypeScriptLexerBase.java
+* https://github.com/antlr/grammars-v4/blob/master/typescript/Java/TypeScriptParserBase.java
+
+Run the following command
+```bash
+java -jar antlr-4.8-complete.jar TypeScriptLexer.g4 -package antlr.typescript
+```
 
