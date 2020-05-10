@@ -24,26 +24,29 @@ import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EDataType
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EcorePackage
-import org.eclipse.emf.ecore.EcoreFactory
 import org.eclipse.emf.ecore.EEnum
 import com.crossecore.Utils
+import com.crossecore.EcoreVisitor
 
-class FactoryImplGenerator extends TypeScriptVisitor{
+class FactoryImplGenerator extends EcoreVisitor{
 	
-	private IdentifierProvider id = new TypeScriptIdentifier();
-	//private TypeTranslator t = new TypeScriptTypeTranslator(id);
-	private TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2();
+	IdentifierProvider id = new TypeScriptIdentifier();
+	TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2();
 	//private ImportManager imports = new ImportManager(t);
 	
 	new(){
 		super();
 	}
 	
+	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);
 
 	}
 	
+	override allowOverride(){
+		return false
+	}
 	
 	override caseEPackage (EPackage epackage) {
 		var eclasses = epackage.EClassifiers.filter[c|c instanceof EClass].map[c|c as EClass].filter[c|!c.interface && !c.abstract];

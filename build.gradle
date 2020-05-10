@@ -12,15 +12,69 @@ plugins {
   id "org.xtext.xtend" version "2.0.8"
   id 'jacoco'
   id "de.undercouch.download" version "4.0.4"
+  id 'maven-publish'
   //id 'de.jansauer.printcoverage' version '2.0.0'
   //id 'antlr'
 }
+
+version = '0.1.0-SNAPSHOT'
 
 jacocoTestReport {
     reports {
         xml.enabled true
     }
 }
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            
+            groupId 'com.crossecore'
+            artifactId 'com.crossecore.generator'
+            
+            pom {
+                name = 'CrossEcore Generator'
+                description = 'A concise description of my library'
+                url = 'http://www.crossecore.com'
+                licenses {
+                    license {
+                        name = 'Apache License 2.0'
+                        url = 'https://www.apache.org/licenses/LICENSE-2.0'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'schwichti'
+                        name = 'Simon Schwichtenberg'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git@github.com:crossecore/crossecore-generator.git'
+                    developerConnection = 'scm:git:git@github.com:crossecore/crossecore-generator.git'
+                    url = 'https://github.com/crossecore/crossecore-generator'
+                }
+            }
+        }
+    }
+    repositories {
+        mavenLocal()
+        /*
+        maven {
+            def releasesRepoUrl = "https://oss.sonatype.org/content/repositories/releases/"
+            def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+            credentials {
+                username project.hasProperty('sonatypeUser') ? project.getProperty('sonatypeUser'):''
+                password project.hasProperty('sonatypePassword') ? project.getProperty('sonatypePassword'):''
+                //password project.hasProperty('password') ? project.getProperty('password'):''
+                
+            }
+        }
+        */
+    }
+}
+
 
 apply plugin: 'java'
 apply plugin: 'eclipse'

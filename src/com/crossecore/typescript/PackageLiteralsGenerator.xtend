@@ -18,23 +18,22 @@
  */
 package com.crossecore.typescript
 
-import org.eclipse.emf.ecore.EPackage
-import org.eclipse.emf.ecore.EClassifier
-import java.util.ArrayList
 import com.crossecore.DependencyManager
+import com.crossecore.EcoreVisitor
+import java.util.ArrayList
 import java.util.Collection
-import org.eclipse.emf.ecore.util.EcoreUtil
-import org.eclipse.emf.ecore.EClass
-import org.eclipse.emf.ecore.EEnum
-import org.eclipse.emf.ecore.EDataType
-import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EAttribute
-import com.crossecore.ImportManager
-import org.eclipse.emf.ecore.EcorePackage
+import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.ecore.EClassifier
+import org.eclipse.emf.ecore.EDataType
+import org.eclipse.emf.ecore.EEnum
+import org.eclipse.emf.ecore.EPackage
+import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EStructuralFeature
-import com.crossecore.TypeTranslator
+import org.eclipse.emf.ecore.EcorePackage
+import org.eclipse.emf.ecore.util.EcoreUtil
 
-class PackageLiteralsGenerator extends TypeScriptVisitor{
+class PackageLiteralsGenerator extends EcoreVisitor{
 	
 	private TypeScriptIdentifier id = new TypeScriptIdentifier();
 	//private TypeTranslator t = new TypeScriptTypeTranslator(id);
@@ -123,7 +122,7 @@ class PackageLiteralsGenerator extends TypeScriptVisitor{
 	}
 	
 	
-	var metaobjectid = new TypeScriptVisitor(){
+	var metaobjectid = new EcoreVisitor(){
 		
 		override caseEEnum(EEnum enumeration)'''
 			public static «id.literal(enumeration)»:number = «enumeration.classifierID»;

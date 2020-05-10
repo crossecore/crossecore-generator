@@ -29,25 +29,43 @@ import java.util.Locale
 import org.eclipse.emf.ecore.ENamedElement
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.util.EcoreSwitch
+import java.util.List
+import java.util.Collections
+import java.util.ArrayList
+import java.util.HashMap
+import org.eclipse.emf.ecore.EObject
+import java.util.Map
 
 abstract class EcoreVisitor extends EcoreSwitch<CharSequence>{
 	
 	protected String filenamePattern = "%s.cs";
 	protected String path = "";
-	protected ENamedElement epackage = null;
+	protected EPackage epackage = null;
 	
 	
 	new(){
 		super();
 	}
 	
-	new(String path, String filenamePattern, ENamedElement epackage){
+	new(String path, String filenamePattern, EPackage epackage){
 		super();
 		this.path = path;
 		this.filenamePattern = filenamePattern;
 		this.epackage = epackage;
 	}
 	
+	public def Map<EObject, List<String>> index(){
+		var sb = new StringBuilder();
+		var formatter = new Formatter(sb);
+		formatter.format(this.path+this.filenamePattern, this.epackage.name.toFirstUpper);		
+		val result = new HashMap<EObject, List<String>>()
+		result.put(this.epackage, #[sb.toString])
+		return result
+	}
+	
+	public def allowOverride(){
+		return true
+	}
 	
 	public def write(){
 		write(epackage, this.doSwitch(epackage).toString);

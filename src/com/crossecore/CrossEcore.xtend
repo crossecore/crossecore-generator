@@ -40,6 +40,7 @@ import org.eclipse.emf.ecore.EPackage
 import com.crossecore.csharp.VisualStudioProjectGenerator
 import com.crossecore.typescript.NpmPackageGenerator
 import com.crossecore.typescript.TSConfigGenerator
+import com.crossecore.typescript.TypeScriptVisitor
 
 class CrossEcore {
 	
@@ -286,17 +287,8 @@ class CrossEcore {
 		var mypackage = new EcoreLoader().load(ecoremodel) as EPackage;
 		
 		
-		new com.crossecore.typescript.ModelGenerator(base, "%s.ts", mypackage).write();
-		new com.crossecore.typescript.ModelBaseGenerator(base, "%sBase.ts", mypackage).write();	
-		new com.crossecore.typescript.ModelImplGenerator(base, "%sImpl.ts", mypackage).write();
-		new com.crossecore.typescript.PackageGenerator(base, "%sPackage.ts", mypackage).write();
-		new com.crossecore.typescript.PackageImplGenerator(base, "%sPackageImpl.ts", mypackage).write();
-		new com.crossecore.typescript.PackageLiteralsGenerator(base, "%sPackageLiterals.ts", mypackage).write();
-		new com.crossecore.typescript.SwitchGenerator(base, "%sSwitch.ts", mypackage).write();
-		new com.crossecore.typescript.FactoryGenerator(base, "%sFactory.ts", mypackage).write();
-		new com.crossecore.typescript.FactoryImplGenerator(base, "%sFactoryImpl.ts", mypackage).write();
-		new com.crossecore.typescript.NpmPackageGenerator(base, "package.json", mypackage).write();
-		new com.crossecore.typescript.TSConfigGenerator(base, "tsconfig.json", mypackage).write();
+		new TypeScriptVisitor(base, mypackage).write()
+		
 		
 		if(generateDocumentation){
 			

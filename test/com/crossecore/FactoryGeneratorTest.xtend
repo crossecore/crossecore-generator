@@ -12,6 +12,7 @@ import org.antlr.v4.runtime.ANTLRInputStream
 import antlr.typescript.TypeScriptLexer
 import org.antlr.v4.runtime.CommonTokenStream
 import org.antlr.v4.runtime.CharStreams
+import org.eclipse.emf.ecore.EcorePackage
 
 class FactoryGeneratorTest {
 
@@ -19,17 +20,7 @@ class FactoryGeneratorTest {
 
 	@Before def void setup(){
 		
-		epackage = EcoreFactory.eINSTANCE.createEPackage()
-		epackage.name = "MyPackage"
-		epackage.nsURI = "com.mypackage"
-		val eclass = EcoreFactory.eINSTANCE.createEClass();
-		eclass.name = "MyClass"
-		epackage.EClassifiers.add(eclass)		
-		
-		val einterface = EcoreFactory.eINSTANCE.createEClass()
-		einterface.name = "MyInterface"
-		einterface.interface = true
-		epackage.EClassifiers.add(einterface)				
+		epackage = EcorePackage.eINSTANCE
 	}
 
 	@Test def void test_caseEPackage() {
@@ -51,8 +42,28 @@ class FactoryGeneratorTest {
 		
 		assertTrue(x.length===1)
 		
-		assertTrue(result.contains("export interface MyPackageFactory extends EFactory"))
+		assertTrue(result.contains("export interface EcoreFactory extends EFactory"))
 	}
+	
+	@Test def void test_index() {
+		//Arrange
+		val baseDir = "src/"
+		val factory = new FactoryGenerator(baseDir, "%sFactory.ts", epackage)
+		
+		//Action
+		val index = factory.index()
+		
+		
+		//Assert
+		assertNotNull(index)
+		assertTrue(index.size===1)
+		System.out.println(index)
+		assertTrue(index.containsKey(EcorePackage.eINSTANCE))
+		assertArrayEquals(#["src/EcoreFactory.ts"], index.get(EcorePackage.eINSTANCE))
+		
+			
+	}
+	
 	
 	
 }

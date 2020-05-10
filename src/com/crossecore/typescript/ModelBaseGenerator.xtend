@@ -19,17 +19,17 @@
 package com.crossecore.typescript;
 
 import com.crossecore.DependencyManager
-import com.crossecore.ImportManager
-import com.crossecore.TypeTranslator
+import com.crossecore.PerClassVisitor
 import com.crossecore.Utils
 import com.crossecore.csharp.CSharpOCLVisitor
 import java.util.ArrayList
 import java.util.HashMap
 import java.util.HashSet
 import java.util.List
+import org.eclipse.emf.common.util.BasicEList
+import org.eclipse.emf.common.util.BasicEMap
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EClass
-import org.eclipse.emf.ecore.EDataType
 import org.eclipse.emf.ecore.EEnum
 import org.eclipse.emf.ecore.EEnumLiteral
 import org.eclipse.emf.ecore.EOperation
@@ -39,10 +39,9 @@ import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.ETypeParameter
 import org.eclipse.emf.ecore.EcorePackage
-import org.eclipse.emf.common.util.BasicEMap
-import org.eclipse.emf.common.util.BasicEList
+import org.eclipse.emf.ecore.EClassifier
 
-class ModelBaseGenerator extends TypeScriptVisitor{ 
+class ModelBaseGenerator extends PerClassVisitor{ 
 	
 
 	private TypeScriptIdentifier id = new TypeScriptIdentifier();
@@ -61,52 +60,19 @@ class ModelBaseGenerator extends TypeScriptVisitor{
 
 	}
 		
+	override getEClassifiers() {
+		val result = new ArrayList<EClassifier>();
+		result.addAll(DependencyManager.sortEClasses(epackage).filter[c|!c.interface])
+		return result
+	}	
 	
-		
 	
-	override caseEPackage (EPackage epackage){
-		var List<EClass> sortedEClasses = DependencyManager.sortEClasses(epackage);
-		
-		for(EClass eclass : sortedEClasses){
-			tt.clearImports;
-			tt.import_(EcorePackage.eINSTANCE, "InternalEObject");
-			tt.import_(EcorePackage.eINSTANCE, "EClass");
-			tt.import_(EcorePackage.eINSTANCE, "NotificationChain");
-			tt.import_(EcorePackage.eINSTANCE, "ENotificationImpl");
-			tt.import_(EcorePackage.eINSTANCE, "NotificationImpl");
-			tt.import_(EcorePackage.eINSTANCE, "BasicEObjectImpl");
-			tt.import_(epackage, id.EPackagePackageLiterals(epackage));
-			//imports.add(epackage, id.EPackagePackageLiterals(epackage));
-			var body = 	
-			'''
-			«doSwitch(eclass)»
-			'''
-			
-			var contents =
-			'''
-			«tt.printImports(epackage)»
-			«body»
-			'''
-			
-			write(eclass, contents);
-		}
-	
-		return "";
-	}
-	
-	override write(){
-		doSwitch(epackage);
-	}
-		
-
 	
 	override caseEClass(EClass e){
 
 		var eAnnotation = e.getEAnnotation("http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot");
 		var invariants = if(eAnnotation!==null) eAnnotation.getDetails() else new BasicEMap();
 		
-
-		if(!e.interface){
 			
 			var allAttributes = new BasicEList<EAttribute>();
 			var allReferences = new BasicEList<EReference>();
@@ -202,7 +168,16 @@ class ModelBaseGenerator extends TypeScriptVisitor{
 						
 			}
 			
-			return
+			tt.clearImports;
+			tt.import_(EcorePackage.eINSTANCE, "InternalEObject");
+			tt.import_(EcorePackage.eINSTANCE, "EClass");
+			tt.import_(EcorePackage.eINSTANCE, "NotificationChain");
+			tt.import_(EcorePackage.eINSTANCE, "ENotificationImpl");
+			tt.import_(EcorePackage.eINSTANCE, "NotificationImpl");
+			tt.import_(EcorePackage.eINSTANCE, "BasicEObjectImpl");
+			tt.import_(epackage, id.EPackagePackageLiterals(epackage));
+			
+			val body =  
 			'''
 			
 				export class «id.EClassBase(e)»«FOR ETypeParameter param : e.ETypeParameters BEFORE '<' SEPARATOR ',' AFTER '>'»«id.doSwitch(param)»«ENDFOR»
@@ -395,8 +370,13 @@ class ModelBaseGenerator extends TypeScriptVisitor{
 				}
 				
 			'''
+			
+			return 
+			'''
+			«tt.printImports(epackage)»
+			«body»
+			'''
 		
-		}
 	
 	}
 	
@@ -704,6 +684,8 @@ class ModelBaseGenerator extends TypeScriptVisitor{
 		'''
 	
 	}
+	
+	
 	
 
 	

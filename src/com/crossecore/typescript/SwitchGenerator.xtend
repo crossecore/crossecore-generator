@@ -18,16 +18,14 @@
  */
 package com.crossecore.typescript;
 
-import org.eclipse.emf.ecore.EClassifier
-import org.eclipse.emf.ecore.EDataType
-import org.eclipse.emf.ecore.EPackage
-import org.eclipse.emf.ecore.EClass
 import com.crossecore.DependencyManager
-import com.crossecore.ImportManager
+import com.crossecore.EcoreVisitor
+import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.ecore.EClassifier
+import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EcorePackage
-import com.crossecore.TypeTranslator
 
-class SwitchGenerator extends TypeScriptVisitor {
+class SwitchGenerator extends EcoreVisitor {
 	
 	private TypeScriptIdentifier id = new TypeScriptIdentifier();
 	//private TypeTranslator t = new TypeScriptTypeTranslator(id);
@@ -105,7 +103,7 @@ class SwitchGenerator extends TypeScriptVisitor {
 		
 	}
 	
-	var cases = new TypeScriptVisitor(){
+	var cases = new EcoreVisitor(){
 	
 		override caseEClass(EClass eclassifier){
 			var sortedEClasses_ = DependencyManager.sortEClasses(eclassifier.EAllSuperTypes);

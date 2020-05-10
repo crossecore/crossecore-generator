@@ -33,8 +33,9 @@ import com.crossecore.Utils
 import com.crossecore.ImportManager
 import com.crossecore.TypeTranslator
 import java.util.ArrayList
+import com.crossecore.EcoreVisitor
 
-class NpmPackageGenerator extends TypeScriptVisitor{
+class NpmPackageGenerator extends EcoreVisitor{
 	
 	private TypeScriptIdentifier id = new TypeScriptIdentifier();
 	

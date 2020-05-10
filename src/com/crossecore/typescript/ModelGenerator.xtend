@@ -18,19 +18,16 @@
  */
 package com.crossecore.typescript;
 
-import com.crossecore.DependencyManager
-import com.crossecore.ImportManager
-import com.crossecore.TypeTranslator
+import com.crossecore.PerClassVisitor
 import com.crossecore.Utils
 import java.util.ArrayList
-import java.util.Collection
 import java.util.HashMap
-import java.util.HashSet
+import java.util.LinkedHashSet
 import java.util.List
+import java.util.Set
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
-import org.eclipse.emf.ecore.EDataType
 import org.eclipse.emf.ecore.EEnum
 import org.eclipse.emf.ecore.EEnumLiteral
 import org.eclipse.emf.ecore.EOperation
@@ -38,11 +35,8 @@ import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EParameter
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EcorePackage
-import java.util.Set
-import java.util.LinkedHashSet
-import org.eclipse.emf.common.util.EMap
 
-class ModelGenerator extends TypeScriptVisitor{ 
+class ModelGenerator extends PerClassVisitor{ 
 	
 	private TypeScriptIdentifier id = new TypeScriptIdentifier();
 	//private TypeTranslator t = new TypeScriptTypeTranslator(id);
@@ -61,50 +55,13 @@ class ModelGenerator extends TypeScriptVisitor{
 	override write(){
 		doSwitch(epackage);
 	}
-
-	override caseEPackage(EPackage epackage) {
-		var Set<EClassifier> eclassifiers = new LinkedHashSet<EClassifier>();
+	
+	override getEClassifiers() {
+		var eclassifiers = new ArrayList<EClassifier>();
 		eclassifiers.addAll(epackage.EClassifiers.filter[e|e instanceof EClass]);
 		eclassifiers.addAll(epackage.EClassifiers.filter[e|e instanceof EEnum]);
-		
-		for(EClassifier classifier: eclassifiers){
-			tt.clearImports;
-			var body = 	
-			'''
-		 	«IF !Utils.isEcoreEPackage(epackage)»
-		 	«ENDIF»
-			«doSwitch(classifier)»
-			'''
-			
-			var contents =
-			'''
-			«tt.printImports(epackage)»
-			«body»
-			'''
-			write(classifier, contents);
-		}
-		
-		/*
-		for(EClassifier classifier: eclassifiers){
-			var contents = 	'''
-			 	«IF !Utils.isEcoreEPackage(epackage)»
-			 	using Ecore;
-			 	«ENDIF»
-				export namespace «id.doSwitch(epackage)»{
-				
-					«doSwitch(classifier)»
-	
-				}
-			'''
-			write(classifier, contents);
-		}
-		*/
-		
-	
-		return "";
-	
-	}
-	
+		return eclassifiers
+	}	
 
 
 	
@@ -123,7 +80,7 @@ class ModelGenerator extends TypeScriptVisitor{
 					
 		}
 			
-		
+		val body = 
 		'''
 
 			export interface «e.name»
@@ -165,6 +122,12 @@ class ModelGenerator extends TypeScriptVisitor{
 
 			}
 			
+		'''
+		
+		return 
+		'''
+		«tt.printImports(epackage)»
+		«body»
 		'''
 	
 	}

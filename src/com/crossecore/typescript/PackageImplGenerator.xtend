@@ -44,7 +44,7 @@ import org.eclipse.emf.ecore.EParameter
 import org.eclipse.emf.ecore.impl.EClassifierImpl
 import org.eclipse.emf.ecore.impl.EPackageImpl
 
-class PackageImplGenerator extends TypeScriptVisitor{
+class PackageImplGenerator extends EcoreVisitor{
 	
 	private TypeScriptIdentifier id = new TypeScriptIdentifier();
 	//private TypeTranslator t = new TypeScriptTypeTranslator(id);
@@ -59,6 +59,10 @@ class PackageImplGenerator extends TypeScriptVisitor{
 		super(path, filenamePattern, epackage);
 		
 
+	}
+	
+	override allowOverride(){
+		return false
 	}
 	
 	
@@ -309,7 +313,7 @@ class PackageImplGenerator extends TypeScriptVisitor{
 		'''
 	}
 	
-	var literals = new TypeScriptVisitor(){
+	var literals = new EcoreVisitor(){
 		override caseEClass(EClass eclass){
 			//tt.import_(EcorePackage.eINSTANCE,"EClass");
 			'''
@@ -347,7 +351,7 @@ class PackageImplGenerator extends TypeScriptVisitor{
 	}
 	
 	
-	var metaobjectid = new TypeScriptVisitor(){
+	var metaobjectid = new EcoreVisitor(){
 		
 		override caseEEnum(EEnum enumeration)'''
 			public static «id.literal(enumeration)»:number = «enumeration.classifierID»;
