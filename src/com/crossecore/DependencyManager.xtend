@@ -44,9 +44,6 @@ class DependencyManager {
 		
 		visited = new HashSet<EClass>();
 		sorted = new Stack<EClass>();
-		
-		var roots = eclassifiers.filter[e|e.ESuperTypes.empty];
-		
 
 		for(EClass root:eclassifiers){
 			
@@ -54,10 +51,7 @@ class DependencyManager {
 		}
 		
 		
-		var x = new BasicEList<EClass>(sorted);
-		//Collections.reverse(x);
-		
-		return x;
+		return new BasicEList<EClass>(sorted);
 
 	}
 	
