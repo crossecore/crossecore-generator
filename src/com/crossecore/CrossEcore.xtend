@@ -40,12 +40,14 @@ import org.eclipse.emf.ecore.EPackage
 import com.crossecore.csharp.VisualStudioProjectGenerator
 import com.crossecore.typescript.NpmPackageGenerator
 import com.crossecore.typescript.TSConfigGenerator
+import org.apache.log4j.Logger
+import org.apache.log4j.LogManager
 
 class CrossEcore {
 	
 	private static boolean generateDocumentation = true;
 	
-	
+	private static final Logger logger = LogManager.getLogger(CrossEcore);
 	
 	
 	static def main(String[] args){
@@ -177,9 +179,10 @@ class CrossEcore {
 		else{
 			
 			for(String message : errors){
-				System.out.println("Error: "+message);
+				logger.error(message)
+				
 			}
-			System.out.println("Program will exit.");
+			logger.error("Generator failed.")
 		}
 
 	}
