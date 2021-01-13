@@ -18,17 +18,17 @@
  */
 package com.crossecore.typescript;
 
+import com.crossecore.EcoreVisitor
 import com.crossecore.IdentifierProvider
+import com.crossecore.Utils
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EDataType
+import org.eclipse.emf.ecore.EEnum
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EcorePackage
-import org.eclipse.emf.ecore.EcoreFactory
-import org.eclipse.emf.ecore.EEnum
-import com.crossecore.Utils
 
-class FactoryImplGenerator extends TypeScriptVisitor{
+class FactoryImplGenerator extends EcoreVisitor{
 	
 	private IdentifierProvider id = new TypeScriptIdentifier();
 	//private TypeTranslator t = new TypeScriptTypeTranslator(id);

@@ -19,17 +19,17 @@
 package com.crossecore.typescript;
 
 import com.crossecore.DependencyManager
-import com.crossecore.ImportManager
-import com.crossecore.TypeTranslator
+import com.crossecore.EcoreVisitor
 import com.crossecore.Utils
 import com.crossecore.csharp.CSharpOCLVisitor
 import java.util.ArrayList
 import java.util.HashMap
 import java.util.HashSet
 import java.util.List
+import org.eclipse.emf.common.util.BasicEList
+import org.eclipse.emf.common.util.BasicEMap
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EClass
-import org.eclipse.emf.ecore.EDataType
 import org.eclipse.emf.ecore.EEnum
 import org.eclipse.emf.ecore.EEnumLiteral
 import org.eclipse.emf.ecore.EOperation
@@ -39,10 +39,8 @@ import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.ETypeParameter
 import org.eclipse.emf.ecore.EcorePackage
-import org.eclipse.emf.common.util.BasicEMap
-import org.eclipse.emf.common.util.BasicEList
 
-class ModelBaseGenerator extends TypeScriptVisitor{ 
+class ModelBaseGenerator extends EcoreVisitor{ 
 	
 
 	private TypeScriptIdentifier id = new TypeScriptIdentifier();

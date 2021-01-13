@@ -18,14 +18,13 @@
  */
  package com.crossecore.typescript;
 
+import com.crossecore.EcoreVisitor
 import com.crossecore.IdentifierProvider
-import com.crossecore.ImportManager
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EPackage
-import com.crossecore.Utils
 
-class FactoryGenerator extends TypeScriptVisitor{
+class FactoryGenerator extends EcoreVisitor{
 	
 	private IdentifierProvider id = new TypeScriptIdentifier();
 	//private ImportManager imports = new ImportManager(new TypeScriptTypeTranslator(id));

@@ -18,19 +18,15 @@
  */
 package com.crossecore.typescript;
 
-import com.crossecore.DependencyManager
-import com.crossecore.ImportManager
-import com.crossecore.TypeTranslator
 import com.crossecore.Utils
 import java.util.ArrayList
-import java.util.Collection
 import java.util.HashMap
-import java.util.HashSet
+import java.util.LinkedHashSet
 import java.util.List
+import java.util.Set
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
-import org.eclipse.emf.ecore.EDataType
 import org.eclipse.emf.ecore.EEnum
 import org.eclipse.emf.ecore.EEnumLiteral
 import org.eclipse.emf.ecore.EOperation
@@ -38,11 +34,9 @@ import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EParameter
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EcorePackage
-import java.util.Set
-import java.util.LinkedHashSet
-import org.eclipse.emf.common.util.EMap
+import com.crossecore.EcoreVisitor
 
-class ModelGenerator extends TypeScriptVisitor{ 
+class ModelGenerator extends EcoreVisitor{ 
 	
 	private TypeScriptIdentifier id = new TypeScriptIdentifier();
 	//private TypeTranslator t = new TypeScriptTypeTranslator(id);

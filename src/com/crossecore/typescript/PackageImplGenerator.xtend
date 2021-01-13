@@ -18,33 +18,26 @@
  */
 package com.crossecore.typescript;
 
-import org.eclipse.emf.ecore.EDataType
-import org.eclipse.emf.ecore.EPackage
-import org.eclipse.emf.ecore.EAttribute
-import org.eclipse.emf.ecore.EClassifier
-import org.eclipse.emf.ecore.EClass
-import org.eclipse.emf.ecore.EReference
-import org.eclipse.emf.ecore.EEnum
-import com.crossecore.EcoreVisitor
-import com.crossecore.IdentifierProvider
-import java.util.Collection
-import org.eclipse.emf.ecore.util.EcoreUtil
-import java.util.ArrayList
 import com.crossecore.DependencyManager
-import org.eclipse.emf.ecore.EStructuralFeature
+import com.crossecore.EcoreVisitor
 import com.crossecore.Utils
-import org.eclipse.emf.ecore.EcorePackage
-import com.crossecore.ImportManager
+import java.util.ArrayList
+import java.util.Collection
+import org.eclipse.emf.ecore.EAttribute
+import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.ecore.EClassifier
+import org.eclipse.emf.ecore.EDataType
+import org.eclipse.emf.ecore.EEnum
 import org.eclipse.emf.ecore.EObject
-import java.util.List
-import com.crossecore.TypeTranslator
-import org.eclipse.emf.ecore.impl.EcorePackageImpl
 import org.eclipse.emf.ecore.EOperation
+import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EParameter
-import org.eclipse.emf.ecore.impl.EClassifierImpl
-import org.eclipse.emf.ecore.impl.EPackageImpl
+import org.eclipse.emf.ecore.EReference
+import org.eclipse.emf.ecore.EStructuralFeature
+import org.eclipse.emf.ecore.EcorePackage
+import org.eclipse.emf.ecore.util.EcoreUtil
 
-class PackageImplGenerator extends TypeScriptVisitor{
+class PackageImplGenerator extends EcoreVisitor{
 	
 	private TypeScriptIdentifier id = new TypeScriptIdentifier();
 	//private TypeTranslator t = new TypeScriptTypeTranslator(id);
@@ -309,7 +302,7 @@ class PackageImplGenerator extends TypeScriptVisitor{
 		'''
 	}
 	
-	var literals = new TypeScriptVisitor(){
+	var literals = new EcoreVisitor(){
 		override caseEClass(EClass eclass){
 			//tt.import_(EcorePackage.eINSTANCE,"EClass");
 			'''
@@ -347,7 +340,7 @@ class PackageImplGenerator extends TypeScriptVisitor{
 	}
 	
 	
-	var metaobjectid = new TypeScriptVisitor(){
+	var metaobjectid = new EcoreVisitor(){
 		
 		override caseEEnum(EEnum enumeration)'''
 			public static «id.literal(enumeration)»:number = «enumeration.classifierID»;

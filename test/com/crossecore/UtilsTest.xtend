@@ -1,18 +1,10 @@
 package com.crossecore
 
-import static org.junit.Assert.*
-import org.junit.Test
-import com.crossecore.typescript.FactoryGenerator
 import org.eclipse.emf.ecore.EcoreFactory
-import org.junit.Before
-import org.eclipse.emf.ecore.EPackage
-import org.antlr.v4.runtime.tree.xpath.XPath
-import antlr.typescript.TypeScriptParser
-import org.antlr.v4.runtime.ANTLRInputStream
-import antlr.typescript.TypeScriptLexer
-import org.antlr.v4.runtime.CommonTokenStream
-import org.antlr.v4.runtime.CharStreams
 import org.eclipse.emf.ecore.EcorePackage
+import org.junit.Test
+
+import static org.junit.Assert.*
 
 class UtilsTest {
 

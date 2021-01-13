@@ -18,23 +18,10 @@
  */
 package com.crossecore.typescript;
 
-import org.eclipse.emf.ecore.EDataType
+import com.crossecore.EcoreVisitor
 import org.eclipse.emf.ecore.EPackage
-import org.eclipse.emf.ecore.EAttribute
-import org.eclipse.emf.ecore.EClassifier
-import org.eclipse.emf.ecore.EClass
-import org.eclipse.emf.ecore.EReference
-import org.eclipse.emf.ecore.EEnum
-import com.crossecore.IdentifierProvider
-import com.crossecore.DependencyManager
-import org.eclipse.emf.ecore.util.EcoreUtil
-import org.eclipse.emf.ecore.EcorePackage
-import com.crossecore.Utils
-import com.crossecore.ImportManager
-import com.crossecore.TypeTranslator
-import java.util.ArrayList
 
-class NpmPackageGenerator extends TypeScriptVisitor{
+class NpmPackageGenerator extends EcoreVisitor{
 	
 	private TypeScriptIdentifier id = new TypeScriptIdentifier();
 	

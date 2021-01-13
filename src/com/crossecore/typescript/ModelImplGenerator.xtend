@@ -19,17 +19,16 @@
 package com.crossecore.typescript;
 
 import com.crossecore.DependencyManager
+import com.crossecore.EcoreVisitor
 import com.crossecore.Utils
 import com.crossecore.csharp.CSharpOCLVisitor
 import java.util.List
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.ETypeParameter
-import com.crossecore.ImportManager
 import org.eclipse.emf.ecore.EcorePackage
-import com.crossecore.TypeTranslator
 
-class ModelImplGenerator extends TypeScriptVisitor{ 
+class ModelImplGenerator extends EcoreVisitor{ 
 	
 
 	private TypeScriptIdentifier id = new TypeScriptIdentifier();
