@@ -1,4 +1,4 @@
-package com.crossecore
+package com.crossecore.typescript
 
 import static org.junit.Assert.*
 import org.junit.Test
