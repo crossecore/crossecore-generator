@@ -56,8 +56,6 @@ abstract class EcoreVisitor extends EcoreSwitch<CharSequence>{
 	public def write(ENamedElement element, String contents, Boolean override_){
 		
 		
-		//TODO use FileWriter
-		
 		var sb = new StringBuilder();
 		
 		var formatter = new Formatter(sb, Locale.US);
