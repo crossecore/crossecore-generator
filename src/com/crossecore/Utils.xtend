@@ -53,7 +53,7 @@ class Utils {
 	}
 	
 	public static def isEcoreEPackage(EPackage epackage){
-		if(epackage !=null && epackage.nsURI=="http://www.eclipse.org/emf/2002/Ecore"){
+		if(epackage !==null && epackage.nsURI==="http://www.eclipse.org/emf/2002/Ecore"){
 			return true;
 		}
 		return false;
