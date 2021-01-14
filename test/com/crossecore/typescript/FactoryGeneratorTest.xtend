@@ -48,7 +48,6 @@ class FactoryGeneratorTest {
 		//Action
 		val result = factory.caseEPackage(epackage).toString()
 		
-		System.out.println(result);
 		//Assert
 		//https://github.com/antlr/antlr4/blob/master/doc/tree-matching.md
 		
@@ -67,7 +66,7 @@ class FactoryGeneratorTest {
 		val x = XPath.findAll(tree, xpath, parser).toSet;
 		
 		
-		assertTrue(x.length===1)
+		assertTrue(x.size===1)
 		
 		assertTrue(result.contains("export interface MyPackageFactory extends EFactory"))
 	
@@ -75,7 +74,7 @@ class FactoryGeneratorTest {
 		val x2 = XPath.findAll(tree, xpath2, parser).toSet;
 		
 		
-		assertTrue(x2.length===2)
+		assertTrue(x2.size===2)
 	}
 	
 	
