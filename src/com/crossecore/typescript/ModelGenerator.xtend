@@ -65,8 +65,6 @@ class ModelGenerator extends EcoreVisitor{
 			tt.clearImports;
 			var body = 	
 			'''
-		 	«IF !Utils.isEcoreEPackage(epackage)»
-		 	«ENDIF»
 			«doSwitch(classifier)»
 			'''
 			
@@ -78,30 +76,11 @@ class ModelGenerator extends EcoreVisitor{
 			write(classifier, contents);
 		}
 		
-		/*
-		for(EClassifier classifier: eclassifiers){
-			var contents = 	'''
-			 	«IF !Utils.isEcoreEPackage(epackage)»
-			 	using Ecore;
-			 	«ENDIF»
-				export namespace «id.doSwitch(epackage)»{
-				
-					«doSwitch(classifier)»
-	
-				}
-			'''
-			write(classifier, contents);
-		}
-		*/
-		
-	
 		return "";
 	
 	}
 	
 
-
-	
 	override caseEClass(EClass e){
 
 		var overloading = new HashMap<String, List<EOperation>>();
