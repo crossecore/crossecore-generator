@@ -66,7 +66,41 @@ class ModelGeneratorTest {
 		eattribute.EType = EcorePackage.Literals.ESTRING
 		eclass.EStructuralFeatures.add(eattribute)
 		
-			
+		val ereference = EcoreFactory.eINSTANCE.createEReference()
+		ereference.name = "ereference_single"
+		ereference.upperBound = 1
+		ereference.EType = supertype
+		eclass.EStructuralFeatures.add(ereference)
+				
+		val ereference2 = EcoreFactory.eINSTANCE.createEReference()
+		ereference2.name = "ereference_many"
+		ereference2.upperBound = -1
+		ereference2.EType = supertype
+		eclass.EStructuralFeatures.add(ereference2)
+		
+		var map = EcoreFactory.eINSTANCE.createEClass()
+		map.name = "StringToStringMap"
+		map.instanceClassName = "java.util.Map$Entry"
+		
+		var key_attribute = EcoreFactory.eINSTANCE.createEAttribute()
+		key_attribute.name = "key"
+		key_attribute.EType = EcorePackage.Literals.ESTRING
+		
+		var value_attribute = EcoreFactory.eINSTANCE.createEAttribute()
+		value_attribute.name = "value"
+		value_attribute.EType = EcorePackage.Literals.ESTRING
+		
+		map.EStructuralFeatures.add(key_attribute)
+		map.EStructuralFeatures.add(value_attribute)
+		
+		epackage.EClassifiers.add(map)
+		
+		val ereference3 = EcoreFactory.eINSTANCE.createEReference()
+		ereference3.name = "ereference_map"
+		ereference3.containment = true
+		ereference3.upperBound = -1
+		ereference3.EType = map
+		eclass.EStructuralFeatures.add(ereference3)
 	}
 
 	@Test def void test_caseEClass() {
@@ -102,7 +136,7 @@ class ModelGeneratorTest {
 		val y = XPath.findAll(tree, xpath2, parser).toSet;
 		
 		System.out.println(y)
-		assertTrue(y.size===1)
+		assertTrue(y.size===4)
 		
 	}
 	
