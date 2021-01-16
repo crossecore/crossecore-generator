@@ -101,9 +101,6 @@ class FactoryImplGenerator extends EcoreVisitor{
 					throw new Error("The datatype '" + eDataType.name + "' is not a valid classifier");
 				}
 			}
-			«ENDIF»
-			
-			«IF !edatatypes.empty»
 			public convertToString(eDataType:EDataType, instanceValue:any):string {
 				switch (eDataType.getClassifierID()) {
 				«FOR EDataType e : edatatypes»
