@@ -28,6 +28,13 @@ class PackageImplGeneratorTest {
 		val eclass = EcoreFactory.eINSTANCE.createEClass();
 		eclass.name = "MyClass"
 		
+		val supertype = EcoreFactory.eINSTANCE.createEClass();
+		supertype.name = "Supertype"
+		
+		epackage.EClassifiers.add(supertype)
+		
+		eclass.ESuperTypes.add(supertype)
+		
 		val eattribute = EcoreFactory.eINSTANCE.createEAttribute()
 		eattribute.name ="attribute"
 		eattribute.EType = EcorePackage.Literals.ESTRING;
@@ -55,7 +62,7 @@ class PackageImplGeneratorTest {
 		eattribute2.ordered = false
 		eclass.EStructuralFeatures.add(eattribute2)
 		
-		val ereference = EcoreFactory.eINSTANCE.createEAttribute()
+		val ereference = EcoreFactory.eINSTANCE.createEReference()
 		ereference.name ="ereference"
 		ereference.EType = eclass
 		eclass.EStructuralFeatures.add(ereference)
@@ -64,6 +71,7 @@ class PackageImplGeneratorTest {
 		eoperation.name = "operation"
 		eoperation.unique = true
 		eoperation.ordered = true
+		eclass.EOperations.add(eoperation)
 		
 		val param = EcoreFactory.eINSTANCE.createEParameter()
 		param.name = "p"
@@ -71,6 +79,7 @@ class PackageImplGeneratorTest {
 		eoperation.EParameters.add(param)
 		
 		epackage.EClassifiers.add(eclass)
+		
 		
 		val einterface = EcoreFactory.eINSTANCE.createEClass();
 		einterface.name = "MyInterface"
