@@ -85,24 +85,25 @@ dependencies {
     
     compile group: 'commons-cli', name: 'commons-cli', version: '1.4'
     
-    //https://hudson.eclipse.org/ocl/view/OCL/job/ocl-oxygen-master/lastBuild/artifact/MDT-OCL.p2.repository/plugins/
+
+    //https://ci.eclipse.org/ocl/job/ocl-master/lastSuccessfulBuild/artifact/targetPlatform/plugins/
   
-    compile files('lib/org.eclipse.ocl_3.6.200.v20170522-1736.jar')
-    compile files('lib/org.eclipse.ocl.common_1.4.200.v20160613-1518.jar')
-    compile files('lib/org.eclipse.ocl.ecore_3.6.200.v20170522-1736.jar')
-    compile files('lib/org.eclipse.ocl.pivot_1.3.0.v20170522-1753.jar')
-    compile files('lib/org.eclipse.ocl.xtext.base_1.3.0.v20170522-1753.jar')
-    compile files('lib/org.eclipse.ocl.xtext.completeocl_1.3.0.v20170522-1753.jar')
-    compile files('lib/org.eclipse.ocl.xtext.essentialocl_1.3.0.v20170522-1753.jar')
-    compile files('lib/org.eclipse.ocl.xtext.oclinecore_1.3.0.v20170522-1753.jar')
-    compile files('lib/org.eclipse.ocl.xtext.oclstdlib_1.3.0.v20170522-1753.jar')
+    compile files('lib/org.eclipse.ocl_3.15.200.v20210117-0741.jar')
+    compile files('lib/org.eclipse.ocl.common_1.8.600.v20210117-0741.jar')
+    compile files('lib/org.eclipse.ocl.ecore_3.15.200.v20210117-0741.jar')
+    compile files('lib/org.eclipse.ocl.pivot_1.14.0.v20210117-0741.jar')
+    compile files('lib/org.eclipse.ocl.xtext.base_1.14.0.v20210117-0741.jar')
+    compile files('lib/org.eclipse.ocl.xtext.completeocl_1.14.0.v20210117-0741.jar')
+    compile files('lib/org.eclipse.ocl.xtext.essentialocl_1.14.0.v20210117-0741.jar')
+    compile files('lib/org.eclipse.ocl.xtext.oclinecore_1.14.0.v20210117-0741.jar')
+    compile files('lib/org.eclipse.ocl.xtext.oclstdlib_1.14.0.v20210117-0741.jar')
     
     compile group: 'lpg.runtime', name: 'java', version: '2.0.17-v201004271640'
 
-	compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.11.0'
-	compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.0'
+	compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.14.0'
+	compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.14.0'
     
-    testImplementation 'junit:junit:4.12'
-    compile group: 'org.antlr', name: 'antlr4-runtime', version: '4.9'
+    testImplementation 'junit:junit:4.13.1'
+    compile group: 'org.antlr', name: 'antlr4-runtime', version: '4.9.1'
     
 }
