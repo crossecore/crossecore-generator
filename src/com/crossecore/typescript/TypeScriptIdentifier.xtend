@@ -34,7 +34,7 @@ import com.crossecore.TypeTranslator
 
 class TypeScriptIdentifier extends IdentifierProvider {
 	
-	private TypeTranslator t = new TypeScriptTypeTranslator(this);
+	private TypeScriptTypeTranslator2 t = new TypeScriptTypeTranslator2();
 	
 	override escapeKeyword(String identifier) {
 		var identifier_ = identifier.replace("arguments", "arguments_");
