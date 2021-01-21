@@ -30,6 +30,10 @@ class ModelBaseGeneratorTest {
 		class_supertype.name = "SuperType"
 		epackage.EClassifiers.add(class_supertype)
 		
+		val class_indirect_supertype = EcoreFactory.eINSTANCE.createEClass();
+		class_indirect_supertype.name = "IndirectSuperType"
+		epackage.EClassifiers.add(class_indirect_supertype)
+		
 		val class_interface = EcoreFactory.eINSTANCE.createEClass();
 		class_interface.name = "SuperInterface"
 		epackage.EClassifiers.add(class_interface)
@@ -37,6 +41,7 @@ class ModelBaseGeneratorTest {
 		val classa = EcoreFactory.eINSTANCE.createEClass();
 		classa.name = "ClassA"
 		classa.ESuperTypes.add(class_supertype)
+		classa.ESuperTypes.add(class_indirect_supertype)
 		classa.ESuperTypes.add(class_interface)
 		epackage.EClassifiers.add(classa)
 		
@@ -54,6 +59,11 @@ class ModelBaseGeneratorTest {
 		classb_classa_many.EType = classa
 		classb_classa_many.upperBound = -1
 		classb.EStructuralFeatures.add(classb_classa_many)
+		
+		val classindirectsupertype_attribute = EcoreFactory.eINSTANCE.createEAttribute()
+		classindirectsupertype_attribute.name = "super_attribute"
+		classindirectsupertype_attribute.EType = EcorePackage.Literals.ESTRING
+		class_indirect_supertype.EStructuralFeatures.add(classindirectsupertype_attribute)
 		
 		val classa_attribute = EcoreFactory.eINSTANCE.createEAttribute()
 		classa_attribute.name = "attribute"
