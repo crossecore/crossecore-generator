@@ -18,6 +18,7 @@ import org.junit.Test
 class ModelBaseGeneratorTest {
 
 	private EPackage epackage
+	private static String PIVOT = "http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot"
 
 	@Before def void setup(){
 		
@@ -70,11 +71,44 @@ class ModelBaseGeneratorTest {
 		classa_attribute.EType = EcorePackage.Literals.ESTRING
 		classa.EStructuralFeatures.add(classa_attribute)
 		
+		val classa_derivedattribute = EcoreFactory.eINSTANCE.createEAttribute()
+		classa_derivedattribute.name = "derivedAttributeSingle"
+		classa_derivedattribute.derived = true
+		classa_derivedattribute.EType = EcorePackage.Literals.ESTRING
+		classa.EStructuralFeatures.add(classa_derivedattribute)
+
+		val classa_derivedoclattribute = EcoreFactory.eINSTANCE.createEAttribute()
+		classa_derivedoclattribute.name = "derivedOclAttributeSingle"
+		classa_derivedoclattribute.derived = true
+		classa_derivedoclattribute.EType = EcorePackage.Literals.ESTRING
+		val eannotation = EcoreFactory.eINSTANCE.createEAnnotation()
+		eannotation.source = PIVOT
+		eannotation.details.put("derivation", "'hi'")
+		classa_derivedoclattribute.EAnnotations.add(eannotation)
+		classa.EStructuralFeatures.add(classa_derivedoclattribute)
+		
+		val classa_derivedattributeMany = EcoreFactory.eINSTANCE.createEAttribute()
+		classa_derivedattributeMany.name = "derivedAttributeMany"
+		classa_derivedattributeMany.derived = true
+		classa_derivedattributeMany.EType = EcorePackage.Literals.ESTRING
+		classa.EStructuralFeatures.add(classa_derivedattributeMany)
+		
 		val classa_attribute_many = EcoreFactory.eINSTANCE.createEAttribute()
 		classa_attribute_many.name = "attribute_many"
 		classa_attribute_many.EType = EcorePackage.Literals.ESTRING
 		classa_attribute_many.upperBound = -1
 		classa.EStructuralFeatures.add(classa_attribute_many)
+		
+		val classa_classb_derivedSingle = EcoreFactory.eINSTANCE.createEReference()
+		classa_classb_derivedSingle.name = "classBderivedSingle"
+		classa_classb_derivedSingle.EType = classb
+		classa.EStructuralFeatures.add(classa_classb_derivedSingle)
+		
+		val classa_classb_derivedMany = EcoreFactory.eINSTANCE.createEReference()
+		classa_classb_derivedMany.name = "classBderivedSingle"
+		classa_classb_derivedMany.EType = classb
+		classa_classb_derivedMany.upperBound = -1
+		classa.EStructuralFeatures.add(classa_classb_derivedMany)
 		
 		val classa_classb_single = EcoreFactory.eINSTANCE.createEReference()
 		classa_classb_single.name = "referencedType"
