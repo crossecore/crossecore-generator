@@ -54,6 +54,7 @@ import org.eclipse.ocl.ecore.OCL
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.ocl.ecore.delegate.OCLDelegateDomain
 import org.eclipse.ocl.xtext.essentialocl.EssentialOCLStandaloneSetup
+import org.eclipse.emf.ecore.resource.ResourceSet
 
 class CSharpOCLVisitor extends AbstractVisitor<CharSequence>{
 	private TypeTranslator t = CSharpTypeTranslator.INSTANCE;
@@ -63,12 +64,17 @@ class CSharpOCLVisitor extends AbstractVisitor<CharSequence>{
 	public def String translate(String expression, EClassifier context){
 		var rs = new ResourceSetImpl();
 		
-		OCL.initialize(rs);
-		OCLDelegateDomain.initialize(rs);
-		org.eclipse.ocl.pivot.internal.resource.StandaloneProjectMap.getAdapter(rs);
-
-		EssentialOCLStandaloneSetup.doSetup();
-
+//		OCL.initialize(rs);
+//		OCLDelegateDomain.initialize(rs);
+//		org.eclipse.ocl.pivot.internal.resource.StandaloneProjectMap.getAdapter(rs);
+//
+//		EssentialOCLStandaloneSetup.doSetup();
+		
+		//new 
+		org.eclipse.ocl.xtext.oclinecore.OCLinEcoreStandaloneSetup.doSetup()
+		//org.eclipse.ocl.pivot.OCL.initialize(rs)
+//		org.eclipse.ocl.pivot.model.OCLstdlib.install() 
+		//org.eclipse.ocl.pivot.internal.delegate.OCLDelegateDomain.initialize(rs)
 		
 		var ocl = org.eclipse.ocl.ecore.OCL.newInstance();
 		var helper = ocl.createOCLHelper();
@@ -76,6 +82,9 @@ class CSharpOCLVisitor extends AbstractVisitor<CharSequence>{
 		helper.setContext(context);
 		
 		var oclExp = helper.createQuery(expression);
+		
+
+		
 		
 		return oclExp.accept(this).toString;
 		
