@@ -38,6 +38,10 @@ class ModelBaseGeneratorTest {
 		val class_interface = EcoreFactory.eINSTANCE.createEClass();
 		class_interface.name = "SuperInterface"
 		epackage.EClassifiers.add(class_interface)
+		
+		val eenum = EcoreFactory.eINSTANCE.createEEnum();
+		eenum.name = "MyEnum"
+		epackage.EClassifiers.add(eenum)
 
 		val classa = EcoreFactory.eINSTANCE.createEClass();
 		classa.name = "ClassA"
@@ -102,13 +106,37 @@ class ModelBaseGeneratorTest {
 		val classa_classb_derivedSingle = EcoreFactory.eINSTANCE.createEReference()
 		classa_classb_derivedSingle.name = "classBderivedSingle"
 		classa_classb_derivedSingle.EType = classb
+		classa_classb_derivedSingle.derived = true
 		classa.EStructuralFeatures.add(classa_classb_derivedSingle)
 		
+		val classa_classb_derivedocl = EcoreFactory.eINSTANCE.createEReference()
+		classa_classb_derivedocl.name = "derivedOclReferenceSingle"
+		classa_classb_derivedocl.derived = true
+		classa_classb_derivedocl.EType = EcorePackage.Literals.ESTRING
+		val eannotation2 = EcoreFactory.eINSTANCE.createEAnnotation()
+		eannotation2.source = PIVOT
+		eannotation2.details.put("derivation", "null")
+		classa_classb_derivedocl.EAnnotations.add(eannotation2)
+		classa.EStructuralFeatures.add(classa_classb_derivedocl)
+		
 		val classa_classb_derivedMany = EcoreFactory.eINSTANCE.createEReference()
-		classa_classb_derivedMany.name = "classBderivedSingle"
+		classa_classb_derivedMany.name = "classBderivedMany"
 		classa_classb_derivedMany.EType = classb
 		classa_classb_derivedMany.upperBound = -1
+		classa_classb_derivedMany.derived = true
 		classa.EStructuralFeatures.add(classa_classb_derivedMany)
+		
+		val classa_classb_derivedocl_many = EcoreFactory.eINSTANCE.createEReference()
+		classa_classb_derivedocl_many.name = "derivedOclReferenceMany"
+		classa_classb_derivedocl_many.derived = true
+		classa_classb_derivedocl_many.ordered = true
+		classa_classb_derivedocl_many.unique = true
+		classa_classb_derivedocl_many.EType = EcorePackage.Literals.ESTRING
+		val eannotation3= EcoreFactory.eINSTANCE.createEAnnotation()
+		eannotation3.source = PIVOT
+		eannotation3.details.put("derivation", "OrderedSet{}")
+		classa_classb_derivedocl_many.EAnnotations.add(eannotation3)
+		classa.EStructuralFeatures.add(classa_classb_derivedocl_many)	
 		
 		val classa_classb_single = EcoreFactory.eINSTANCE.createEReference()
 		classa_classb_single.name = "referencedType"
