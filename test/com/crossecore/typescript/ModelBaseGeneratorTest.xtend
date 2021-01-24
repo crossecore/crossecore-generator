@@ -41,6 +41,10 @@ class ModelBaseGeneratorTest {
 		
 		val eenum = EcoreFactory.eINSTANCE.createEEnum();
 		eenum.name = "MyEnum"
+		val literal = EcoreFactory.eINSTANCE.createEEnumLiteral();
+		literal.name = "EINS"
+		literal.value = 1
+		eenum.ELiterals.add(literal)
 		epackage.EClassifiers.add(eenum)
 
 		val classa = EcoreFactory.eINSTANCE.createEClass();
@@ -48,6 +52,11 @@ class ModelBaseGeneratorTest {
 		classa.ESuperTypes.add(class_supertype)
 		classa.ESuperTypes.add(class_indirect_supertype)
 		classa.ESuperTypes.add(class_interface)
+		
+		val eannotation5 = EcoreFactory.eINSTANCE.createEAnnotation()
+		eannotation5.source = PIVOT
+		eannotation5.details.put("invariant", "true")
+		classa.EAnnotations.add(eannotation5)
 		epackage.EClassifiers.add(classa)
 		
 		val classb = EcoreFactory.eINSTANCE.createEClass();
@@ -150,7 +159,15 @@ class ModelBaseGeneratorTest {
 		classa_classb_many.containment = true
 		classa_classb_many.upperBound = -1
 		classa_classb_many.EOpposite = classb_classa_many
-		classa.EStructuralFeatures.add(classa_classb_many)		
+		classa.EStructuralFeatures.add(classa_classb_many)	
+		
+		val ereference_map = EcoreFactory.eINSTANCE.createEReference()
+		ereference_map.name = "referenceMap"
+		ereference_map.EType = EcorePackage.Literals.ESTRING_TO_STRING_MAP_ENTRY
+		ereference_map.upperBound = -1
+		ereference_map.containment = true
+		classa.EStructuralFeatures.add(ereference_map)
+			
 				
 		val classa_operation = EcoreFactory.eINSTANCE.createEOperation()
 		classa_operation.name = "operation_overload"
@@ -175,6 +192,16 @@ class ModelBaseGeneratorTest {
 		classa_operation3.name = "operation"
 		classa_operation3.EType = EcorePackage.Literals.ESTRING
 		classa.EOperations.add(classa_operation3)
+		
+		val classa_operation4 = EcoreFactory.eINSTANCE.createEOperation()
+		classa_operation4.name = "operationocl"
+		classa_operation4.EType = EcorePackage.Literals.ESTRING
+		
+		val eannotation4 = EcoreFactory.eINSTANCE.createEAnnotation()
+		eannotation4.source = PIVOT
+		eannotation4.details.put("body", "'hi'")
+		classa_operation4.EAnnotations.add(eannotation4)
+		classa.EOperations.add(classa_operation4)
 		
 //		val classa_typeparameter = EcoreFactory.eINSTANCE.createETypeParameter()
 //		classa_typeparameter.name="T"
