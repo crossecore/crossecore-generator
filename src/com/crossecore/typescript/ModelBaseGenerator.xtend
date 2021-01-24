@@ -508,9 +508,6 @@ class ModelBaseGenerator extends EcoreVisitor{
 	
 	}
 	
-	override caseEParameter(EParameter parameter)'''
-		«tt.translateType(parameter.EGenericType)» «id.doSwitch(parameter)»
-	'''
 	
 
 	
