@@ -60,8 +60,6 @@ class ModelBaseGenerator extends EcoreVisitor{
 	}
 		
 	
-		
-	
 	override caseEPackage (EPackage epackage){
 		var List<EClass> sortedEClasses = DependencyManager.sortEClasses(epackage);
 		
@@ -431,22 +429,6 @@ class ModelBaseGenerator extends EcoreVisitor{
 		
 	}
 	
-	
-	override caseEEnum(EEnum eenum) '''
-
-		export enum «eenum.name»{
-			«FOR EEnumLiteral eenumliteral : eenum.ELiterals SEPARATOR ','»
-				«caseEEnumLiteral(eenumliteral)»
-			«ENDFOR»
-		}
-
-		
-	'''
-	
-	override caseEEnumLiteral(EEnumLiteral eenumliteral)'''
-	
-		«eenumliteral.name» = «eenumliteral.value»
-	'''
 	
 	override caseEAttribute(EAttribute eattribute){
 	
