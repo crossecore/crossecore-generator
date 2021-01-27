@@ -197,16 +197,62 @@ class ModelBaseGeneratorTest {
 		classa_operation4.name = "operationocl"
 		classa_operation4.EType = EcorePackage.Literals.ESTRING
 		
+		val classa_operation5 = EcoreFactory.eINSTANCE.createEOperation()
+		classa_operation5.name = "operation_overloader"
+		classa_operation5.EType = EcorePackage.Literals.ESTRING
+		classa.EOperations.add(classa_operation5)
+		
+		val classa_operation5_param1 = EcoreFactory.eINSTANCE.createEParameter()
+		classa_operation5_param1.name = "p1"
+		classa_operation5_param1.EType = EcorePackage.Literals.EINT
+		classa_operation5.EParameters.add(classa_operation5_param1)
+		
+		val classa_operation5_param2 = EcoreFactory.eINSTANCE.createEParameter()
+		classa_operation5_param2.name = "p2"
+		classa_operation5_param2.EType = EcorePackage.Literals.ESTRING
+		classa_operation5.EParameters.add(classa_operation5_param2)
+		
+		val classa_operation6 = EcoreFactory.eINSTANCE.createEOperation()
+		classa_operation6.name = "operation_overloader"
+		classa_operation6.EType = EcorePackage.Literals.ESTRING
+		classa.EOperations.add(classa_operation6)
+		
+		val classa_operation6_param1 = EcoreFactory.eINSTANCE.createEParameter()
+		classa_operation6_param1.name = "p1"
+		classa_operation6_param1.EType = EcorePackage.Literals.ESTRING
+		classa_operation6.EParameters.add(classa_operation6_param1)
+		
+		val classa_operation6_param2 = EcoreFactory.eINSTANCE.createEParameter()
+		classa_operation6_param2.name = "p2"
+		classa_operation6_param2.EType = classb
+		classa_operation6.EParameters.add(classa_operation6_param2)		
+		
 		val eannotation4 = EcoreFactory.eINSTANCE.createEAnnotation()
 		eannotation4.source = PIVOT
 		eannotation4.details.put("body", "'hi'")
 		classa_operation4.EAnnotations.add(eannotation4)
 		classa.EOperations.add(classa_operation4)
 		
-//		val classa_typeparameter = EcoreFactory.eINSTANCE.createETypeParameter()
-//		classa_typeparameter.name="T"
-//		classa.ETypeParameters.add(classa_typeparameter)
-//		epackage.EClassifiers.add(classa)
+		
+		/*
+		val genericClass = EcoreFactory.eINSTANCE.createEClass()
+		genericClass.name = "GenericClass"
+		val typeparameter = EcoreFactory.eINSTANCE.createETypeParameter()
+		typeparameter.name = "T"
+		genericClass.ETypeParameters.add(typeparameter)
+		epackage.EClassifiers.add(genericClass)
+		
+		val genericClass2 = EcoreFactory.eINSTANCE.createEClass()
+		genericClass2.name = "GenericClass2"
+		val typeparameter2 = EcoreFactory.eINSTANCE.createETypeParameter()
+		typeparameter2.name = "T"
+		genericClass2.ETypeParameters.add(typeparameter2)
+		
+		val typeparameter3 = EcoreFactory.eINSTANCE.createETypeParameter()
+		typeparameter3.name = "K"
+		genericClass2.ETypeParameters.add(typeparameter3)
+		epackage.EClassifiers.add(genericClass2)
+		*/
 		
 	}
 
