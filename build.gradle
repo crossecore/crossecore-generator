@@ -22,6 +22,8 @@ sonarqube {
     property "sonar.projectKey", "crossecore_crossecore-generator"
     property "sonar.organization", "crossecore"
     property "sonar.host.url", "https://sonarcloud.io"
+    property "sonar.sources", "build/xtend/main"
+    property "sonar.tests", "build/xtend/test"
   }
 }
 
@@ -38,14 +40,12 @@ apply plugin: 'eclipse'
 sourceSets {
     main {
         java {
-            srcDirs 'src'
-            srcDirs 'build/xtend/main'
+            srcDir 'src'
         }
     }
     test{
         java{
-            srcDirs 'test'
-            srcDirs 'build/xtend/test'
+            srcDir 'test'
         }
         //antlr.srcDirs = ['test/antlr']
     }
