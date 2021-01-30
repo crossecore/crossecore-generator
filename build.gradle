@@ -25,6 +25,7 @@ sonarqube {
     property "sonar.scm.disabled", "true"
     property "sonar.sources", "build/xtend/main"
     property "sonar.tests", "build/xtend/test"
+    property "sonar.jacoco.reportPaths", "build/test-results/test"
   }
 }
 
