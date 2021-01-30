@@ -40,7 +40,7 @@ class SwitchGeneratorTest {
 		
 		//Action
 		val result = generator.caseEPackage(epackage).toString()
-		System.out.println(result)
+		//System.out.println(result)
 		
 		//Assert
 		//https://github.com/antlr/antlr4/blob/master/doc/tree-matching.md
@@ -55,7 +55,7 @@ class SwitchGeneratorTest {
 		val tree = parser.program();
 		val ruleNamesList = Arrays.asList(parser.getRuleNames());
 		val prettyTree = TreeUtils.toPrettyTree(tree, ruleNamesList);
-		System.out.println(prettyTree)
+		//System.out.println(prettyTree)
 		
 		val x = XPath.findAll(tree, xpath, parser).toSet;
 		
