@@ -20,7 +20,6 @@ package com.crossecore.java
 
 import com.crossecore.DependencyManager
 import com.crossecore.IdentifierProvider
-import com.crossecore.Utils
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
@@ -34,7 +33,7 @@ import com.crossecore.EcoreVisitor
 
 class PackageGenerator extends EcoreVisitor{
 	
-	private IdentifierProvider id = new JavaIdentifier();
+	IdentifierProvider id = new JavaIdentifier();
 	
 	
 	new(){

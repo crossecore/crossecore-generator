@@ -33,10 +33,8 @@ import com.crossecore.Utils
 import com.crossecore.DependencyManager
 import java.util.List
 import java.util.HashSet
-import java.util.Collection
 import com.crossecore.TypeTranslator
 
-import org.eclipse.ocl.ecore.utilities.AbstractVisitor;
 import com.crossecore.EcoreVisitor
 import org.eclipse.emf.common.util.BasicEMap
 import java.util.Set
@@ -44,8 +42,8 @@ import org.eclipse.emf.common.util.BasicEList
 
 class ModelGenerator extends EcoreVisitor{
 	
-	private JavaIdentifier id = new JavaIdentifier();
-	private TypeTranslator t = new JavaTypeTranslator(id);
+	JavaIdentifier id = new JavaIdentifier();
+	TypeTranslator t = new JavaTypeTranslator(id);
 	
 	new(){
 		super();

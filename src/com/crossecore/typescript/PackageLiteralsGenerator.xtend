@@ -35,10 +35,10 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 
 class PackageLiteralsGenerator extends EcoreVisitor{
 	
-	private TypeScriptIdentifier id = new TypeScriptIdentifier();
+	TypeScriptIdentifier id = new TypeScriptIdentifier();
 	//private TypeTranslator t = new TypeScriptTypeTranslator(id);
 	//private ImportManager imports = new ImportManager(t);
-	private TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2();
+	TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2();
 	
 	new(){
 		super();
@@ -54,8 +54,6 @@ class PackageLiteralsGenerator extends EcoreVisitor{
 	
 		var sortedEClasses = new ArrayList<EClassifier>(DependencyManager.sortEClasses(epackage)); 
 	
-		var Collection<EClass> eclasses =  EcoreUtil.getObjectsByType(epackage.EClassifiers, EcorePackage.Literals.ECLASS);
-		var Collection<EEnum> enums =  EcoreUtil.getObjectsByType(epackage.EClassifiers, EcorePackage.Literals.EENUM);
 		var Collection<EDataType> edatatypes = EcoreUtil.getObjectsByType(epackage.EClassifiers, EcorePackage.Literals.EDATA_TYPE);
 		sortedEClasses.addAll(edatatypes);
 		

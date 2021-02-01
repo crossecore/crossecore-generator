@@ -30,8 +30,8 @@ import org.eclipse.emf.ecore.EPackage
 class UserLevelCode extends CSharpVisitor{
 	
 	
-	private CSharpIdentifier id = new CSharpIdentifier();
-	private EObject root;
+	CSharpIdentifier id = new CSharpIdentifier();
+	EObject root;
 	
 	new(String path, String filenamePattern, EPackage epackage, EObject root){
 		super(path, filenamePattern, epackage);
@@ -128,7 +128,7 @@ class UserLevelCode extends CSharpVisitor{
 						«id.EObject(eobject)».«eattribute.name».add(«literal(item, eattribute)»);
 					«ENDFOR»
 				«ELSE»
-					«IF eobject.eGet(eattribute)!=null»
+					«IF eobject.eGet(eattribute)!==null»
 					«id.EObject(eobject)».«eattribute.name» = «literal(eobject, eattribute)»;
 					«ENDIF»
 				«ENDIF»
@@ -143,13 +143,13 @@ class UserLevelCode extends CSharpVisitor{
 						«IF ereference.containment»
 						«doSwitch(item as EObject)»
 						«ENDIF»
-						«IF ereference.EOpposite==null»
+						«IF ereference.EOpposite===null»
 						«id.EObject(eobject)».«ereference.name».add(«id.EObject(item as EObject)»);
 						«ENDIF»
 					«ENDFOR»
 				«ELSEIF !ereference.many»
 					«var item = eobject.eGet(ereference) as EObject»
-					«IF item!=null»
+					«IF item!==null»
 						«IF ereference.containment»
 							«doSwitch(item)»
 						«ENDIF»

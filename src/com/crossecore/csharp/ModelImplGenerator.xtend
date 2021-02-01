@@ -27,10 +27,10 @@ import org.eclipse.emf.ecore.ETypeParameter
 
 class ModelImplGenerator extends CSharpVisitor{
 	
-	private CSharpIdentifier id = new CSharpIdentifier();
+	CSharpIdentifier id = new CSharpIdentifier();
 	//private CSharpLiteralIdentifier literalId = new CSharpLiteralIdentifier();
-	private CSharpOCLVisitor ocl2csharp = new CSharpOCLVisitor();
-	private String header = '''
+	CSharpOCLVisitor ocl2csharp = new CSharpOCLVisitor();
+	String header = '''
 	/* CrossEcore is a cross-platform modeling framework that generates C#, TypeScript, 
 	 * JavaScript, Swift code from Ecore models with embedded OCL (http://www.crossecore.org/).
 	 * The original Eclipse Modeling Framework is available at https://www.eclipse.org/modeling/emf/.

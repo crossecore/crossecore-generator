@@ -18,22 +18,20 @@
  */
 package com.crossecore
 
-import org.eclipse.emf.ecore.util.EcoreSwitch
-import org.eclipse.emf.ecore.ENamedElement
-import org.eclipse.emf.ecore.EPackage
-import org.eclipse.emf.ecore.EStructuralFeature
+import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
-import org.eclipse.emf.ecore.EReference
-import org.eclipse.emf.ecore.EEnum
 import org.eclipse.emf.ecore.EDataType
-import org.eclipse.emf.ecore.EAttribute
+import org.eclipse.emf.ecore.EEnum
+import org.eclipse.emf.ecore.ENamedElement
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EOperation
-import org.eclipse.emf.ecore.EParameter
-import java.util.Iterator
+import org.eclipse.emf.ecore.EPackage
+import org.eclipse.emf.ecore.EReference
+import org.eclipse.emf.ecore.EStructuralFeature
+import org.eclipse.emf.ecore.util.EcoreSwitch
 
-public class IdentifierProvider extends EcoreSwitch<String>{
+class IdentifierProvider extends EcoreSwitch<String>{
 	
 
 	def String escapeKeyword(String id){
@@ -64,7 +62,7 @@ public class IdentifierProvider extends EcoreSwitch<String>{
 	
 
 	
-	public def String privateEStructuralFeature(EStructuralFeature feature){
+	def String privateEStructuralFeature(EStructuralFeature feature){
 		
 		var name = feature.name;
 		var first = name.charAt(0).toString.toLowerCase;
@@ -74,13 +72,13 @@ public class IdentifierProvider extends EcoreSwitch<String>{
 
 	}
 	
-	public def String literal(EClassifier eclass){
+	def String literal(EClassifier eclass){
 		
 		return eclass.name.toUpperCase;
 
 	}
 	
-	public def String literal(EOperation eoperation){
+	def String literal(EOperation eoperation){
 		//ECLASS___IS_SUPER_TYPE_OF__ECLASS
 		var eclass = eoperation.EContainingClass;
 		
@@ -100,27 +98,27 @@ public class IdentifierProvider extends EcoreSwitch<String>{
 
 	}
 	
-	public def String literal(EEnum eenum){
+	def String literal(EEnum eenum){
 		
 		return eenum.name.toUpperCase;
 
 	}
 
 
-	public def String literal(EDataType edatatype){
+	def String literal(EDataType edatatype){
 		
 		return edatatype.name.toUpperCase;
 
 	}
 	
-	public def String EClassifier_FEATURE_COUNT(EClassifier eclassifier){
+	def String EClassifier_FEATURE_COUNT(EClassifier eclassifier){
 		
 		var name = eclassifier.name.toUpperCase;
 		
 		return name+"_FEATURE_COUNT";
 	}
 	
-	public def String EClassifier_OPERATION_COUNT(EClassifier eclassifier){
+	def String EClassifier_OPERATION_COUNT(EClassifier eclassifier){
 		
 		var name = eclassifier.name.toUpperCase;
 		
@@ -128,27 +126,27 @@ public class IdentifierProvider extends EcoreSwitch<String>{
 	}
 
 	
-	public def String literalRef(EClassifier eclass){
+	def String literalRef(EClassifier eclass){
 		
 		
 		return '''«_caseEPackage(eclass.EPackage)»PackageImpl.Literals.«literal(eclass)»''';
 	}
 	
-	public def String literal(EClass eclass, EStructuralFeature feature){
+	def String literal(EClass eclass, EStructuralFeature feature){
 		var eclassname = eclass.name.replaceAll("([a-z])([A-Z])", "$1_$2").toUpperCase;
 		var efeaturename = feature.name.replaceAll("([a-z])([A-Z])", "$1_$2").toUpperCase;
 		
 		return '''«eclassname»__«efeaturename»''';
 	}
 	
-	public def String literal(EClass eclass, EOperation feature){
+	def String literal(EClass eclass, EOperation feature){
 		var eclassname = eclass.name.replaceAll("([a-z])([A-Z])", "$1_$2").toUpperCase;
 		var efeaturename = feature.name.replaceAll("([a-z])([A-Z])", "$1_$2").toUpperCase;
 		
 		return '''«eclassname»___«efeaturename»''';
 	}
 	
-	public def String literalRef(EClass eclass, EStructuralFeature feature){
+	def String literalRef(EClass eclass, EStructuralFeature feature){
 		
 		
 		var epackagename = _caseEPackage(eclass.EPackage);
@@ -160,14 +158,14 @@ public class IdentifierProvider extends EcoreSwitch<String>{
 		
 	}
 	
-	public def String literal(EStructuralFeature feature){
+	def String literal(EStructuralFeature feature){
 		
 		
 		return literal(feature.EContainingClass, feature);
 
 	}
 	
-	public def String literalRef(EStructuralFeature feature){
+	def String literalRef(EStructuralFeature feature){
 		
 		
 		return literalRef(feature.EContainingClass, feature);
@@ -175,61 +173,61 @@ public class IdentifierProvider extends EcoreSwitch<String>{
 	}
 	
 	/*
-	public def String basicSetEClassifier(EClassifier classifier) {
+	def String basicSetEClassifier(EClassifier classifier) {
 		return "basicSet"+classifier.name
 	}
 	*/
 	
-	public def String basicSetEReference(EReference ereference) {
+	def String basicSetEReference(EReference ereference) {
 		var name = ereference.name.toFirstUpper;
 		return "basicSet"+name;
 	}
 	
-	public def String EPackageFactory(EPackage epackage){
+	def String EPackageFactory(EPackage epackage){
 		var name = epackage.name.toFirstUpper;
 		return name+"Factory";
 	}
-	public def String EPackageFactoryImpl(EPackage epackage){
+	def String EPackageFactoryImpl(EPackage epackage){
 		var name = epackage.name.toFirstUpper;
 		return name+"FactoryImpl";
 	}
 	
-	public def String createEClass(EClass eclass){
+	def String createEClass(EClass eclass){
 		var name = eclass.name.toFirstUpper;
 		return "create"+name;
 	}
 	
-	public def String EClassImpl(EClass eclass){
+	def String EClassImpl(EClass eclass){
 		var name = eclass.name.toFirstUpper;
 		return name+"Impl"
 	}
 	
-	public def String EClassBase(EClass eclass){
+	def String EClassBase(EClass eclass){
 		var name = eclass.name.toFirstUpper;
 		return name+"Base"
 	}
 	
-	public def String variable(EClass eclass){
+	def String variable(EClass eclass){
 		var name = eclass.name.toFirstUpper;
 		return "the"+name;
 	}
 	
-	public def String EPackagePackage(EPackage epackage){
+	def String EPackagePackage(EPackage epackage){
 		var name = epackage.name.toFirstUpper;
 		return name+"Package";
 	}
 	
-	public def String EPackagePackageImpl(EPackage epackage){
+	def String EPackagePackageImpl(EPackage epackage){
 		var name = epackage.name.toFirstUpper;
 		return name+"PackageImpl";
 	}
 	
-	public	def EPackageSwitch(EPackage ePackage) {
+	def EPackageSwitch(EPackage ePackage) {
 		var name = ePackage.name.toFirstUpper;
 		return name+"Switch";
 	}
 	
-	public def String getEClassifier(EClassifier e){
+	def String getEClassifier(EClassifier e){
 
 
 		if(e instanceof EEnum){
@@ -243,23 +241,23 @@ public class IdentifierProvider extends EcoreSwitch<String>{
 		}
 	}
 	
-	public def String getEClass(EClass eclass){
+	def String getEClass(EClass eclass){
 		var name = eclass.name.toFirstUpper;
 		return "get"+name;
 	}
 	
-	public def String getEEnum(EEnum e){
+	def String getEEnum(EEnum e){
 		var name = e.name.toFirstUpper;
 		return "get"+name;
 	}
 	
-	public def String getEDataType(EDataType e){
+	def String getEDataType(EDataType e){
 		var name = e.name.toFirstUpper;
 		return "get"+name;
 	}
 	
 	
-	public def String getEAttribute(EAttribute e){
+	def String getEAttribute(EAttribute e){
 		
 		var classname = e.EContainingClass.name.toFirstUpper;
 		var attributename = e.name.toFirstUpper;
@@ -267,7 +265,7 @@ public class IdentifierProvider extends EcoreSwitch<String>{
 		return "get"+classname+"_"+attributename;
 	}
 	
-	public def String getEOperation(EOperation e){
+	def String getEOperation(EOperation e){
 		//getEModelElement__GetEAnnotation__String
 		var classname = e.EContainingClass.name.toFirstUpper;
 		var attributename = e.name.toFirstUpper;
@@ -290,7 +288,7 @@ public class IdentifierProvider extends EcoreSwitch<String>{
 		return '''get«classname»__«attributename»__«parameters»'''
 	}
 	
-	public def String getEReference(EReference e){
+	def String getEReference(EReference e){
 		
 		var classname = e.EContainingClass.name.toFirstUpper;
 		var attributename = e.name.toFirstUpper;
@@ -298,24 +296,24 @@ public class IdentifierProvider extends EcoreSwitch<String>{
 		return "get"+classname+"_"+attributename;
 	}
 	
-	public def String EClassEClass(EClass e){
+	def String EClassEClass(EClass e){
 		
 		var name = e.name.toFirstUpper;
 		return name+"EClass";
 	}
 	
-	public def String EEnumEEnum(EEnum e){
+	def String EEnumEEnum(EEnum e){
 		
 		var name = e.name.toFirstUpper;
 		return name+"EEnum";
 	}
-	public def String EDataTypeEDataType(EDataType e){
+	def String EDataTypeEDataType(EDataType e){
 		
 		var name = e.name.toFirstUpper;
 		return name+"EDataType";
 	}
 	
-	public def String EOperationEOperation(EOperation e){
+	def String EOperationEOperation(EOperation e){
 		
 		var name = e.name.toFirstUpper;
 		return name+"EOperation";
@@ -323,12 +321,12 @@ public class IdentifierProvider extends EcoreSwitch<String>{
 
 
 	
-	public def EObject(EObject eobject){
+	def EObject(EObject eobject){
 		
 		var idfeature = eobject.eClass.EIDAttribute;
 		var id = "";
 		
-		if(idfeature!=null){
+		if(idfeature!==null){
 			
 			id = eobject.eGet(idfeature).toString;
 		}
@@ -344,13 +342,13 @@ public class IdentifierProvider extends EcoreSwitch<String>{
 	}
 	
 	
-	public def validate(EClassifier eclassifier){
+	def validate(EClassifier eclassifier){
 		
 		var name = eclassifier.name.toFirstUpper;
 		return "validate"+name;
 	}
 	
-	public def validate(EClassifier eclassifier, String invariant){
+	def validate(EClassifier eclassifier, String invariant){
 		
 		var name = eclassifier.name.toFirstUpper;
 		
@@ -358,31 +356,31 @@ public class IdentifierProvider extends EcoreSwitch<String>{
 	}
 	
 	
-	public def getEStructuralFeature(EStructuralFeature eStructuralFeature){
+	def getEStructuralFeature(EStructuralFeature eStructuralFeature){
 		return '''get«eStructuralFeature.name.toFirstUpper»'''
 	}
 	
-	public def isSetEStructuralFeature(EStructuralFeature eStructuralFeature){
+	def isSetEStructuralFeature(EStructuralFeature eStructuralFeature){
 		return '''isSet«eStructuralFeature.name.toFirstUpper»'''
 	}
 	
-	public def setEStructuralFeature(EStructuralFeature eStructuralFeature){
+	def setEStructuralFeature(EStructuralFeature eStructuralFeature){
 		return '''set«eStructuralFeature.name.toFirstUpper»'''
 	}
 	
-	public def edefault(EAttribute eAttribute){
+	def edefault(EAttribute eAttribute){
 		return '''«eAttribute.name.toUpperCase»_EDEFAULT'''
 	}
 	
-	public def getEPackage(EPackage ePackage){
+	def getEPackage(EPackage ePackage){
 		return '''get«ePackage.name.toFirstUpper»'''
 	}
 	
-	public def createEDataTypeFromString(EDataType eAttribute){
+	def createEDataTypeFromString(EDataType eAttribute){
 		return '''create«eAttribute.name.toFirstUpper»FromString'''
 	}
 	
-	public def convertEDataTypeToString(EDataType eAttribute){
+	def convertEDataTypeToString(EDataType eAttribute){
 		return '''convert«eAttribute.name.toFirstUpper»ToString'''
 	}
 	

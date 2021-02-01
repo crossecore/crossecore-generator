@@ -33,10 +33,10 @@ import java.util.ArrayList
 class Utils {
 	
 	
-	public static def boolean isEqual(EPackage epackage, EPackage other){
+	static def boolean isEqual(EPackage epackage, EPackage other){
 		return epackage.nsURI.equals(other.nsURI);
 	}
-	public static def boolean isEqual(EClassifier eclassifier, EClassifier other){
+	static def boolean isEqual(EClassifier eclassifier, EClassifier other){
 		
 		var first = eclassifier.EPackage.nsURI+"."+eclassifier.name;
 		var second = other.EPackage.nsURI+"."+other.name;
@@ -44,15 +44,15 @@ class Utils {
 		return first.equals(second);
 	}
 	
-	public static def isEClassifierForEObject(EClassifier eclassifier){
+	static def isEClassifierForEObject(EClassifier eclassifier){
 		
-		if(eclassifier.name!=null && eclassifier.name=="EObject" && isEcoreEPackage(eclassifier.EPackage)){
+		if(eclassifier.name!==null && eclassifier.name=="EObject" && isEcoreEPackage(eclassifier.EPackage)){
 			return true;
 		}
 		return false;
 	}
 	
-	public static def isEcoreEPackage(EPackage epackage){
+	static def isEcoreEPackage(EPackage epackage){
 		if(epackage !==null && epackage.nsURI==="http://www.eclipse.org/emf/2002/Ecore"){
 			return true;
 		}
@@ -62,7 +62,7 @@ class Utils {
 	/**
 	 * Removes all EOperations that an EObject inherits from the EObject-Class
 	 */
-	public static def nonEObjectEOperations(List<EOperation> operations){
+	static def nonEObjectEOperations(List<EOperation> operations){
 		
 		var eobjectOperations = new HashSet<EOperation>(EcorePackage.Literals.EOBJECT.EOperations);
 		var result = new HashSet<EOperation>(operations);
@@ -73,7 +73,7 @@ class Utils {
 	/**
 	 * Removes all EAttributes that an EObject inherits from the EObject-Class
 	 */
-	public static def nonEObjectEAttributes(List<EAttribute> operations){
+	static def nonEObjectEAttributes(List<EAttribute> operations){
 		
 		var eobjectOperations = new HashSet<EAttribute>(EcorePackage.Literals.EOBJECT.EAttributes);
 		var result = new HashSet<EAttribute>(operations);
@@ -84,7 +84,7 @@ class Utils {
 	/**
 	 * Removes all EReferences that an EObject inherits from the EObject-Class
 	 */
-	public static def nonEObjectEReferences(List<EReference> operations){
+	static def nonEObjectEReferences(List<EReference> operations){
 		
 		var eobjectOperations = new HashSet<EReference>(EcorePackage.Literals.EOBJECT.EReferences);
 		var result = new HashSet<EReference>(operations);
@@ -92,7 +92,7 @@ class Utils {
 		return result;
 	}
 	
-	public static def getSubclassClosure(EPackage epackage){
+	static def getSubclassClosure(EPackage epackage){
 		
 		var result = new HashMap<EClass, HashSet<EClass>>();
 		var eclasses = epackage.EClassifiers.filter[e|e instanceof EClass].map[e| e as EClass];
@@ -119,12 +119,12 @@ class Utils {
 		
 	}
 	
-	public static def getSubclasses(EClass eclass){
+	static def getSubclasses(EClass eclass){
 		
 		return getSubclassClosure(eclass.EPackage).get(eclass);
 	}
 	
-	public static def getFirstSuperclasses(EClass eclass){
+	static def getFirstSuperclasses(EClass eclass){
 		
 		val result = new ArrayList<EClass>();
 		
@@ -142,7 +142,7 @@ class Utils {
 		return result;
 	}
 	
-	public static def getInheritedOperations(EClass eclass){
+	static def getInheritedOperations(EClass eclass){
 		return getFirstSuperclasses(eclass).map[e|e.EOperations].flatten();
 		
 	}

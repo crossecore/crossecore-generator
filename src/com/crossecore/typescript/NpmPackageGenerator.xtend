@@ -23,7 +23,6 @@ import org.eclipse.emf.ecore.EPackage
 
 class NpmPackageGenerator extends EcoreVisitor{
 	
-	private TypeScriptIdentifier id = new TypeScriptIdentifier();
 	
 	new(){
 		super();

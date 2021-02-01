@@ -31,10 +31,8 @@ import org.eclipse.emf.ecore.EcorePackage
 class ModelImplGenerator extends EcoreVisitor{ 
 	
 
-	private TypeScriptIdentifier id = new TypeScriptIdentifier();
-	private CSharpOCLVisitor ocl2csharp = new CSharpOCLVisitor();
-	//private TypeTranslator t = new TypeScriptTypeTranslator(id);
-	private TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2();
+	TypeScriptIdentifier id = new TypeScriptIdentifier();
+	TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2();
 	//private ImportManager imports = new ImportManager(t);
 	
 	

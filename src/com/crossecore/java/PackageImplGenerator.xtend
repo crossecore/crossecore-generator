@@ -38,7 +38,7 @@ import org.eclipse.emf.ecore.EEnumLiteral
 
 class PackageImplGenerator extends EcoreVisitor{
 	
-	private IdentifierProvider id = new JavaIdentifier();
+	IdentifierProvider id = new JavaIdentifier();
 	//private CSharpLiteralIdentifier literalId = new CSharpLiteralIdentifier();
 	
 	new(){
@@ -126,10 +126,10 @@ class PackageImplGenerator extends EcoreVisitor{
 		        }
 		        
 		        private boolean isCreated = false;
-	            public void createPackageContents()
-	            {
-	                if (isCreated) return;
-	                isCreated = true;
+				public void createPackageContents()
+				{
+					if (isCreated) return;
+					isCreated = true;
 					«FOR EClass eclass:eclasses»
 						«id.EClassEClass(eclass)» = createEClass(«id.literal(eclass)»);
 						«FOR EStructuralFeature feature:eclass.EStructuralFeatures»
@@ -149,8 +149,8 @@ class PackageImplGenerator extends EcoreVisitor{
 		        private boolean isInitialized = false;
 		        public void initializePackageContents()
 		        {
-	                if (isInitialized) return;
-	                isInitialized = true;
+		        	if (isInitialized) return;
+		        	isInitialized = true;
 		            // Initialize package
 					setName(eNAME);
 					setNsPrefix(eNS_PREFIX);

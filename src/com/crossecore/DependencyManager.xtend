@@ -18,17 +18,11 @@
  */
 package com.crossecore;
 
-import java.util.ArrayList
-import java.util.HashMap
-import java.util.LinkedList
-import java.util.List
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.emf.ecore.EcorePackage
 import java.util.Collection
-import java.util.Collections
-import java.util.Comparator
 import org.eclipse.emf.common.util.BasicEList
 import java.util.HashSet
 import java.util.Stack
@@ -37,8 +31,8 @@ class DependencyManager {
 	
 	//private HashMap<EClassifier, List<EClassifier>> dag;
 	
-	private static HashSet<EClass> visited;
-	private static Stack<EClass> sorted;
+	static HashSet<EClass> visited;
+	static Stack<EClass> sorted;
 	
 	static def sortEClasses(Collection<EClass> eclassifiers){
 		

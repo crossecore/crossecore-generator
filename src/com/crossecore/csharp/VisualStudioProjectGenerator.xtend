@@ -19,11 +19,10 @@
 package com.crossecore.csharp
 
 import org.eclipse.emf.ecore.EPackage
-import org.eclipse.emf.ecore.EClass
 
 class VisualStudioProjectGenerator extends CSharpVisitor{
 	
-	private CSharpIdentifier id = new CSharpIdentifier();
+	CSharpIdentifier id = new CSharpIdentifier();
 	
 	new(){
 		super();

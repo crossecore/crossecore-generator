@@ -21,18 +21,16 @@ package com.crossecore.java
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EPackage
-import com.crossecore.Utils
 import com.crossecore.IdentifierProvider
 import com.crossecore.EcoreVisitor
 import com.crossecore.TypeTranslator
 import org.eclipse.emf.common.util.BasicEList
-import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.emf.ecore.EDataType
 
 class FactoryImplGenerator extends EcoreVisitor {
 	
-	private IdentifierProvider id = new JavaIdentifier();
-	private TypeTranslator t = new JavaTypeTranslator(id);
+	IdentifierProvider id = new JavaIdentifier();
+	TypeTranslator t = new JavaTypeTranslator(id);
 	
 	new(){
 		super();

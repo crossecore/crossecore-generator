@@ -36,19 +36,17 @@ import org.eclipse.ocl.ecore.OrderedSetType
 import org.eclipse.ocl.ecore.PrimitiveType
 import org.eclipse.ocl.ecore.SequenceType
 import org.eclipse.ocl.ecore.SetType
-import com.crossecore.Utils
 import org.eclipse.emf.ecore.EDataType
-import org.eclipse.emf.ecore.EObject
 
 class TypeScriptTypeTranslator2 {
 
-	private HashMap<EPackage, Set<String>> packages2 = new HashMap<EPackage, Set<String>>();
+	HashMap<EPackage, Set<String>> packages2 = new HashMap<EPackage, Set<String>>();
 
-	public def clearImports() {
+	def clearImports() {
 		packages2.clear;
 	}
 
-	public def void import_(EPackage epackage, String name) {
+	def void import_(EPackage epackage, String name) {
 		// TODO name conflicts from different packages
 		var epackage_ = if(epackage.nsURI.equals("http://www.eclipse.org/emf/2002/Ecore")) EcorePackage.eINSTANCE else epackage;
 		if (!packages2.containsKey(epackage_)) {
@@ -59,7 +57,7 @@ class TypeScriptTypeTranslator2 {
 		packages2.put(epackage_, eClassifierNames);
 	}
 	
-	public def void import_(EClassifier eclassifier) {
+	def void import_(EClassifier eclassifier) {
 
 		if(eclassifier instanceof EDataType === false){
 			
@@ -99,7 +97,7 @@ class TypeScriptTypeTranslator2 {
 
 	}
 	
-	public def String translateType(EClassifier eClassifier) {
+	def String translateType(EClassifier eClassifier) {
 		if (eClassifier !== null) {
 
 			if (eClassifier.instanceClassName !== null && !eClassifier.instanceClassName.isEmpty) {
@@ -239,7 +237,7 @@ class TypeScriptTypeTranslator2 {
 	}
 
 
-	public def String translateType(EGenericType eGenericType) {
+	def String translateType(EGenericType eGenericType) {
 		/*
 		 * self.eClassifiers->select(e|e.oclIsTypeOf(EDataType))->collect(e|e.oclAsType(EDataType).instanceClassName)
 		 */
@@ -297,7 +295,7 @@ class TypeScriptTypeTranslator2 {
 
 	}
 
-	public def listType(boolean unique, boolean ordered) {
+	def listType(boolean unique, boolean ordered) {
 
 		if (!unique && !ordered) {
 			import_(EcorePackage.eINSTANCE, "Bag");

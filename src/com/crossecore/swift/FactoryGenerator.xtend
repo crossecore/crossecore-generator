@@ -27,7 +27,7 @@ import com.crossecore.EcoreVisitor
 
 class FactoryGenerator extends EcoreVisitor {
 	
-	private IdentifierProvider id = new SwiftIdentifier();
+	IdentifierProvider id = new SwiftIdentifier();
 	
 	new(){
 		super();

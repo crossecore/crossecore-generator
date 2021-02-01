@@ -50,19 +50,13 @@ import org.eclipse.ocl.expressions.TupleLiteralPart
 import org.eclipse.emf.ecore.ETypedElement
 import org.eclipse.ocl.expressions.CollectionRange
 import org.eclipse.ocl.expressions.UnlimitedNaturalLiteralExp
-import org.eclipse.ocl.ecore.OCL
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import org.eclipse.ocl.ecore.delegate.OCLDelegateDomain
-import org.eclipse.ocl.xtext.essentialocl.EssentialOCLStandaloneSetup
-import org.eclipse.emf.ecore.resource.ResourceSet
 
 class CSharpOCLVisitor extends AbstractVisitor<CharSequence>{
-	private TypeTranslator t = CSharpTypeTranslator.INSTANCE;
+	TypeTranslator t = CSharpTypeTranslator.INSTANCE;
 	
 	
 
-	public def String translate(String expression, EClassifier context){
-		var rs = new ResourceSetImpl();
+	def String translate(String expression, EClassifier context){
 		
 //		OCL.initialize(rs);
 //		OCLDelegateDomain.initialize(rs);
@@ -91,8 +85,7 @@ class CSharpOCLVisitor extends AbstractVisitor<CharSequence>{
 	}
 	
 
-    override CharSequence handleCollectionRange(CollectionRange<EClassifier> range, CharSequence firstResult,
-            CharSequence lastResult) {
+    override CharSequence handleCollectionRange(CollectionRange<EClassifier> range, CharSequence firstResult, CharSequence lastResult) {
         
         var buffer = new StringBuffer();
         
@@ -161,9 +154,6 @@ class CSharpOCLVisitor extends AbstractVisitor<CharSequence>{
         
          	
         var collectionLiteral = literalExp as CollectionLiteralExpImpl;
-        var kind = literalExp.kind;
-        var collectionType = collectionLiteral.EGenericType.EClassifier as CollectionType;//e.g. SequenceType
-        var elementType = collectionType.elementType;
         var type = "";
         
         //TODO move to TypeTranslator
@@ -234,7 +224,7 @@ class CSharpOCLVisitor extends AbstractVisitor<CharSequence>{
 
     }	
 	
-	override def handleIfExp(IfExp<EClassifier> ifExp, CharSequence conditionResult, CharSequence thenResult,
+	override handleIfExp(IfExp<EClassifier> ifExp, CharSequence conditionResult, CharSequence thenResult,
             CharSequence elseResult) {
     
     	return '''«conditionResult» ? «thenResult» : «elseResult»'''
@@ -248,11 +238,8 @@ class CSharpOCLVisitor extends AbstractVisitor<CharSequence>{
         
         var isOclstdlib = false;
         
-        if(operation!=null && 
-        	operation.eContainer !=null && 
-        	operation.eContainer.eContainer!=null &&
-        	operation.eContainer.eContainer instanceof EPackage &&
-        	(operation.eContainer.eContainer as EPackage).nsURI.equals("http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore")
+        if(operation!==null && 
+        	(operation?.eContainer?.eContainer as EPackage)?.nsURI?.equals("http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore")
         ){
         	isOclstdlib = true;	
         }
@@ -261,9 +248,6 @@ class CSharpOCLVisitor extends AbstractVisitor<CharSequence>{
                 
         if(isOclstdlib){
         	
-        	var op = callExp.referredOperation;
-        	var c = op.EContainingClass;
-        	var n = c.name;
         	
         	if(callExp.referredOperation.EContainingClass.name.equals("Boolean_Class")){
         		

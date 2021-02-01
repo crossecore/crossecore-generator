@@ -57,11 +57,11 @@ import org.eclipse.ocl.xtext.essentialocl.EssentialOCLStandaloneSetup
 import com.crossecore.IdentifierProvider
 
 class JavaOCLVisitor extends AbstractVisitor<CharSequence>{
-	private TypeTranslator t = JavaTypeTranslator.INSTANCE;
-	private IdentifierProvider id = new JavaIdentifier();
+	TypeTranslator t = JavaTypeTranslator.INSTANCE;
+	IdentifierProvider id = new JavaIdentifier();
 	
 
-	public def String translate(String expression, EClassifier context){
+	def String translate(String expression, EClassifier context){
 		var rs = new ResourceSetImpl();
 		
 		OCL.initialize(rs);
@@ -146,9 +146,6 @@ class JavaOCLVisitor extends AbstractVisitor<CharSequence>{
         
          	
         var collectionLiteral = literalExp as CollectionLiteralExpImpl;
-        var kind = literalExp.kind;
-        var collectionType = collectionLiteral.EGenericType.EClassifier as CollectionType;//e.g. SequenceType
-        var elementType = collectionType.elementType;
         var type = "";
         
         //TODO move to TypeTranslator
@@ -219,7 +216,7 @@ class JavaOCLVisitor extends AbstractVisitor<CharSequence>{
 
     }	
 	
-	override def handleIfExp(IfExp<EClassifier> ifExp, CharSequence conditionResult, CharSequence thenResult,
+	override handleIfExp(IfExp<EClassifier> ifExp, CharSequence conditionResult, CharSequence thenResult,
             CharSequence elseResult) {
     
     	return '''«conditionResult» ? «thenResult» : «elseResult»'''
@@ -246,9 +243,6 @@ class JavaOCLVisitor extends AbstractVisitor<CharSequence>{
                 
         if(isOclstdlib){
         	
-        	var op = callExp.referredOperation;
-        	var c = op.EContainingClass;
-        	var n = c.name;
         	
         	if(callExp.referredOperation.EContainingClass.name.equals("Boolean_Class")){
         		

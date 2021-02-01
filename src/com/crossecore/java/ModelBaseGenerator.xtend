@@ -37,10 +37,10 @@ import org.eclipse.emf.common.util.BasicEList
 
 class ModelBaseGenerator extends EcoreVisitor{
 	
-	private JavaIdentifier id = new JavaIdentifier();
-	private TypeTranslator t = new JavaTypeTranslator(id);
+	JavaIdentifier id = new JavaIdentifier();
+	TypeTranslator t = new JavaTypeTranslator(id);
 
-	private JavaOCLVisitor ocl2csharp = new JavaOCLVisitor();
+	JavaOCLVisitor ocl2csharp = new JavaOCLVisitor();
 	
 	
 	new(){

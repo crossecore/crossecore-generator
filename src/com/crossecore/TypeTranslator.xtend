@@ -35,7 +35,7 @@ import org.eclipse.emf.ecore.EEnumLiteral
 
 abstract class TypeTranslator {
 	
-	private IdentifierProvider id;
+	IdentifierProvider id;
 	
 	
 	new(IdentifierProvider _id){
@@ -43,7 +43,7 @@ abstract class TypeTranslator {
 	}
 	
 	
-	public def String translateType(EClassifier eClassifier){
+	def String translateType(EClassifier eClassifier){
 		
 		var result = new StringBuffer();
 		
@@ -68,7 +68,7 @@ abstract class TypeTranslator {
 	 * Case 4: type.EClassifier is EJava_Class
 	 * 
 	 */
-	public def String translateType(EGenericType type){
+	def String translateType(EGenericType type){
 		
 		
 		if(type===null){
@@ -125,7 +125,7 @@ abstract class TypeTranslator {
 			}
 			//TODO < > characters for generics are platform dependent and should be moved to the platform specific type translator or these character should be configurable
 			//TODO test this:
-			result.append('''«FOR EGenericType argument: type.ETypeArguments BEFORE '<' SEPARATOR ',' AFTER '>'»«if (argument.EClassifier==null) wildCardGenerics(argument) else translateType(argument)»«ENDFOR»''');
+			result.append('''«FOR EGenericType argument: type.ETypeArguments BEFORE '<' SEPARATOR ',' AFTER '>'»«if (argument.EClassifier===null) wildCardGenerics(argument) else translateType(argument)»«ENDFOR»''');
 
 		}
 		else if(type.ETypeParameter !== null){
@@ -136,12 +136,12 @@ abstract class TypeTranslator {
 
 	}
 	
-	public abstract def String voidType(EGenericType type);
-	public abstract def String wildCardGenerics(EGenericType type);
-	public abstract def String classType(EGenericType type);
+	abstract def String voidType(EGenericType type);
+	abstract def String wildCardGenerics(EGenericType type);
+	abstract def String classType(EGenericType type);
 	
 	
-	public def String mapDataType(EDataType type){
+	def String mapDataType(EDataType type){
 		
 		var result = mapPrimitiveType(type);
 				
@@ -157,7 +157,7 @@ abstract class TypeTranslator {
 
 	}
 	
-	public def boolean isPrimitiveType(EClassifier eclassifier){
+	def boolean isPrimitiveType(EClassifier eclassifier){
 		
 		if(eclassifier instanceof EDataType == false){
 			return false;
@@ -186,15 +186,15 @@ abstract class TypeTranslator {
 	/**
 	 * Dependency required
 	 */
-	public abstract def String mapComplexType(EDataType type);
+	abstract def String mapComplexType(EDataType type);
 
 	/**
 	 * No dependencies required
 	 */
-	public abstract def String mapPrimitiveType(EDataType type);
+	abstract def String mapPrimitiveType(EDataType type);
 	
 	
-	public def listType(boolean unique, boolean ordered){
+	def listType(boolean unique, boolean ordered){
 		
 		//return "oclstdlib."+super.listType(unique, ordered);
 		if(!unique && !ordered){
@@ -215,7 +215,6 @@ abstract class TypeTranslator {
 	
 	def String defaultValue(EClassifier type){
 		
-		var x = type.defaultValue;
 		
 		if(type.defaultValue!==null){
 			

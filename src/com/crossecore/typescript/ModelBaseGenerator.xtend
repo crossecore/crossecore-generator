@@ -30,8 +30,6 @@ import org.eclipse.emf.common.util.BasicEList
 import org.eclipse.emf.common.util.BasicEMap
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EClass
-import org.eclipse.emf.ecore.EEnum
-import org.eclipse.emf.ecore.EEnumLiteral
 import org.eclipse.emf.ecore.EOperation
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EParameter
@@ -43,11 +41,10 @@ import org.eclipse.emf.ecore.EcorePackage
 class ModelBaseGenerator extends EcoreVisitor{ 
 	
 
-	private TypeScriptIdentifier id = new TypeScriptIdentifier();
-	private CSharpOCLVisitor ocl2csharp = new CSharpOCLVisitor();
+	TypeScriptIdentifier id = new TypeScriptIdentifier();
+	CSharpOCLVisitor ocl2csharp = new CSharpOCLVisitor();
 	
-	private TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2();
-	//private TypeTranslator t = new TypeScriptTypeTranslator(id);
+	TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2();
 	//private ImportManager imports = new ImportManager(t);
 	
 	new(){
@@ -279,7 +276,7 @@ class ModelBaseGenerator extends EcoreVisitor{
 				
 					«IF !referencesSingle.empty»
 						«FOR EReference ref:referencesSingle»
-							«IF ref.EOpposite != null && ref.EOpposite.containment»
+							«IF ref.EOpposite !== null && ref.EOpposite.containment»
 							public «id.basicSetEReference(ref)»(newobj:«id.doSwitch(ref.EType)», msgs:NotificationChain):NotificationChain {
 									msgs = this.eBasicSetContainer(newobj, «id.literalRef(ref)», msgs);
 									return msgs;
@@ -444,10 +441,10 @@ class ModelBaseGenerator extends EcoreVisitor{
 			
 			var eAnnotation = eattribute.getEAnnotation("http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot");
 
-			if(eAnnotation!=null){
+			if(eAnnotation !== null){
 				
 				oclDeriveExpr = eAnnotation.getDetails().get("derivation");
-				if(oclDeriveExpr!=null){
+				if(oclDeriveExpr !== null){
 					deriveExpr = ocl2csharp.translate(oclDeriveExpr, eattribute.EContainingClass);
 					isOcl= true;
 				}
@@ -522,10 +519,10 @@ class ModelBaseGenerator extends EcoreVisitor{
 			
 			var eAnnotation = ereference.getEAnnotation("http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot");
 
-			if(eAnnotation!=null){
+			if(eAnnotation!==null){
 				
 				oclDeriveExpr = eAnnotation.getDetails().get("derivation");
-				if(oclDeriveExpr!=null){
+				if(oclDeriveExpr!==null){
 					deriveExpr = ocl2csharp.translate(oclDeriveExpr, ereference.EContainingClass);
 					isOcl= true;
 				}
@@ -566,7 +563,7 @@ class ModelBaseGenerator extends EcoreVisitor{
 					return this.«id.privateEStructuralFeature(ereference)»;
 					«ELSE»
 					if(this.«id.privateEStructuralFeature(ereference)»===null){
-						this.«id.privateEStructuralFeature(ereference)» = new «listType»<«tt.translateType(ereference.EGenericType)»>(this, «id.literalRef(ereference)», «IF ereference.EOpposite!=null»«id.literalRef(ereference.EOpposite)»«ELSE»BasicEObjectImpl.EOPPOSITE_FEATURE_BASE - «id.literalRef(ereference)»«ENDIF»);
+						this.«id.privateEStructuralFeature(ereference)» = new «listType»<«tt.translateType(ereference.EGenericType)»>(this, «id.literalRef(ereference)», «IF ereference.EOpposite!==null»«id.literalRef(ereference.EOpposite)»«ELSE»BasicEObjectImpl.EOPPOSITE_FEATURE_BASE - «id.literalRef(ereference)»«ENDIF»);
 							
 					}
 					return this.«id.privateEStructuralFeature(ereference)»;
@@ -587,7 +584,7 @@ class ModelBaseGenerator extends EcoreVisitor{
 					«ELSEIF ereference.derived && !isOcl»
 					//TODO implement derivation
 					return null;
-					«ELSEIF ereference.EOpposite!= null && ereference.EOpposite.containment»
+					«ELSEIF ereference.EOpposite!== null && ereference.EOpposite.containment»
 					if (this.eContainerFeatureID() != «id.literalRef(ereference)») return null;
 					return this.eInternalContainer() as «id.doSwitch(ereference.EType)»;
 					«ELSE»
@@ -603,9 +600,9 @@ class ModelBaseGenerator extends EcoreVisitor{
 						this.eNotify(new ENotificationImpl(this, NotificationImpl.SET,«id.literalRef(ereference)» , oldvalue, value));
 					}
 					«ELSE»
-					«var featureId = if(ereference.EOpposite!=null) id.literalRef(ereference.EOpposite) else "BasicEObjectImpl.EOPPOSITE_FEATURE_BASE - " + id.literalRef(ereference) »
-					«var featureClass = if(ereference.EOpposite!=null) '''«id.doSwitch(ereference.EOpposite.EType)»''' else "null"»
-					«var getcurrentvalue = if(ereference.EOpposite!=null && ereference.EOpposite.containment) '''this.eInternalContainer() as «id.doSwitch(ereference.EType)»''' else "this."+id.privateEStructuralFeature(ereference)»
+					«var featureId = if(ereference.EOpposite!==null) id.literalRef(ereference.EOpposite) else "BasicEObjectImpl.EOPPOSITE_FEATURE_BASE - " + id.literalRef(ereference) »
+					«var featureClass = if(ereference.EOpposite!==null) '''«id.doSwitch(ereference.EOpposite.EType)»''' else "null"»
+					«var getcurrentvalue = if(ereference.EOpposite!==null && ereference.EOpposite.containment) '''this.eInternalContainer() as «id.doSwitch(ereference.EType)»''' else "this."+id.privateEStructuralFeature(ereference)»
 					if (value != «getcurrentvalue») {
 						let msgs:NotificationChain = null;
 						if («getcurrentvalue» != null){
@@ -628,18 +625,6 @@ class ModelBaseGenerator extends EcoreVisitor{
 			«ENDIF»
 		'''
 		
-		var back = 
-		'''
-			
-			«IF ereference.many»
-			public «ereference.name»= new «listType»<«ereference.EType.name»>();
-	
-			«ELSE»
-			
-			public «ereference.name»:«ereference.EType.name» = null;
-			
-			«ENDIF»
-		'''
 		return ec5plus;
 	
 	

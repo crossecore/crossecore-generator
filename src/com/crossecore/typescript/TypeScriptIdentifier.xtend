@@ -19,22 +19,21 @@
 package com.crossecore.typescript
 
 import com.crossecore.IdentifierProvider
-import org.eclipse.emf.ecore.EClass
-import org.eclipse.emf.ecore.EStructuralFeature
-import org.eclipse.emf.ecore.EPackage
-import org.eclipse.emf.ecore.EOperation
-import org.eclipse.emf.ecore.EParameter
-import org.eclipse.emf.ecore.EcorePackage
-import org.eclipse.emf.ecore.EClassifier
-import org.eclipse.emf.ecore.EEnum
-import org.eclipse.emf.ecore.EDataType
 import org.eclipse.emf.ecore.EAttribute
+import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.ecore.EClassifier
+import org.eclipse.emf.ecore.EDataType
+import org.eclipse.emf.ecore.EEnum
+import org.eclipse.emf.ecore.EOperation
+import org.eclipse.emf.ecore.EPackage
+import org.eclipse.emf.ecore.EParameter
 import org.eclipse.emf.ecore.EReference
-import com.crossecore.TypeTranslator
+import org.eclipse.emf.ecore.EStructuralFeature
+import org.eclipse.emf.ecore.EcorePackage
 
 class TypeScriptIdentifier extends IdentifierProvider {
 	
-	private TypeScriptTypeTranslator2 t = new TypeScriptTypeTranslator2();
+	TypeScriptTypeTranslator2 t = new TypeScriptTypeTranslator2();
 	
 	override escapeKeyword(String identifier) {
 		var identifier_ = identifier.replace("arguments", "arguments_");

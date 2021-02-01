@@ -39,10 +39,10 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 
 class PackageImplGenerator extends EcoreVisitor{
 	
-	private TypeScriptIdentifier id = new TypeScriptIdentifier();
+	TypeScriptIdentifier id = new TypeScriptIdentifier();
 	//private TypeTranslator t = new TypeScriptTypeTranslator(id);
 	//private ImportManager imports = new ImportManager(t);
-	private TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2()
+	TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2()
 	
 	new(){
 		super();

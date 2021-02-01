@@ -20,17 +20,13 @@ package com.crossecore.java
 
 import org.eclipse.emf.ecore.EPackage
 import com.crossecore.IdentifierProvider
-import com.crossecore.Utils
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.common.util.BasicEMap
 import com.crossecore.EcoreVisitor
-import org.eclipse.emf.ecore.EClassifier
-import org.eclipse.emf.ecore.EParameter
-import org.eclipse.ocl.expressions.VariableExp
 
 class ValidatorGenerator extends EcoreVisitor{
 	
-	private IdentifierProvider id = new JavaIdentifier();
+	IdentifierProvider id = new JavaIdentifier();
 
 	
 	new(){
@@ -110,15 +106,12 @@ class ValidatorGenerator extends EcoreVisitor{
 		            «ENDFOR»
 		            return result;
 	        	«ENDIF»
-	        }
+			}
 			
 			«FOR String invariant:invariants.keySet»
-	        
-	        public boolean «id.validate(eclass, invariant)»(«id.doSwitch(eclass)» obj, DiagnosticChain diagnostics, Map<Object, Object> context)
-	        {
-	            return obj.«invariant»(diagnostics, context);
-
-	        }
+			public boolean «id.validate(eclass, invariant)»(«id.doSwitch(eclass)» obj, DiagnosticChain diagnostics, Map<Object, Object> context){
+				return obj.«invariant»(diagnostics, context);
+			}
 	        «ENDFOR»
 			'''
 			//FIXME: do not replace "self" with "this" 

@@ -30,9 +30,9 @@ import org.eclipse.emf.ecore.EcorePackage
 
 class FactoryImplGenerator extends EcoreVisitor{
 	
-	private IdentifierProvider id = new TypeScriptIdentifier();
+	IdentifierProvider id = new TypeScriptIdentifier();
 	//private TypeTranslator t = new TypeScriptTypeTranslator(id);
-	private TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2();
+	TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2();
 	//private ImportManager imports = new ImportManager(t);
 	
 	new(){
@@ -125,7 +125,7 @@ class FactoryImplGenerator extends EcoreVisitor{
 				let result:«id.doSwitch(e)» = «id.doSwitch(e)».get_string(initialValue);
 				if (result == null)
 					throw new Error(
-	                        "The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.name + "'");
+						"The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.name + "'");
 				return result;
 			}
 			

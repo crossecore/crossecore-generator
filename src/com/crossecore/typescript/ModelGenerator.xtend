@@ -38,9 +38,9 @@ import com.crossecore.EcoreVisitor
 
 class ModelGenerator extends EcoreVisitor{ 
 	
-	private TypeScriptIdentifier id = new TypeScriptIdentifier();
+	TypeScriptIdentifier id = new TypeScriptIdentifier();
 	//private TypeTranslator t = new TypeScriptTypeTranslator(id);
-	private TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2();
+	TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2();
 	//private ImportManager imports = new ImportManager(t);
 	
 	new(){
@@ -296,7 +296,7 @@ class ModelGenerator extends EcoreVisitor{
 		//var name = if (overloaded) eoperation.name+eoperation.EContainingClass.getOperationID(eoperation) else eoperation.name;
 		var name = if(overloaded) id.caseOverloadedEOperation(eoperation) else id.doSwitch(eoperation);
 		'''
-			«name»(«FOR EParameter eparameter:eoperation.EParameters SEPARATOR ', '»«id.doSwitch(eparameter)»:«tt.translateType(eparameter.EGenericType)»«ENDFOR»):«IF eoperation.EType!=null» «tt.translateType(eoperation.EGenericType)» «ELSE» void «ENDIF»;
+			«name»(«FOR EParameter eparameter:eoperation.EParameters SEPARATOR ', '»«id.doSwitch(eparameter)»:«tt.translateType(eparameter.EGenericType)»«ENDFOR»):«IF eoperation.EType!==null» «tt.translateType(eoperation.EGenericType)» «ELSE» void «ENDIF»;
 		'''
 	
 	}

@@ -36,10 +36,10 @@ import org.eclipse.emf.ecore.EcorePackage
 
 class ModelBaseGenerator extends EcoreVisitor{
 	
-	private SwiftIdentifier id = new SwiftIdentifier();
-	private SwiftTypeTranslator t = new SwiftTypeTranslator(id);
+	SwiftIdentifier id = new SwiftIdentifier();
+	SwiftTypeTranslator t = new SwiftTypeTranslator(id);
 
-	private CSharpOCLVisitor ocl2csharp = new CSharpOCLVisitor();
+	CSharpOCLVisitor ocl2csharp = new CSharpOCLVisitor();
 	
 	
 	new(){
@@ -98,7 +98,7 @@ class ModelBaseGenerator extends EcoreVisitor{
 					referencesSingle.add(ref);
 				}
 				
-				if(ref.EOpposite!=null){
+				if(ref.EOpposite!==null){
 					referencesWithOpposite.add(ref);
 					
 					if(!ref.many){
@@ -193,7 +193,7 @@ class ModelBaseGenerator extends EcoreVisitor{
 				
 				«IF !referencesSingle.empty»
 					«FOR EReference ref:referencesSingle»
-						«IF ref.EOpposite != null && ref.EOpposite.containment»
+						«IF ref.EOpposite !== null && ref.EOpposite.containment»
 						func «id.basicSetEReference(ref)»(newobj:«id.doSwitch(ref.EType)»?, msgs:NotificationChain?) -> NotificationChain?{
 							var msgs_ = msgs;
 							if let newobj_ = newobj as? InternalEObject{
@@ -280,10 +280,10 @@ class ModelBaseGenerator extends EcoreVisitor{
 			
 			var eAnnotation = eattribute.getEAnnotation("http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot");
 
-			if(eAnnotation!=null){
+			if(eAnnotation!==null){
 				
 				oclDeriveExpr = eAnnotation.getDetails().get("derivation");
-				if(oclDeriveExpr!=null){
+				if(oclDeriveExpr!==null){
 					deriveExpr = ocl2csharp.translate(oclDeriveExpr, eattribute.EContainingClass);
 					//deriveExpr = "null"; //FIXME enable OCL to C# translation
 					isOcl= true;
@@ -353,10 +353,10 @@ class ModelBaseGenerator extends EcoreVisitor{
 			
 			var eAnnotation = ereference.getEAnnotation("http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot");
 
-			if(eAnnotation!=null){
+			if(eAnnotation!==null){
 				
 				oclDeriveExpr = eAnnotation.getDetails().get("derivation");
-				if(oclDeriveExpr!=null){
+				if(oclDeriveExpr!==null){
 					deriveExpr = ocl2csharp.translate(oclDeriveExpr, ereference.EContainingClass);
 					isOcl= true;
 				}
@@ -382,7 +382,7 @@ class ModelBaseGenerator extends EcoreVisitor{
 					return «listType»<«t.translateTypeImpl(ereference.EGenericType)»>();
 					«ELSE»
 					if let x = «id.privateEStructuralFeature(ereference)»{
-						«id.privateEStructuralFeature(ereference)» = «listType»<«t.translateTypeImpl(ereference.EGenericType)»>(owner: self as InternalEObject, featureId: «id.literalRef(ereference)», oppositeFeatureId: «IF ereference.EOpposite!=null»«id.literalRef(ereference.EOpposite)»«ELSE»BasicEObjectImpl.EOPPOSITE_FEATURE_BASE - «id.literalRef(ereference)»«ENDIF»);
+						«id.privateEStructuralFeature(ereference)» = «listType»<«t.translateTypeImpl(ereference.EGenericType)»>(owner: self as InternalEObject, featureId: «id.literalRef(ereference)», oppositeFeatureId: «IF ereference.EOpposite!==null»«id.literalRef(ereference.EOpposite)»«ELSE»BasicEObjectImpl.EOPPOSITE_FEATURE_BASE - «id.literalRef(ereference)»«ENDIF»);
 					}
 					return «id.privateEStructuralFeature(ereference)»!;
 					
@@ -392,7 +392,7 @@ class ModelBaseGenerator extends EcoreVisitor{
 
 			}
 		«ELSE»
-			«IF !(ereference.derived || (ereference.EOpposite!=null && ereference.EOpposite.containment))»
+			«IF !(ereference.derived || (ereference.EOpposite!==null && ereference.EOpposite.containment))»
 			private var «id.privateEStructuralFeature(ereference)»:«t.translateType(ereference.EGenericType)»?;
 			«ENDIF»
 			var «id.doSwitch(ereference)»:«t.translateType(ereference.EGenericType)»?
@@ -405,7 +405,7 @@ class ModelBaseGenerator extends EcoreVisitor{
 					«ELSEIF ereference.derived && !isOcl»
 					//TODO implement derivation
 					return nil;//«t.translateType(ereference.EGenericType)»Impl();
-					«ELSEIF ereference.EOpposite!= null && ereference.EOpposite.containment»
+					«ELSEIF ereference.EOpposite!== null && ereference.EOpposite.containment»
 					return (eContainerFeatureID() == «id.literalRef(ereference)») ? eInternalContainer() as? «id.doSwitch(ereference.EType)» : nil;
 					«ELSE»
 					return «id.privateEStructuralFeature(ereference)»;
@@ -413,17 +413,17 @@ class ModelBaseGenerator extends EcoreVisitor{
 				}
 				«IF !ereference.derived && ereference.changeable»
 				set(value) {
-					«IF !ereference.containment && ereference.EOpposite==null»
+					«IF !ereference.containment && ereference.EOpposite===null»
 					var oldvalue = «id.privateEStructuralFeature(ereference)»;
 					«id.privateEStructuralFeature(ereference)» = value;
 					if (eNotificationRequired()){
 						eNotify(notification:ENotificationImpl(notifier: self, eventType: NotificationImpl.SET, featureID: «id.literalRef(ereference)» , oldValue: oldvalue, newValue: value));
 					}
 					«ELSE»
-					«var featureId = if(ereference.EOpposite!=null) id.literalRef(ereference.EOpposite) else "BasicEObjectImpl.EOPPOSITE_FEATURE_BASE - " + id.literalRef(ereference) »
-					«var featureClass = if(ereference.EOpposite!=null) '''Mirror(reflecting:«id.doSwitch(ereference.EOpposite.EType)».self)''' else "nil"»
+					«var featureId = if(ereference.EOpposite!==null) id.literalRef(ereference.EOpposite) else "BasicEObjectImpl.EOPPOSITE_FEATURE_BASE - " + id.literalRef(ereference) »
+					«var featureClass = if(ereference.EOpposite!==null) '''Mirror(reflecting:«id.doSwitch(ereference.EOpposite.EType)».self)''' else "nil"»
 					«var etype = t.translateTypeImpl(ereference.EGenericType)»
-					«var getcurrentvalue = if(ereference.EOpposite!=null && ereference.EOpposite.containment) '''eInternalContainer()''' else id.privateEStructuralFeature(ereference)»
+					«var getcurrentvalue = if(ereference.EOpposite!==null && ereference.EOpposite.containment) '''eInternalContainer()''' else id.privateEStructuralFeature(ereference)»
 					if let value_ = value as? «etype»{
 					
 						if let container = «getcurrentvalue» as? «etype»{
@@ -470,7 +470,7 @@ class ModelBaseGenerator extends EcoreVisitor{
 		}
 		
 		sb.append("->");
-		if(o.EGenericType==null){
+		if(o.EGenericType===null){
 			sb.append("null");
 		}
 		else{
@@ -486,10 +486,7 @@ class ModelBaseGenerator extends EcoreVisitor{
 		
 		var signatures = new HashSet<String>();
 		var operations = new HashSet<EOperation>();
-		var eclass = e.EContainingClass;
 		if(!e.EContainingClass.ESuperTypes.empty){
-			var c = e.eClass;
-			var st = e.eClass.ESuperTypes;
 			operations.addAll(e.eClass.ESuperTypes.get(0).EAllOperations);
 		}
 		else{
@@ -512,11 +509,11 @@ class ModelBaseGenerator extends EcoreVisitor{
 		
 		var eAnnotation = e.getEAnnotation("http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot");
 
-		if(eAnnotation!=null){
+		if(eAnnotation!==null){
 			
 			var body_ = eAnnotation.getDetails().get("body");
 			
-			if(body_!=null){
+			if(body_!==null){
 				body = '''return «ocl2csharp.translate(body_, e.EContainingClass)»;''';
 			}
 		}
@@ -530,7 +527,7 @@ class ModelBaseGenerator extends EcoreVisitor{
 		}
 		
 		'''
-	    «IF override_»override «ENDIF»func «id.doSwitch(e)»(«FOR EParameter parameter:e.EParameters SEPARATOR ','»«doSwitch(parameter)»«ENDFOR») «IF e.EGenericType!=null»-> «returntype»«ENDIF»
+	    «IF override_»override «ENDIF»func «id.doSwitch(e)»(«FOR EParameter parameter:e.EParameters SEPARATOR ','»«doSwitch(parameter)»«ENDFOR») «IF e.EGenericType!==null»-> «returntype»«ENDIF»
 	    {
 	        «body»
 	    }

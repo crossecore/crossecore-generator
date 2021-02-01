@@ -30,7 +30,7 @@ class EcoreTypeTranslator extends TypeTranslator {
 		super(_id)
 	}
 	
-	public override String mapPrimitiveType(EDataType type){
+	override String mapPrimitiveType(EDataType type){
 		
 		return type.name;
 		/*

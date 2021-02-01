@@ -28,7 +28,7 @@ import org.eclipse.emf.ecore.ETypeParameter
 
 class ModelImplGenerator extends EcoreVisitor{
 	
-	private SwiftIdentifier id = new SwiftIdentifier();
+	SwiftIdentifier id = new SwiftIdentifier();
 	
 	new(){
 		super();
@@ -51,7 +51,7 @@ class ModelImplGenerator extends EcoreVisitor{
 			var contents = 	
 				'''
 				«IF !Utils.isEcoreEPackage(epackage)»
-			 	using Ecore;
+				using Ecore;
 			 	«ENDIF»
 				«doSwitch(eclass)»
 			'''

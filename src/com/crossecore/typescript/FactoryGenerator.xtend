@@ -26,9 +26,9 @@ import org.eclipse.emf.ecore.EPackage
 
 class FactoryGenerator extends EcoreVisitor{
 	
-	private IdentifierProvider id = new TypeScriptIdentifier();
+	IdentifierProvider id = new TypeScriptIdentifier();
 	//private ImportManager imports = new ImportManager(new TypeScriptTypeTranslator(id));
-	private TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2();
+	TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2();
 	
 	
 	new(){

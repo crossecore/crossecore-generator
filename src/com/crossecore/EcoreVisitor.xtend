@@ -27,7 +27,6 @@ import java.nio.charset.Charset
 import java.util.Formatter
 import java.util.Locale
 import org.eclipse.emf.ecore.ENamedElement
-import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.util.EcoreSwitch
 
 abstract class EcoreVisitor extends EcoreSwitch<CharSequence>{
@@ -49,11 +48,11 @@ abstract class EcoreVisitor extends EcoreSwitch<CharSequence>{
 	}
 	
 	
-	public def write(){
+	def write(){
 		write(epackage, this.doSwitch(epackage).toString);
 	}
 	
-	public def write(ENamedElement element, String contents, Boolean override_){
+	def write(ENamedElement element, String contents, Boolean override_){
 		
 		
 		var sb = new StringBuilder();
@@ -87,7 +86,7 @@ abstract class EcoreVisitor extends EcoreSwitch<CharSequence>{
 
 	}
 	
-	public def write(ENamedElement element, String contents){
+	def write(ENamedElement element, String contents){
 		write(element, contents, true);
 	}
 	

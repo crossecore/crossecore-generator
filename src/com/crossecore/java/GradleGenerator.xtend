@@ -19,7 +19,6 @@
 package com.crossecore.java
 
 import com.crossecore.EcoreVisitor
-import com.crossecore.IdentifierProvider
 import org.eclipse.emf.ecore.EPackage
 
 class GradleGenerator extends EcoreVisitor{

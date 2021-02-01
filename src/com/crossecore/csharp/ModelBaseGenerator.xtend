@@ -37,12 +37,12 @@ import org.eclipse.emf.common.util.BasicEList
 
 class ModelBaseGenerator extends CSharpVisitor{
 	
-	private CSharpIdentifier id = new CSharpIdentifier();
-	private TypeTranslator t = new CSharpTypeTranslator(id);
+	CSharpIdentifier id = new CSharpIdentifier();
+	TypeTranslator t = new CSharpTypeTranslator(id);
 
-	private CSharpOCLVisitor ocl2csharp = new CSharpOCLVisitor();
+	CSharpOCLVisitor ocl2csharp = new CSharpOCLVisitor();
 	
-	private String header = '''
+	String header = '''
 	/* CrossEcore is a cross-platform modeling framework that generates C#, TypeScript, 
 	 * JavaScript, Swift code from Ecore models with embedded OCL (http://www.crossecore.org/).
 	 * The original Eclipse Modeling Framework is available at https://www.eclipse.org/modeling/emf/.
@@ -381,10 +381,10 @@ class ModelBaseGenerator extends CSharpVisitor{
 			
 			var eAnnotation = eattribute.getEAnnotation("http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot");
 
-			if(eAnnotation!=null){
+			if(eAnnotation!==null){
 				
 				oclDeriveExpr = eAnnotation.getDetails().get("derivation");
-				if(oclDeriveExpr!=null){
+				if(oclDeriveExpr!==null){
 					deriveExpr = ocl2csharp.translate(oclDeriveExpr, eattribute.EContainingClass);
 					//deriveExpr = "null"; //FIXME enable OCL to C# translation
 					isOcl= true;
@@ -457,10 +457,10 @@ class ModelBaseGenerator extends CSharpVisitor{
 			
 			var eAnnotation = ereference.getEAnnotation("http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot");
 
-			if(eAnnotation!=null){
+			if(eAnnotation!==null){
 				
 				oclDeriveExpr = eAnnotation.getDetails().get("derivation");
-				if(oclDeriveExpr!=null){
+				if(oclDeriveExpr!==null){
 					deriveExpr = ocl2csharp.translate(oclDeriveExpr, ereference.EContainingClass);
 					isOcl= true;
 				}
@@ -499,7 +499,7 @@ class ModelBaseGenerator extends CSharpVisitor{
 					return «id.privateEStructuralFeature(ereference)»;
 					«ELSE»
 					if(«id.privateEStructuralFeature(ereference)»==null){
-						«id.privateEStructuralFeature(ereference)» = new «listType»<«t.translateType(ereference.EGenericType)»>(this, «id.literalRef(ereference)», «IF ereference.EOpposite!=null»«id.literalRef(ereference.EOpposite)»«ELSE»EOPPOSITE_FEATURE_BASE - «id.literalRef(ereference)»«ENDIF»);
+						«id.privateEStructuralFeature(ereference)» = new «listType»<«t.translateType(ereference.EGenericType)»>(this, «id.literalRef(ereference)», «IF ereference.EOpposite!==null»«id.literalRef(ereference.EOpposite)»«ELSE»EOPPOSITE_FEATURE_BASE - «id.literalRef(ereference)»«ENDIF»);
 					}
 					return «id.privateEStructuralFeature(ereference)»;
 					«ENDIF»
@@ -529,16 +529,16 @@ class ModelBaseGenerator extends CSharpVisitor{
 				}
 				«IF !ereference.derived && ereference.changeable»
 				set {
-					«IF !ereference.containment && ereference.EOpposite==null»
+					«IF !ereference.containment && ereference.EOpposite===null»
 					var oldvalue = «id.privateEStructuralFeature(ereference)»;
 					«id.privateEStructuralFeature(ereference)» = value;
 					if (eNotificationRequired()){
 						eNotify(new ENotificationImpl(this, NotificationImpl.SET, «id.literalRef(e, ereference)», oldvalue, value));
 					}
 					«ELSE»
-					«var featureId = if(ereference.EOpposite!=null) id.literalRef(ereference.EOpposite) else "EOPPOSITE_FEATURE_BASE - " + id.literalRef(e, ereference) »
-					«var featureClass = if(ereference.EOpposite!=null) '''typeof(«id.doSwitch(ereference.EOpposite.EType)»)''' else "null"»
-					«var getcurrentvalue = if(ereference.EOpposite!=null && ereference.EOpposite.containment) '''eInternalContainer()''' else id.privateEStructuralFeature(ereference)»
+					«var featureId = if(ereference.EOpposite!==null) id.literalRef(ereference.EOpposite) else "EOPPOSITE_FEATURE_BASE - " + id.literalRef(e, ereference) »
+					«var featureClass = if(ereference.EOpposite!==null) '''typeof(«id.doSwitch(ereference.EOpposite.EType)»)''' else "null"»
+					«var getcurrentvalue = if(ereference.EOpposite!==null && ereference.EOpposite.containment) '''eInternalContainer()''' else id.privateEStructuralFeature(ereference)»
 					if (value != «getcurrentvalue») {
 						NotificationChain msgs = null;
 						if («getcurrentvalue» != null){
@@ -572,11 +572,11 @@ class ModelBaseGenerator extends CSharpVisitor{
 		
 		var eAnnotation = e.getEAnnotation("http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot");
 
-		if(eAnnotation!=null){
+		if(eAnnotation!==null){
 			
 			var body_ = eAnnotation.getDetails().get("body");
 			
-			if(body_!=null){
+			if(body_!==null){
 				body = '''return «ocl2csharp.translate(body_, e.EContainingClass)»;''';
 			}
 		}

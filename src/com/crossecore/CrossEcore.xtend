@@ -34,20 +34,17 @@ import org.apache.commons.cli.DefaultParser
 import org.apache.commons.cli.HelpFormatter
 import org.apache.commons.cli.Option
 import org.apache.commons.cli.Options
-import org.eclipse.emf.ecore.ENamedElement
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EPackage
 import com.crossecore.csharp.VisualStudioProjectGenerator
-import com.crossecore.typescript.NpmPackageGenerator
-import com.crossecore.typescript.TSConfigGenerator
 import org.apache.log4j.Logger
 import org.apache.log4j.LogManager
 
 class CrossEcore {
 	
-	private static boolean generateDocumentation = true;
+	static boolean generateDocumentation = true;
 	
-	private static final Logger logger = LogManager.getLogger(CrossEcore);
+	static final Logger logger = LogManager.getLogger(CrossEcore);
 	
 	
 	static def main(String[] args){
@@ -188,7 +185,7 @@ class CrossEcore {
 	}
 	
 	
-	public static def String generate(EPackage epackage, String filename) throws IllegalArgumentException{
+	static def String generate(EPackage epackage, String filename) throws IllegalArgumentException{
 	
 		
 		if(epackage===null){
