@@ -123,10 +123,13 @@ class ModelGeneratorTest {
 		eparam1.name = "p1"
 		eparam1.EType = EcorePackage.Literals.ESTRING
 		eoperation.EParameters.add(eparam1)
-		
+
 		val eoperation2 = EcoreFactory.eINSTANCE.createEOperation()
 		eoperation2.name = "operation_overload"
 		eoperation2.EType = EcorePackage.Literals.ESTRING
+
+		eclass.EOperations.add(eoperation)
+		eclass.EOperations.add(eoperation2)
 		
 		val modelGenerator = new ModelGenerator();
 		
