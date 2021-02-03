@@ -15,6 +15,7 @@ import org.junit.Before
 import org.junit.Test
 
 import static org.junit.Assert.*
+import com.crossecore.AntlrTestUtil
 
 class ModelGeneratorTest {
 
@@ -101,6 +102,138 @@ class ModelGeneratorTest {
 		ereference3.upperBound = -1
 		ereference3.EType = map
 		eclass.EStructuralFeatures.add(ereference3)
+	}
+	
+	@Test def void test_caseEClassx() {
+		
+		//Arrange
+		val epackage = EcoreFactory.eINSTANCE.createEPackage()
+		epackage.name = "MyPackage"
+		epackage.nsURI = "com.mypackage"
+		
+		val eclass = EcoreFactory.eINSTANCE.createEClass();
+		eclass.name = "MyClass"
+		epackage.EClassifiers.add(eclass)
+		
+		val eoperation = EcoreFactory.eINSTANCE.createEOperation()
+		eoperation.name = "operation_overload"
+		eoperation.EType = EcorePackage.Literals.ESTRING
+		
+		val eparam1 = EcoreFactory.eINSTANCE.createEParameter()
+		eparam1.name = "p1"
+		eparam1.EType = EcorePackage.Literals.ESTRING
+		eoperation.EParameters.add(eparam1)
+		
+		val eoperation2 = EcoreFactory.eINSTANCE.createEOperation()
+		eoperation2.name = "operation_overload"
+		eoperation2.EType = EcorePackage.Literals.ESTRING
+		
+		val modelGenerator = new ModelGenerator();
+		
+		//Action
+		val result = modelGenerator.caseEClass(eclass).toString()
+		
+		//Assert
+		val nodes = AntlrTestUtil.xpath(result, "//methodSignature")
+		assertTrue("Class should have 2 overloaded operations and 1 generic delegating operation", nodes.size===3)
+		
+	}
+	
+	@Test def void test_caseEClassy() {
+		
+		//Arrange
+		val epackage = EcoreFactory.eINSTANCE.createEPackage()
+		epackage.name = "MyPackage"
+		epackage.nsURI = "com.mypackage"
+		
+		val eclass = EcoreFactory.eINSTANCE.createEClass();
+		eclass.name = "MyClass"
+		epackage.EClassifiers.add(eclass)
+		
+		val modelGenerator = new ModelGenerator();
+		
+		//Action
+		val result = modelGenerator.caseEClass(eclass).toString()
+		
+		//Assert
+		val nodes = AntlrTestUtil.xpath(result, "//interfaceDeclaration/interfaceExtendsClause/classOrInterfaceTypeList/typeReference/typeName")
+		assertTrue(nodes.size===1)
+		assertTrue("Interface for EClass with no supertypes extends InternalEObject", nodes.get(0).text.equals("InternalEObject"))
+		
+	}
+	@Test def void test_caseEClassz() {
+		
+		//Arrange
+		
+		val modelGenerator = new ModelGenerator();
+		
+		//Action
+		val result = modelGenerator.caseEClass(EcorePackage.Literals.EOBJECT).toString()
+		
+		//Assert
+		val nodes = AntlrTestUtil.xpath(result, "//interfaceDeclaration/interfaceExtendsClause/classOrInterfaceTypeList/typeReference/typeName")
+		assertTrue(nodes.size===1)
+		assertTrue("Interface for EObject extends Notifier", nodes.get(0).text.equals("Notifier"))
+		
+	}
+	@Test def void test_caseEClassz2() {
+		
+		//Arrange
+		val epackage = EcoreFactory.eINSTANCE.createEPackage()
+		epackage.name = "MyPackage"
+		epackage.nsURI = "com.mypackage"
+		
+		val supertype = EcoreFactory.eINSTANCE.createEClass();
+		supertype.name = "SuperType"
+		epackage.EClassifiers.add(supertype)
+		
+		val eclass = EcoreFactory.eINSTANCE.createEClass();
+		eclass.name = "MyClass"
+		eclass.ESuperTypes.add(supertype)
+		epackage.EClassifiers.add(eclass)
+		
+		val modelGenerator = new ModelGenerator();
+		
+		//Action
+		val result = modelGenerator.caseEClass(EcorePackage.Literals.EOBJECT).toString()
+		
+		//Assert
+		val nodes = AntlrTestUtil.xpath(result, "//interfaceDeclaration/interfaceExtendsClause/classOrInterfaceTypeList")
+		assertTrue(nodes.size===1)
+		assertTrue("Interface for EClass with supertype extends supertype interface", nodes.size===1)	
+	}
+	
+	@Test def void test_caseEClassz3() {
+		
+		//Arrange
+		val epackage = EcoreFactory.eINSTANCE.createEPackage()
+		epackage.name = "MyPackage"
+		epackage.nsURI = "com.mypackage"
+		
+		val supertype = EcoreFactory.eINSTANCE.createEClass();
+		supertype.name = "SuperType"
+		epackage.EClassifiers.add(supertype)
+		
+		val supertype2 = EcoreFactory.eINSTANCE.createEClass();
+		supertype2.name = "SuperType2"
+		epackage.EClassifiers.add(supertype2)
+		
+		val eclass = EcoreFactory.eINSTANCE.createEClass();
+		eclass.name = "MyClass"
+		eclass.ESuperTypes.add(supertype)
+		eclass.ESuperTypes.add(supertype2)
+		epackage.EClassifiers.add(eclass)
+		
+		val modelGenerator = new ModelGenerator();
+		
+		//Action
+		val result = modelGenerator.caseEClass(eclass).toString()
+		
+		//Assert
+		val nodes = AntlrTestUtil.xpath(result, "//interfaceDeclaration/interfaceExtendsClause/classOrInterfaceTypeList/typeReference")
+		System.out.println(nodes.size)
+		assertTrue("Interface for EClass with supertypes extends supertype interfaces", nodes.size==2)
+		
 	}
 
 	@Test def void test_caseEClass() {

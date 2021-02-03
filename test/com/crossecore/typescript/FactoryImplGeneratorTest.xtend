@@ -13,10 +13,11 @@ import org.junit.Before
 import org.junit.Test
 
 import static org.junit.Assert.*
+import com.crossecore.AntlrTestUtil
 
 class FactoryImplGeneratorTest {
 
-	private EPackage epackage
+	EPackage epackage
 
 	@Before def void setup(){
 		
@@ -51,31 +52,14 @@ class FactoryImplGeneratorTest {
 		//Action
 		val result = generator.caseEPackage(epackage).toString()
 		//System.out.println(result)
-		
 		//Assert
-		//https://github.com/antlr/antlr4/blob/master/doc/tree-matching.md
-		
 		val xpath = "//classElement/propertyMemberDeclaration/propertyName/identifierName";
-		val lexer = new TypeScriptLexer(CharStreams.fromString(result));
-		val tokens = new CommonTokenStream(lexer);
-		val parser = new TypeScriptParser(tokens);
+		val nodes = AntlrTestUtil.xpath(result, xpath)
 		
-		
-		parser.setBuildParseTree(true);
-		val tree = parser.program();
-		val ruleNamesList = Arrays.asList(parser.getRuleNames());
-		val prettyTree = TreeUtils.toPrettyTree(tree, ruleNamesList);
-		//System.out.println(prettyTree)
-		
-		val x = XPath.findAll(tree, xpath, parser).toSet;
-		
-		
-		assertTrue(x.exists[t|t.text.equals("convertMyEnumToString")])
-		
-		assertTrue(x.exists[t|t.text.equals("createMyEnumFromString")])
-		assertTrue(x.exists[t|t.text.equals("convertMyDatatypeToString")])
-		
-		assertTrue(x.exists[t|t.text.equals("createMyDatatypeFromString")])
+		assertTrue(nodes.exists[t|t.text.equals("convertMyEnumToString")])
+		assertTrue(nodes.exists[t|t.text.equals("createMyEnumFromString")])
+		assertTrue(nodes.exists[t|t.text.equals("convertMyDatatypeToString")])
+		assertTrue(nodes.exists[t|t.text.equals("createMyDatatypeFromString")])
 		
 	}
 
