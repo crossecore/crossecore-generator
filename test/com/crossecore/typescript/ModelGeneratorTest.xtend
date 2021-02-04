@@ -19,90 +19,6 @@ import com.crossecore.AntlrTestUtil
 
 class ModelGeneratorTest {
 
-	private EPackage epackage
-
-	@Before def void setup(){
-		
-		epackage = EcoreFactory.eINSTANCE.createEPackage()
-		epackage.name = "MyPackage"
-		epackage.nsURI = "com.mypackage"
-		
-		val supertype = EcoreFactory.eINSTANCE.createEClass();
-		supertype.name = "SuperType"
-		epackage.EClassifiers.add(supertype)
-		
-		val eclass = EcoreFactory.eINSTANCE.createEClass();
-		eclass.name = "MyClass"
-		eclass.ESuperTypes.add(supertype)
-		epackage.EClassifiers.add(eclass)
-		
-		val eoperation = EcoreFactory.eINSTANCE.createEOperation()
-		eoperation.name = "operation_overload"
-		eoperation.EType = EcorePackage.Literals.ESTRING
-		
-		val eparam1 = EcoreFactory.eINSTANCE.createEParameter()
-		eparam1.name = "p1"
-		eparam1.EType = EcorePackage.Literals.ESTRING
-		eoperation.EParameters.add(eparam1)
-		
-		val eoperation2 = EcoreFactory.eINSTANCE.createEOperation()
-		eoperation2.name = "operation_overload"
-		eoperation2.EType = EcorePackage.Literals.ESTRING
-		
-		val eoperation3 = EcoreFactory.eINSTANCE.createEOperation()
-		eoperation3.name = "operation_void"
-		eoperation3.EType = EcorePackage.Literals.ESTRING
-
-		val eparam2 = EcoreFactory.eINSTANCE.createEParameter()
-		eparam2.name = "p1"
-		eparam2.EType = EcorePackage.Literals.EINT
-		eoperation2.EParameters.add(eparam2)
-		
-		eclass.EOperations.add(eoperation)
-		eclass.EOperations.add(eoperation2)	
-		eclass.EOperations.add(eoperation3)
-		
-		val eattribute = EcoreFactory.eINSTANCE.createEAttribute()
-		eattribute.name = "attribute_string"
-		eattribute.EType = EcorePackage.Literals.ESTRING
-		eclass.EStructuralFeatures.add(eattribute)
-		
-		val ereference = EcoreFactory.eINSTANCE.createEReference()
-		ereference.name = "ereference_single"
-		ereference.upperBound = 1
-		ereference.EType = supertype
-		eclass.EStructuralFeatures.add(ereference)
-				
-		val ereference2 = EcoreFactory.eINSTANCE.createEReference()
-		ereference2.name = "ereference_many"
-		ereference2.upperBound = -1
-		ereference2.EType = supertype
-		eclass.EStructuralFeatures.add(ereference2)
-		
-		var map = EcoreFactory.eINSTANCE.createEClass()
-		map.name = "StringToStringMap"
-		map.instanceClassName = "java.util.Map$Entry"
-		
-		var key_attribute = EcoreFactory.eINSTANCE.createEAttribute()
-		key_attribute.name = "key"
-		key_attribute.EType = EcorePackage.Literals.ESTRING
-		
-		var value_attribute = EcoreFactory.eINSTANCE.createEAttribute()
-		value_attribute.name = "value"
-		value_attribute.EType = EcorePackage.Literals.ESTRING
-		
-		map.EStructuralFeatures.add(key_attribute)
-		map.EStructuralFeatures.add(value_attribute)
-		
-		epackage.EClassifiers.add(map)
-		
-		val ereference3 = EcoreFactory.eINSTANCE.createEReference()
-		ereference3.name = "ereference_map"
-		ereference3.containment = true
-		ereference3.upperBound = -1
-		ereference3.EType = map
-		eclass.EStructuralFeatures.add(ereference3)
-	}
 	
 	@Test def void test_caseEClassx() {
 		
@@ -234,62 +150,185 @@ class ModelGeneratorTest {
 		
 		//Assert
 		val nodes = AntlrTestUtil.xpath(result, "//interfaceDeclaration/interfaceExtendsClause/classOrInterfaceTypeList/typeReference")
-		System.out.println(nodes.size)
 		assertTrue("Interface for EClass with supertypes extends supertype interfaces", nodes.size==2)
-		
 	}
-
-	@Test def void test_caseEClass() {
+	
+	@Test def void test_caseEClassz4() {
 		
 		//Arrange
+		val epackage = EcoreFactory.eINSTANCE.createEPackage()
+		epackage.name = "MyPackage"
+		epackage.nsURI = "com.mypackage"
+		
+		val eclass = EcoreFactory.eINSTANCE.createEClass();
+		eclass.name = "MyClass"
+		epackage.EClassifiers.add(eclass)
+		
+		val attribute = EcoreFactory.eINSTANCE.createEAttribute;
+		attribute.name = "attribute"
+		attribute.EType = EcorePackage.Literals.ESTRING
+		eclass.EStructuralFeatures.add(attribute)
+		
 		val modelGenerator = new ModelGenerator();
 		
 		//Action
-		val result = modelGenerator.caseEClass(epackage.EClassifiers.findFirst[e|e instanceof EClass && e.name.equals("MyClass")] as EClass).toString()
-		//System.out.println(result)
+		val result = modelGenerator.caseEClass(eclass).toString()
 		
 		//Assert
-		//https://github.com/antlr/antlr4/blob/master/doc/tree-matching.md
-		
-		val xpath = "//methodSignature";
-		val lexer = new TypeScriptLexer(CharStreams.fromString(result));
-		val tokens = new CommonTokenStream(lexer);
-		val parser = new TypeScriptParser(tokens);
-		
-		
-		
-		parser.setBuildParseTree(true);
-		val tree = parser.program();
-		val ruleNamesList = Arrays.asList(parser.getRuleNames());
-		val prettyTree = TreeUtils.toPrettyTree(tree, ruleNamesList);
-		//System.out.println(prettyTree)
-		
-		val x = XPath.findAll(tree, xpath, parser).toSet;
-		
-		assertTrue(x.size===4)
-		
-		val xpath2 = "//propertySignatur";
-		val y = XPath.findAll(tree, xpath2, parser).toSet;
-		
-		//System.out.println(y)
-		assertTrue(y.size===4)
+		val nodes = AntlrTestUtil.xpath(result, "//interfaceDeclaration/objectType/typeBody/typeMemberList/typeMember/propertySignatur/propertyName/identifierName")
+		assertTrue(nodes.size===1)
+		assertTrue("Interface for EClass has EAttribute", nodes.get(0).text.equals("attribute"))
 		
 	}
 	
+	@Test def void test_caseEClassz99() {
+		
+		//Arrange
+		val epackage = EcoreFactory.eINSTANCE.createEPackage()
+		epackage.name = "MyPackage"
+		epackage.nsURI = "com.mypackage"
+		
+		val eclass = EcoreFactory.eINSTANCE.createEClass();
+		eclass.name = "MyClass"
+		epackage.EClassifiers.add(eclass)
+		
+		val attribute = EcoreFactory.eINSTANCE.createEAttribute;
+		attribute.name = "attribute"
+		attribute.EType = EcorePackage.Literals.ESTRING
+		attribute.upperBound = -1
+		eclass.EStructuralFeatures.add(attribute)
+		
+		val modelGenerator = new ModelGenerator();
+		
+		//Action
+		val result = modelGenerator.caseEClass(eclass).toString()
+		
+		//Assert
+		val nodes = AntlrTestUtil.xpath(result, "//interfaceDeclaration/objectType/typeBody/typeMemberList/typeMember/propertySignatur/propertyName/identifierName")
+		assertTrue(nodes.size===1)
+		assertTrue("Interface for EClass has EAttribute", nodes.get(0).text.equals("attribute"))
+		
+	}
+	
+	@Test def void test_caseEClassz89() {
+		
+		//Arrange
+		val epackage = EcoreFactory.eINSTANCE.createEPackage()
+		epackage.name = "MyPackage"
+		epackage.nsURI = "com.mypackage"
+		
+		val eclass = EcoreFactory.eINSTANCE.createEClass();
+		eclass.name = "MyClass"
+		epackage.EClassifiers.add(eclass)
+		
+		val reference = EcoreFactory.eINSTANCE.createEReference;
+		reference.name = "reference"
+		reference.EType = EcorePackage.Literals.ESTRING_TO_STRING_MAP_ENTRY
+		reference.containment = true
+		
+		eclass.EStructuralFeatures.add(reference)
+		
+		val modelGenerator = new ModelGenerator();
+		
+		//Action
+		val result = modelGenerator.caseEClass(eclass).toString()
+		
+		//Assert
+		val nodes = AntlrTestUtil.xpath(result, "//interfaceDeclaration/objectType/typeBody/typeMemberList/typeMember/propertySignatur/typeAnnotation/type_/unionOrIntersectionOrPrimaryType/primaryType/typeReference/typeName")
+		assertTrue("EClass has EMap", nodes.get(0).text.equals("EMap"))
+		
+		val nodes2 = AntlrTestUtil.xpath(result, "//predefinedType")
+		assertTrue(nodes2.size===2)
+		assertTrue(nodes2.get(0).text.equals("string"))
+		assertTrue(nodes2.get(1).text.equals("string"))
+	}
+	
+	@Test def void test_caseEClassz5() {
+		
+		//Arrange
+		val epackage = EcoreFactory.eINSTANCE.createEPackage()
+		epackage.name = "MyPackage"
+		epackage.nsURI = "com.mypackage"
+		
+		val referencedType = EcoreFactory.eINSTANCE.createEClass();
+		referencedType.name = "ReferenceType"
+		epackage.EClassifiers.add(referencedType)
+		
+		val eclass = EcoreFactory.eINSTANCE.createEClass();
+		eclass.name = "MyClass"
+		epackage.EClassifiers.add(eclass)
+		
+		val reference = EcoreFactory.eINSTANCE.createEReference;
+		reference.name = "reference"
+		reference.EType = referencedType
+		eclass.EStructuralFeatures.add(reference)
+		
+		val modelGenerator = new ModelGenerator();
+		
+		//Action
+		val result = modelGenerator.caseEClass(eclass).toString()
+		
+		//Assert
+		val nodes = AntlrTestUtil.xpath(result, "//interfaceDeclaration/objectType/typeBody/typeMemberList/typeMember/propertySignatur/propertyName/identifierName")
+		assertTrue(nodes.size===1)
+		assertTrue("Interface for EClass has EReference", nodes.get(0).text.equals("reference"))
+		
+	}
+	
+	@Test def void test_caseEClassz6() {
+		
+		//Arrange
+		val epackage = EcoreFactory.eINSTANCE.createEPackage()
+		epackage.name = "MyPackage"
+		epackage.nsURI = "com.mypackage"
+		
+		val referencedType = EcoreFactory.eINSTANCE.createEClass();
+		referencedType.name = "ReferenceType"
+		epackage.EClassifiers.add(referencedType)
+		
+		val eclass = EcoreFactory.eINSTANCE.createEClass();
+		eclass.name = "MyClass"
+		epackage.EClassifiers.add(eclass)
+		
+		val reference = EcoreFactory.eINSTANCE.createEReference;
+		reference.name = "reference"
+		reference.EType = referencedType
+		reference.upperBound = -1
+		eclass.EStructuralFeatures.add(reference)
+		
+		val modelGenerator = new ModelGenerator();
+		
+		//Action
+		val result = modelGenerator.caseEClass(eclass).toString()
+		
+		//Assert
+		val nodes = AntlrTestUtil.xpath(result, "//interfaceDeclaration/objectType/typeBody/typeMemberList/typeMember/propertySignatur/propertyName/identifierName")
+		assertTrue(nodes.size===1)
+		assertTrue("Interface for EClass has EReference", nodes.get(0).text.equals("reference"))
+		
+	}
+
+
+	
 	@Test def void test_caseEEnum(){
 		
+		
+		//Arrange
 		val eenum = EcoreFactory.eINSTANCE.createEEnum();
 		eenum.name = "MyEnum"
 		
 		val literal1 = EcoreFactory.eINSTANCE.createEEnumLiteral();
 		literal1.name = "LITERAL"
 		literal1.value = 3
-		
-		//Arrange
 		val modelGenerator = new ModelGenerator();
 		
 		//Action
-		val result = modelGenerator.caseEEnum(eenum)	
+		val result = modelGenerator.caseEEnum(eenum).toString
+		
+		//Assert
+		val nodes = AntlrTestUtil.xpath(result, "//classDeclaration")
+		assertTrue("Class is generated from EEnum ", nodes.size===1)
+			
 	}
 	
 }

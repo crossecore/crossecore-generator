@@ -35,7 +35,6 @@ class ModelImplGenerator extends EcoreVisitor{
 	TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2();
 	//private ImportManager imports = new ImportManager(t);
 	
-	
 	new(){
 		super();
 	}
@@ -44,23 +43,16 @@ class ModelImplGenerator extends EcoreVisitor{
 		super(path, filenamePattern, epackage);
 
 	}
-		
 	
 	override caseEPackage (EPackage epackage){
 		var List<EClass> sortedEClasses = DependencyManager.sortEClasses(epackage);
 		
 		for(EClass eclass : sortedEClasses){
 			
-			
 			var body = 	
 			'''
-			«IF !Utils.isEcoreEPackage(epackage)»
-			/* import Ecore*/
-		 	«ENDIF»
 			«doSwitch(eclass)»
 			'''
-			
-			
 			
 			var contents =
 			'''
@@ -77,8 +69,6 @@ class ModelImplGenerator extends EcoreVisitor{
 	override write(){
 		doSwitch(epackage);
 	}
-	
-
 	
 	override caseEClass(EClass e){
 

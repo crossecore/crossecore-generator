@@ -14,6 +14,7 @@ import org.junit.Before
 import org.junit.Test
 
 import static org.junit.Assert.*
+import com.crossecore.AntlrTestUtil
 
 class PackageImplGeneratorTest {
 
@@ -143,5 +144,28 @@ class PackageImplGeneratorTest {
 		
 	}
 
+	@Test def void test_caseEPackage2() {
+		
+		//Arrange
+		
+		val epackage = EcoreFactory.eINSTANCE.createEPackage()
+		epackage.name = "MyPackage"
+		epackage.nsURI = "com.mypackage"
+		
+		val eclass = EcoreFactory.eINSTANCE.createEClass();
+		eclass.name = "MyClass"
+		
+		epackage.EClassifiers.add(eclass)
+		
+		val generator = new PackageImplGenerator();
+
+		//Action
+		val result = generator.caseEPackage(epackage).toString
+		System.out.println(result)
+		
+		//Assert
+		assertTrue(result.contains("this.createEClass(MyPackagePackageImpl.MYCLASS)"))		
+		
+	}
 	
 }
