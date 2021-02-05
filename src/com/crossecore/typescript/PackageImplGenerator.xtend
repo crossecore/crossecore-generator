@@ -67,26 +67,6 @@ class PackageImplGenerator extends EcoreVisitor{
 		
 		var sortedEClasses = sortedEClasses_.filter[e| e.EPackage.equals(epackage)];
 		
-		var allLiterals = new ArrayList<EObject>();
-		allLiterals.addAll(epackage.EClassifiers);
-		
-		for(EClassifier e : sortedEClasses){
-			
-			if(e instanceof EClass){
-				for(EStructuralFeature f: (e as EClass).EStructuralFeatures){
-					allLiterals.add(f);	
-				}	
-			}
-		}
-		
-		for(EEnum e : enums){
-			
-			allLiterals.add(e);	
-		}
-		
-		allLiterals.addAll(EcoreUtil.getObjectsByType(epackage.EClassifiers, EcorePackage.Literals.EATTRIBUTE));
-		allLiterals.addAll(EcoreUtil.getObjectsByType(epackage.EClassifiers, EcorePackage.Literals.EREFERENCE));
-		
 		
 		tt.import_(EcorePackage.eINSTANCE, "EPackageImpl");
 		tt.import_(EcorePackage.eINSTANCE, "EFactory");
@@ -280,15 +260,6 @@ class PackageImplGenerator extends EcoreVisitor{
 					«doSwitch(eclassifier)»
 				«ENDFOR»
 				
-				/*
-				public static Literals = {
-					«FOR EObject e: allLiterals SEPARATOR ', '»
-						«literals.doSwitch(e)»
-					«ENDFOR»
-				}
-				*/
-				
-
 		 
 		}
 		'''
@@ -301,44 +272,7 @@ class PackageImplGenerator extends EcoreVisitor{
 		«body»
 		'''
 	}
-	
-	var literals = new EcoreVisitor(){
-		override caseEClass(EClass eclass){
-			//tt.import_(EcorePackage.eINSTANCE,"EClass");
-			'''
-				«id.literal(eclass)»: «id.EPackagePackageImpl(eclass.EPackage)».eINSTANCE.«id.getEClass(eclass)»()
-
-			'''
-		}
 		
-		override caseEEnum(EEnum enumeration){
-			
-			//tt.import_(EcorePackage.eINSTANCE,"EEnum");
-			'''«id.literal(enumeration)»: «id.EPackagePackageImpl(enumeration.EPackage)».eINSTANCE.«id.getEEnum(enumeration)»()'''
-		}
-		
-		override caseEDataType(EDataType edatatype){
-			//tt.import_(EcorePackage.eINSTANCE,"EDataType");
-			'''«id.literal(edatatype)»: «id.EPackagePackageImpl(edatatype.EPackage)».eINSTANCE.«id.getEDataType(edatatype)»()'''
-			
-		}
-	
-		override caseEReference(EReference ereference){
-			//tt.import_(EcorePackage.eINSTANCE,"EReference");
-			'''«id.literal(ereference)»: «id.EPackagePackageImpl(ereference.EContainingClass.EPackage)».eINSTANCE.«id.getEReference(ereference)»()'''
-		}
-		
-		override caseEAttribute(EAttribute eattribute){
-			//tt.import_(EcorePackage.eINSTANCE,"EAttribute");			
-			'''«id.literal(eattribute)»: «id.EPackagePackageImpl(eattribute.EContainingClass.EPackage)».eINSTANCE.«id.getEAttribute(eattribute)»()'''
-		}
-		
-		override caseEOperation(EOperation eoperation){
-			
-			'''«id.literal(eoperation)»: «id.EPackagePackageImpl(eoperation.EContainingClass.EPackage)».eINSTANCE.«id.getEOperation(eoperation)»()'''
-		}	
-	}
-	
 	
 	var metaobjectid = new EcoreVisitor(){
 		
@@ -352,10 +286,6 @@ class PackageImplGenerator extends EcoreVisitor{
 			
 		'''
 		
-		override caseEOperation(EOperation eoperation)'''
-			public static «id.literal(eoperation)»:number = «eoperation.operationID»;
-			
-		'''
 		
 		override caseEClass(EClass eclassifier){
 
@@ -393,17 +323,12 @@ class PackageImplGenerator extends EcoreVisitor{
 		tt.import_(EcorePackage.eINSTANCE,"EEnum");
 		'''public «id.getEEnum(enumeration)»=():EEnum=>{return this.«id.EEnumEEnum(enumeration)»;}'''
 	}
-	
-	override caseEOperation(EOperation operation){
-		tt.import_(EcorePackage.eINSTANCE,"EOperation");
-		'''public «id.getEOperation(operation)»=():EOperation=>{return this.«id.EOperationEOperation(operation)»;}'''
-	}
-	
 
 	
 	override caseEClass(EClass eclass){
 		var featureIdx = 0;
 		var operationIdx = 0;
+		//TODO import only if needed
 		tt.import_(EcorePackage.eINSTANCE,"EClass");
 		tt.import_(EcorePackage.eINSTANCE,"EAttribute");
 		tt.import_(EcorePackage.eINSTANCE,"EReference");
