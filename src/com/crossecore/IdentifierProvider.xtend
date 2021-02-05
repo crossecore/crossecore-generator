@@ -85,10 +85,10 @@ class IdentifierProvider extends EcoreSwitch<String>{
 		var parameters = new StringBuffer(); 
 		
 		
-		
 		for (var iter = eoperation.EParameters.iterator(); iter.hasNext();){
 	      
 	      	parameters.append("__")
+			//TODO should not be the type name instead of parameter name appended??
 			parameters.append(iter.next.name.toUpperCase);//TODO trim prefixed E?
 			  
 			
