@@ -1,19 +1,12 @@
 package com.crossecore.typescript
 
-import antlr.typescript.TypeScriptLexer
-import antlr.typescript.TypeScriptParser
-import com.crossecore.TreeUtils
-import java.util.Arrays
-import org.antlr.v4.runtime.CharStreams
-import org.antlr.v4.runtime.CommonTokenStream
-import org.antlr.v4.runtime.tree.xpath.XPath
+import com.crossecore.AntlrTestUtil
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EcoreFactory
 import org.junit.Before
 import org.junit.Test
 
 import static org.junit.Assert.*
-import com.crossecore.AntlrTestUtil
 
 class FactoryImplGeneratorTest {
 
