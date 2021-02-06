@@ -455,6 +455,7 @@ class ModelBaseGenerator extends EcoreVisitor{
 		}
 		
 		//TODO is there a set method for multi-valued EReferences?
+		//TODO case derived && !ocl
 		var es5plus = 
 		'''
 		«IF eattribute.many»
@@ -506,8 +507,6 @@ class ModelBaseGenerator extends EcoreVisitor{
 	}
 	
 	
-
-	
 	override caseEReference(EReference ereference){
 		var listType = tt.listType(ereference.unique, ereference.ordered);
 	
@@ -527,8 +526,6 @@ class ModelBaseGenerator extends EcoreVisitor{
 					isOcl= true;
 				}
 				
-							
-			
 			}
 		}
 	
