@@ -382,13 +382,13 @@ class ModelBaseGenerator extends EcoreVisitor{
 						/*
 						«invariants.get(invariant)»;
 						*/
-						return true;
+						return true;«/*TODO OCL Translator*/»
 					}
 		        	«ENDFOR»
 				}
 				
 			'''
-		
+			
 		}
 	
 	}
