@@ -1073,16 +1073,160 @@ class ModelBaseGeneratorTest {
 	@Test def void test_caseEClass25() {
 		
 		
-		val result = 
-		'''
-		class X<T,R>{
-		    private x = (<X<string, number>> null)
-		}
-		'''
+		//Arrange
+		val epackage = EcoreFactory.eINSTANCE.createEPackage()
+		epackage.name = "MyPackage"
+		epackage.nsURI = "com.mypackage"
+		epackage.nsPrefix = "mypackage"
+		
+		val classA = EcoreFactory.eINSTANCE.createEClass();
+		classA.name = "ClassA"
+
+		val classB = EcoreFactory.eINSTANCE.createEClass();
+		classB.name = "ClassB"
+		
+		val refA = EcoreFactory.eINSTANCE.createEReference()
+		refA.name = "classA"
+		refA.EType = classB
+		refA.containment = true
+		
+		classB.EStructuralFeatures.add(refA)
+
+		val refB = EcoreFactory.eINSTANCE.createEReference()
+		refB.name = "classB"
+		refB.EType = classB
+		refB.containment = true
+		refB.EOpposite = refA
+		classA.EStructuralFeatures.add(refB)
+		
+		epackage.EClassifiers.add(classA)
+		epackage.EClassifiers.add(classB)
+		
+		val generator = new ModelBaseGenerator();
+		
+		//Action
+		val result = generator.caseEClass(classA).toString()
+		System.out.println(result)
 		
 		//Assert
-		val nodes = AntlrTestUtil.xpath(result, "//classElement/propertyMemberDeclaration/setAccessor/setter/propertyName/identifierName")
+		val nodes = AntlrTestUtil.xpath(result, "//classElement/propertyMemberDeclaration/propertyName/identifierName")
+		assertTrue(nodes.exists[n|n.text.equals("basicSetClassB")])
 	}
+
+	@Test def void test_caseEClass28() {
+		
+		
+		//Arrange
+		val epackage = EcoreFactory.eINSTANCE.createEPackage()
+		epackage.name = "MyPackage"
+		epackage.nsURI = "com.mypackage"
+		epackage.nsPrefix = "mypackage"
+		
+		val classA = EcoreFactory.eINSTANCE.createEClass();
+		classA.name = "ClassA"
+
+		val classB = EcoreFactory.eINSTANCE.createEClass();
+		classB.name = "ClassB"
+		
+		val refA = EcoreFactory.eINSTANCE.createEReference()
+		refA.name = "classA"
+		refA.EType = classB
+		classB.EStructuralFeatures.add(refA)
+
+		val refB = EcoreFactory.eINSTANCE.createEReference()
+		refB.name = "classB"
+		refB.EType = classB
+		refB.EOpposite = refA
+		classA.EStructuralFeatures.add(refB)
+		
+		epackage.EClassifiers.add(classA)
+		epackage.EClassifiers.add(classB)
+		
+		val generator = new ModelBaseGenerator();
+		
+		//Action
+		val result = generator.caseEClass(classA).toString()
+		
+		//Assert
+		val nodes = AntlrTestUtil.xpath(result, "//classElement/propertyMemberDeclaration/propertyName/identifierName")
+		assertTrue(nodes.exists[n|n.text.equals("eInverseAdd")])
+		assertTrue(nodes.exists[n|n.text.equals("eInverseRemove")])
+	}
+
+	@Test def void test_caseEClass26() {
+		
+		
+		//Arrange
+		val epackage = EcoreFactory.eINSTANCE.createEPackage()
+		epackage.name = "MyPackage"
+		epackage.nsURI = "com.mypackage"
+		epackage.nsPrefix = "mypackage"
+		
+		val classA = EcoreFactory.eINSTANCE.createEClass();
+		classA.name = "ClassA"
+
+		val classB = EcoreFactory.eINSTANCE.createEClass();
+		classB.name = "ClassB"
+		
+		val classC = EcoreFactory.eINSTANCE.createEClass();
+		classC.name = "ClassC"
+		
+		val eattribute = EcoreFactory.eINSTANCE.createEAttribute()
+		eattribute.name = "attribute"
+		eattribute.EType = EcorePackage.Literals.ESTRING
+		
+		classC.EStructuralFeatures.add(eattribute)
+		
+		classA.ESuperTypes.add(classB)
+		classA.ESuperTypes.add(classC)
+		
+		epackage.EClassifiers.add(classA)
+		epackage.EClassifiers.add(classB)
+		epackage.EClassifiers.add(classC)
+		
+		val generator = new ModelBaseGenerator();
+		
+
+		//Action
+		val result = generator.caseEClass(classA).toString()
+		System.out.println(result)
+		
+		//Assert
+		val nodes = AntlrTestUtil.xpath(result, "//classElement/propertyMemberDeclaration/propertyName/identifierName")
+		assertTrue(nodes.exists[n|n.text.equals("eBaseStructuralFeatureID")])
+		assertTrue(nodes.exists[n|n.text.equals("eDerivedStructuralFeatureID_number_Function")])
+	}
+	
+	@Test def void test_caseEClass27() {
+		
+		
+		//Arrange
+		val epackage = EcoreFactory.eINSTANCE.createEPackage()
+		epackage.name = "MyPackage"
+		epackage.nsURI = "com.mypackage"
+		epackage.nsPrefix = "mypackage"
+		
+		val eclass = EcoreFactory.eINSTANCE.createEClass();
+		eclass.name = "MyClass"
+		
+		val eannotation = EcoreFactory.eINSTANCE.createEAnnotation()
+		eannotation.source = PIVOT
+		eannotation.details.put("invariant", "true")
+		eclass.EAnnotations.add(eannotation)
+
+		epackage.EClassifiers.add(eclass)
+		
+		val generator = new ModelBaseGenerator();
+
+		//Action
+		val result = generator.caseEClass(eclass).toString()
+		
+		//Assert
+		val nodes = AntlrTestUtil.xpath(result, "//classElement/propertyMemberDeclaration/propertyName/identifierName")
+		assertTrue(nodes.exists[n|n.text.equals("invariant")])
+	}	
+	
+	
 	
 	
 }
