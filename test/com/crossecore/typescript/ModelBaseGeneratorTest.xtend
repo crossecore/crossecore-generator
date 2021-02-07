@@ -775,8 +775,8 @@ class ModelBaseGeneratorTest {
 		
 		//Assert
 		val nodes = AntlrTestUtil.xpath(result, "//classDeclaration/classTail/classElement/propertyMemberDeclaration/propertyName/identifierName")
-		assertTrue(nodes.exists[n|n.text.equals("operation_overload_number")])
-		assertTrue(nodes.exists[n|n.text.equals("operation_overload_string")])
+		assertTrue(nodes.exists[n|n.text.equals("operation_overload_EInt")])
+		assertTrue(nodes.exists[n|n.text.equals("operation_overload_EString")])
 		assertTrue(nodes.exists[n|n.text.equals("operation_overload")])
 	}
 	
