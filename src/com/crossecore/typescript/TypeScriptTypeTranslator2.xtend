@@ -99,8 +99,44 @@ class TypeScriptTypeTranslator2 {
 	
 	def String translateType(EClassifier eClassifier) {
 		if (eClassifier !== null) {
+			if (eClassifier instanceof CollectionType) {
 
-			if (eClassifier.instanceClassName !== null && !eClassifier.instanceClassName.isEmpty) {
+				var listtype = "";
+				if (eClassifier instanceof SequenceType) {
+					import_(EcorePackage.eINSTANCE, "Sequence");
+					listtype = "Sequence";
+				} else if (eClassifier instanceof BagType) {
+					import_(EcorePackage.eINSTANCE, "Bag");
+					listtype = "Bag";
+				} else if (eClassifier instanceof OrderedSetType) {
+					import_(EcorePackage.eINSTANCE, "OrderedSet");
+					listtype = "OrderedSet";
+				} else if (eClassifier instanceof SetType) {
+					import_(EcorePackage.eINSTANCE, "Set");
+					listtype = "Set";
+				}
+
+				var elementtype = (eClassifier as CollectionType).elementType;
+
+				if (elementtype instanceof AnyType) {
+					return '''«listtype»<any>''';
+				} else if (elementtype instanceof PrimitiveType) {
+
+					switch (elementtype.name) {
+						case "Integer": return '''«listtype»<number>'''
+						case "String": return '''«listtype»<string>'''
+						case "Real": return '''«listtype»<number>'''
+						case "Boolean": return '''«listtype»<boolean>'''
+					}
+				} else {
+					// TODO import if from different package	
+					return '''«listtype»<«elementtype.name»>'''
+				}
+
+			// TODO other types possible here like ocl's TypeType, InvalidType, VoidType etc.?
+			}
+
+			else if (eClassifier.instanceClassName !== null && !eClassifier.instanceClassName.isEmpty) {
 
 				switch eClassifier.instanceClassName {
 					case 'java.math.BigDecimal':
@@ -188,43 +224,7 @@ class TypeScriptTypeTranslator2 {
 				import_(eClassifier.EPackage, eClassifier.name);
 				return '''«eClassifier.name»'''				
 
-			} else if (eClassifier instanceof CollectionType) {
-
-				var listtype = "";
-				if (eClassifier instanceof SequenceType) {
-					import_(EcorePackage.eINSTANCE, "Sequence");
-					listtype = "Sequence";
-				} else if (eClassifier instanceof BagType) {
-					import_(EcorePackage.eINSTANCE, "Bag");
-					listtype = "Bag";
-				} else if (eClassifier instanceof OrderedSetType) {
-					import_(EcorePackage.eINSTANCE, "OrderedSet");
-					listtype = "OrderedSet";
-				} else if (eClassifier instanceof SetType) {
-					import_(EcorePackage.eINSTANCE, "Set");
-					listtype = "Set";
-				}
-
-				var elementtype = (eClassifier as CollectionType).elementType;
-
-				if (elementtype instanceof AnyType) {
-					return '''«listtype»<object>''';
-				} else if (elementtype instanceof PrimitiveType) {
-
-					switch (elementtype.name) {
-						case "Integer": return '''«listtype»<number>'''
-						case "String": return '''«listtype»<string>'''
-						case "Real": return '''«listtype»<number>'''
-						case "Boolean": return '''«listtype»<boolean>'''
-					}
-				} else {
-					// TODO import if from different package	
-					return '''«listtype»<«elementtype.name»>'''
-				}
-
-			// TODO other types possible here like ocl's TypeType, InvalidType, VoidType etc.?
-			}
-			else{
+			}			else{
 				
 				//EEnums
 				import_(eClassifier.EPackage, eClassifier.name);
