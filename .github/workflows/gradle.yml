@@ -3,7 +3,7 @@ name: Java CI
 on:
   push:
     branches:
-      - testing
+      - master
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
