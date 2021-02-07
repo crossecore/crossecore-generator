@@ -225,7 +225,7 @@ class PackageImplGenerator extends EcoreVisitor{
 						
 					«ENDFOR»
 					
-					«FOR EDataType e:edatatypes»
+					«FOR EDataType e:edatatypes2»
 						this.initEDataType(this.«id.EDataTypeEDataType(e)», null, "«e.name»", «IF !e.serializable»!«ENDIF»EPackageImpl.IS_SERIALIZABLE, !EPackageImpl.IS_GENERATED_INSTANCE_CLASS);
 					«ENDFOR»
 					«FOR EEnum e:enums»
@@ -275,7 +275,7 @@ class PackageImplGenerator extends EcoreVisitor{
 	}
 		
 	
-	var metaobjectid = new EcoreVisitor(){
+	var metaobjectid = new EcoreVisitor(epackage){
 		
 		override caseEEnum(EEnum enumeration)'''
 			public static «id.literal(enumeration)»:number = «enumeration.classifierID»;
@@ -293,12 +293,13 @@ class PackageImplGenerator extends EcoreVisitor{
 			var i = 0;
 			var j =0;
 			
-			tt.import_(eclassifier.EPackage, id.EPackagePackageImpl(eclassifier.EPackage));
+				
+			tt.import_(this.epackage as EPackage, eclassifier.EPackage, id.EPackagePackageImpl(eclassifier.EPackage));
 
 		'''
 			public static «id.literal(eclassifier)»:number = «eclassifier.classifierID»;
-			public static «id.EClassifier_FEATURE_COUNT(eclassifier)»:number = «FOR EClass _super:eclassifier.ESuperTypes SEPARATOR ' + '  AFTER ' + '»«id.EPackagePackageImpl(_super.EPackage)+"."+id.EClassifier_FEATURE_COUNT(_super)»«tt.import_(_super.EPackage, id.EPackagePackageImpl(_super.EPackage))»«ENDFOR»«eclassifier.EStructuralFeatures.size»;
-			public static «id.EClassifier_OPERATION_COUNT(eclassifier)»:number = «FOR EClass _super:eclassifier.ESuperTypes SEPARATOR ' + '  AFTER ' + '»«id.EPackagePackageImpl(_super.EPackage) + "." +id.EClassifier_OPERATION_COUNT(_super)»«tt.import_(_super.EPackage, id.EPackagePackageImpl(_super.EPackage))»«ENDFOR»«eclassifier.EOperations.size»;
+			public static «id.EClassifier_FEATURE_COUNT(eclassifier)»:number = «FOR EClass _super:eclassifier.ESuperTypes SEPARATOR ' + '  AFTER ' + '»«id.EPackagePackageImpl(_super.EPackage)+"."+id.EClassifier_FEATURE_COUNT(_super)»«tt.import_(this.epackage as EPackage, _super.EPackage, id.EPackagePackageImpl(_super.EPackage))»«ENDFOR»«eclassifier.EStructuralFeatures.size»;
+			public static «id.EClassifier_OPERATION_COUNT(eclassifier)»:number = «FOR EClass _super:eclassifier.ESuperTypes SEPARATOR ' + '  AFTER ' + '»«id.EPackagePackageImpl(_super.EPackage) + "." +id.EClassifier_OPERATION_COUNT(_super)»«tt.import_(this.epackage as EPackage, _super.EPackage, id.EPackagePackageImpl(_super.EPackage))»«ENDFOR»«eclassifier.EOperations.size»;
 			
 			«FOR EStructuralFeature feature:eclassifier.EAllStructuralFeatures»
 				public static «id.literal(eclassifier,feature)»:number = «i++»;

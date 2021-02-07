@@ -40,6 +40,10 @@ abstract class EcoreVisitor extends EcoreSwitch<CharSequence>{
 		super();
 	}
 	
+	new(ENamedElement epackage){
+		this.epackage = epackage
+	}
+	
 	new(String path, String filenamePattern, ENamedElement epackage){
 		super();
 		this.path = path;

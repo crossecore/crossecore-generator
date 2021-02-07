@@ -46,6 +46,12 @@ class TypeScriptTypeTranslator2 {
 		packages2.clear;
 	}
 
+	def void import_(EPackage context, EPackage epackage, String name) {
+		if(!context.nsURI.equals(epackage.nsURI)){
+			import_(epackage, name)
+		}
+	}
+
 	def void import_(EPackage epackage, String name) {
 		// TODO name conflicts from different packages
 		var epackage_ = if(epackage.nsURI.equals("http://www.eclipse.org/emf/2002/Ecore")) EcorePackage.eINSTANCE else epackage;
