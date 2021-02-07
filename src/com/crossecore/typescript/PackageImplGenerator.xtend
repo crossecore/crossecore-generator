@@ -162,6 +162,7 @@ class PackageImplGenerator extends EcoreVisitor{
 							this.«id.EClassEClass(e)».eSuperTypes.add(this.«id.getEClass(super_)»());
 						«ENDFOR»
 					«ENDFOR»
+					«tt.import_(EcorePackage.Literals.EOPERATION)»
 					var op:EOperation = null;
 					«FOR EClass e:eclasses»
 						
