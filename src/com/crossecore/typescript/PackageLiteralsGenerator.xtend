@@ -120,7 +120,7 @@ class PackageLiteralsGenerator extends EcoreVisitor{
 	}
 	
 	
-	var metaobjectid = new EcoreVisitor(){
+	var metaobjectid = new EcoreVisitor(epackage){
 		
 		override caseEEnum(EEnum enumeration)'''
 			public static «id.literal(enumeration)»:number = «enumeration.classifierID»;
@@ -138,8 +138,8 @@ class PackageLiteralsGenerator extends EcoreVisitor{
 
 		'''
 			public static «id.literal(eclassifier)»:number = «eclassifier.classifierID»;
-			public static «id.EClassifier_FEATURE_COUNT(eclassifier)»:number = «FOR EClass _super:eclassifier.ESuperTypes SEPARATOR ' + '  AFTER ' + '»«id.EPackagePackageLiterals(_super.EPackage)+"."+id.EClassifier_FEATURE_COUNT(_super)»«tt.import_(_super.EPackage, id.EPackagePackageLiterals(_super.EPackage))»«ENDFOR»«eclassifier.EStructuralFeatures.size»;
-			public static «id.EClassifier_OPERATION_COUNT(eclassifier)»:number = «FOR EClass _super:eclassifier.ESuperTypes SEPARATOR ' + '  AFTER ' + '»«id.EPackagePackageLiterals(_super.EPackage) + "." +id.EClassifier_OPERATION_COUNT(_super)»«tt.import_(_super.EPackage, id.EPackagePackageLiterals(_super.EPackage))»«ENDFOR»«eclassifier.EOperations.size»;
+			public static «id.EClassifier_FEATURE_COUNT(eclassifier)»:number = «FOR EClass _super:eclassifier.ESuperTypes SEPARATOR ' + '  AFTER ' + '»«id.EPackagePackageLiterals(_super.EPackage)+"."+id.EClassifier_FEATURE_COUNT(_super)»«tt.import_(epackage as EPackage, _super.EPackage, id.EPackagePackageLiterals(_super.EPackage))»«ENDFOR»«eclassifier.EStructuralFeatures.size»;
+			public static «id.EClassifier_OPERATION_COUNT(eclassifier)»:number = «FOR EClass _super:eclassifier.ESuperTypes SEPARATOR ' + '  AFTER ' + '»«id.EPackagePackageLiterals(_super.EPackage) + "." +id.EClassifier_OPERATION_COUNT(_super)»«tt.import_(epackage as EPackage, _super.EPackage, id.EPackagePackageLiterals(_super.EPackage))»«ENDFOR»«eclassifier.EOperations.size»;
 			
 			«FOR EStructuralFeature feature:eclassifier.EAllStructuralFeatures»
 				public static «id.literal(eclassifier,feature)»:number = «i++»;
