@@ -38,11 +38,11 @@ class VisualStudioProjectGenerator extends CSharpVisitor{
 		<Project Sdk="Microsoft.NET.Sdk">
 		  
 		  <PropertyGroup>
-		    <TargetFramework>netstandard2.0</TargetFramework>
+		    <TargetFramework>netcoreapp3.1</TargetFramework>
 		  </PropertyGroup>
 		  
 		  <ItemGroup>
-		    <PackageReference Include="Com.CrossEcore.Ecore" Version="0.1.0" />
+		    <PackageReference Include="Com.CrossEcore.Ecore" Version="0.1.1" />
 		  </ItemGroup>
 		
 		</Project>
