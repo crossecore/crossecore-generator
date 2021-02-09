@@ -33,10 +33,8 @@ import com.crossecore.Utils
 import com.crossecore.DependencyManager
 import java.util.List
 import java.util.HashSet
-import java.util.Collection
 import com.crossecore.TypeTranslator
 
-import org.eclipse.ocl.ecore.utilities.AbstractVisitor;
 import com.crossecore.EcoreVisitor
 import org.eclipse.emf.common.util.BasicEMap
 import java.util.Set
@@ -44,12 +42,9 @@ import org.eclipse.emf.common.util.BasicEList
 
 class ModelGenerator extends EcoreVisitor{
 	
-	private JavaIdentifier id = new JavaIdentifier();
-	private TypeTranslator t = new JavaTypeTranslator(id);
+	JavaIdentifier id = new JavaIdentifier();
+	TypeTranslator t = new JavaTypeTranslator(id);
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);
@@ -98,23 +93,6 @@ class ModelGenerator extends EcoreVisitor{
 			«FOR EClassifier supertype:e.ESuperTypes BEFORE ' extends ' SEPARATOR ','»«id.doSwitch(supertype)»«ENDFOR»
 		«ENDIF»
 		{
-			
-			public static com.crossecore.ocl.QuickSet<«id.doSwitch(e)»> allInstances_ = new com.crossecore.ocl.QuickSet<«id.doSwitch(e)»>(«id.doSwitch(e)».class);
-			
-				
-			public static com.crossecore.ocl.QuickSet<«id.doSwitch(e)»> allInstances(){
-				
-				com.crossecore.ocl.QuickSet<«id.doSwitch(e)»> result = new com.crossecore.ocl.QuickSet<«id.doSwitch(e)»>(«id.doSwitch(e)».class);
-				result.addAll(«id.doSwitch(e)».allInstances_);
-				
-				«FOR s:closure»
-				result.addAll(«id.doSwitch(s)».allInstances_);
-				«ENDFOR»
-				
-				return result;
-			}
-			
-			//public static com.crossecore.ocl.QuickSet<«id.doSwitch(e)»> allInstances = new com.crossecore.ocl.QuickSet<«id.doSwitch(e)»>(«id.doSwitch(e)».class);
 			
 			«FOR EStructuralFeature feature:e.EStructuralFeatures»«doSwitch(feature)»«ENDFOR»
 			«FOR EOperation operation:e.EOperations»«doSwitch(operation)»«ENDFOR»

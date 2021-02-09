@@ -18,19 +18,15 @@
  */
 package com.crossecore.typescript;
 
-import com.crossecore.DependencyManager
-import com.crossecore.ImportManager
-import com.crossecore.TypeTranslator
 import com.crossecore.Utils
 import java.util.ArrayList
-import java.util.Collection
 import java.util.HashMap
-import java.util.HashSet
+import java.util.LinkedHashSet
 import java.util.List
+import java.util.Set
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
-import org.eclipse.emf.ecore.EDataType
 import org.eclipse.emf.ecore.EEnum
 import org.eclipse.emf.ecore.EEnumLiteral
 import org.eclipse.emf.ecore.EOperation
@@ -38,20 +34,15 @@ import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EParameter
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EcorePackage
-import java.util.Set
-import java.util.LinkedHashSet
-import org.eclipse.emf.common.util.EMap
+import com.crossecore.EcoreVisitor
 
-class ModelGenerator extends TypeScriptVisitor{ 
+class ModelGenerator extends EcoreVisitor{ 
 	
-	private TypeScriptIdentifier id = new TypeScriptIdentifier();
+	TypeScriptIdentifier id = new TypeScriptIdentifier();
 	//private TypeTranslator t = new TypeScriptTypeTranslator(id);
-	private TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2();
+	TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2();
 	//private ImportManager imports = new ImportManager(t);
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);
@@ -71,8 +62,6 @@ class ModelGenerator extends TypeScriptVisitor{
 			tt.clearImports;
 			var body = 	
 			'''
-		 	«IF !Utils.isEcoreEPackage(epackage)»
-		 	«ENDIF»
 			«doSwitch(classifier)»
 			'''
 			
@@ -84,30 +73,11 @@ class ModelGenerator extends TypeScriptVisitor{
 			write(classifier, contents);
 		}
 		
-		/*
-		for(EClassifier classifier: eclassifiers){
-			var contents = 	'''
-			 	«IF !Utils.isEcoreEPackage(epackage)»
-			 	using Ecore;
-			 	«ENDIF»
-				export namespace «id.doSwitch(epackage)»{
-				
-					«doSwitch(classifier)»
-	
-				}
-			'''
-			write(classifier, contents);
-		}
-		*/
-		
-	
 		return "";
 	
 	}
 	
 
-
-	
 	override caseEClass(EClass e){
 
 		var overloading = new HashMap<String, List<EOperation>>();
@@ -323,7 +293,7 @@ class ModelGenerator extends TypeScriptVisitor{
 		//var name = if (overloaded) eoperation.name+eoperation.EContainingClass.getOperationID(eoperation) else eoperation.name;
 		var name = if(overloaded) id.caseOverloadedEOperation(eoperation) else id.doSwitch(eoperation);
 		'''
-			«name»(«FOR EParameter eparameter:eoperation.EParameters SEPARATOR ', '»«id.doSwitch(eparameter)»:«tt.translateType(eparameter.EGenericType)»«ENDFOR»):«IF eoperation.EType!=null» «tt.translateType(eoperation.EGenericType)» «ELSE» void «ENDIF»;
+			«name»(«FOR EParameter eparameter:eoperation.EParameters SEPARATOR ', '»«id.doSwitch(eparameter)»:«tt.translateType(eparameter.EGenericType)»«ENDFOR»):«IF eoperation.EType!==null» «tt.translateType(eoperation.EGenericType)» «ELSE» void «ENDIF»;
 		'''
 	
 	}

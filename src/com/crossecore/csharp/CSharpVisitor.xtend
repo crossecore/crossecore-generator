@@ -25,8 +25,8 @@ abstract class CSharpVisitor extends EcoreVisitor {
 	
 
 
-	new(){
-		super();
+	new(EPackage epackage){
+		super(epackage)
 	}
 	
 	new(String path, String filenamePattern, EPackage epackage){

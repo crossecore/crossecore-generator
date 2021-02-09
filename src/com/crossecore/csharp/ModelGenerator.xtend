@@ -33,18 +33,15 @@ import com.crossecore.Utils
 import com.crossecore.DependencyManager
 import java.util.List
 import java.util.HashSet
-import java.util.Collection
 import com.crossecore.TypeTranslator
-
-import org.eclipse.ocl.ecore.utilities.AbstractVisitor;
 import java.util.Set
 
 class ModelGenerator extends CSharpVisitor{
 	
-	private CSharpIdentifier id = new CSharpIdentifier();
-	private TypeTranslator t = new CSharpTypeTranslator(id);
+	CSharpIdentifier id = new CSharpIdentifier();
+	TypeTranslator t = new CSharpTypeTranslator(id);
 	
-	private String header = '''
+	String header = '''
 	/* CrossEcore is a cross-platform modeling framework that generates C#, TypeScript, 
 	 * JavaScript, Swift code from Ecore models with embedded OCL (http://www.crossecore.org/).
 	 * The original Eclipse Modeling Framework is available at https://www.eclipse.org/modeling/emf/.
@@ -54,9 +51,6 @@ class ModelGenerator extends CSharpVisitor{
 	 
 	 '''	
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);

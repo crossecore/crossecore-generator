@@ -18,42 +18,32 @@
  */
 package com.crossecore.typescript;
 
-import org.eclipse.emf.ecore.EDataType
-import org.eclipse.emf.ecore.EPackage
-import org.eclipse.emf.ecore.EAttribute
-import org.eclipse.emf.ecore.EClassifier
-import org.eclipse.emf.ecore.EClass
-import org.eclipse.emf.ecore.EReference
-import org.eclipse.emf.ecore.EEnum
-import com.crossecore.EcoreVisitor
-import com.crossecore.IdentifierProvider
-import java.util.Collection
-import org.eclipse.emf.ecore.util.EcoreUtil
-import java.util.ArrayList
 import com.crossecore.DependencyManager
-import org.eclipse.emf.ecore.EStructuralFeature
+import com.crossecore.EcoreVisitor
 import com.crossecore.Utils
-import org.eclipse.emf.ecore.EcorePackage
-import com.crossecore.ImportManager
+import java.util.ArrayList
+import java.util.Collection
+import org.eclipse.emf.ecore.EAttribute
+import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.ecore.EClassifier
+import org.eclipse.emf.ecore.EDataType
+import org.eclipse.emf.ecore.EEnum
 import org.eclipse.emf.ecore.EObject
-import java.util.List
-import com.crossecore.TypeTranslator
-import org.eclipse.emf.ecore.impl.EcorePackageImpl
 import org.eclipse.emf.ecore.EOperation
+import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EParameter
-import org.eclipse.emf.ecore.impl.EClassifierImpl
-import org.eclipse.emf.ecore.impl.EPackageImpl
+import org.eclipse.emf.ecore.EReference
+import org.eclipse.emf.ecore.EStructuralFeature
+import org.eclipse.emf.ecore.EcorePackage
+import org.eclipse.emf.ecore.util.EcoreUtil
 
-class PackageImplGenerator extends TypeScriptVisitor{
+class PackageImplGenerator extends EcoreVisitor{
 	
-	private TypeScriptIdentifier id = new TypeScriptIdentifier();
+	TypeScriptIdentifier id = new TypeScriptIdentifier();
 	//private TypeTranslator t = new TypeScriptTypeTranslator(id);
 	//private ImportManager imports = new ImportManager(t);
-	private TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2()
+	TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2()
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);
@@ -73,26 +63,6 @@ class PackageImplGenerator extends TypeScriptVisitor{
 		sortedEClasses_.addAll(edatatypes);
 		
 		var sortedEClasses = sortedEClasses_.filter[e| e.EPackage.equals(epackage)];
-		
-		var allLiterals = new ArrayList<EObject>();
-		allLiterals.addAll(epackage.EClassifiers);
-		
-		for(EClassifier e : sortedEClasses){
-			
-			if(e instanceof EClass){
-				for(EStructuralFeature f: (e as EClass).EStructuralFeatures){
-					allLiterals.add(f);	
-				}	
-			}
-		}
-		
-		for(EEnum e : enums){
-			
-			allLiterals.add(e);	
-		}
-		
-		allLiterals.addAll(EcoreUtil.getObjectsByType(epackage.EClassifiers, EcorePackage.Literals.EATTRIBUTE));
-		allLiterals.addAll(EcoreUtil.getObjectsByType(epackage.EClassifiers, EcorePackage.Literals.EREFERENCE));
 		
 		
 		tt.import_(EcorePackage.eINSTANCE, "EPackageImpl");
@@ -189,6 +159,7 @@ class PackageImplGenerator extends TypeScriptVisitor{
 							this.«id.EClassEClass(e)».eSuperTypes.add(this.«id.getEClass(super_)»());
 						«ENDFOR»
 					«ENDFOR»
+					«tt.import_(EcorePackage.Literals.EOPERATION)»
 					var op:EOperation = null;
 					«FOR EClass e:eclasses»
 						
@@ -245,13 +216,13 @@ class PackageImplGenerator extends TypeScriptVisitor{
 						op = this.initEOperation_3(this.«id.getEOperation(o)»(), «IF o.EType===null»null«ELSEIF Utils.isEcoreEPackage(o.EType.EPackage)»this.ecorePackage.«id.getEClassifier(o.EType)»()«ELSE»this.«id.getEClassifier(o.EType)»()«ENDIF», "«o.name»", «o.lowerBound», «o.upperBound», «IF !o.unique»!«ENDIF»EPackageImpl.IS_UNIQUE, «IF !o.ordered»!«ENDIF»EPackageImpl.IS_ORDERED);
 						«FOR EParameter p:o.EParameters»
 						//TODO add addEParameter to EPackageImpl
-						//this.addEParameter_3(op, this.«id.getEClass(o.EContainingClass)»(), "«p.name»", «p.lowerBound», «p.upperBound», «IF !o.unique»!«ENDIF»EPackageImpl.IS_UNIQUE, «IF !o.ordered»!«ENDIF»EPackageImpl.IS_ORDERED);
+						//this.addEParameter_3(op, this.«id.getEClass(o.EContainingClass)»(), "«p.name»", «p.lowerBound», «p.upperBound», «IF !p.unique»!«ENDIF»EPackageImpl.IS_UNIQUE, «IF !p.ordered»!«ENDIF»EPackageImpl.IS_ORDERED);
 						«ENDFOR»
 						«ENDFOR»
 						
 					«ENDFOR»
 					
-					«FOR EDataType e:edatatypes»
+					«FOR EDataType e:edatatypes2»
 						this.initEDataType(this.«id.EDataTypeEDataType(e)», null, "«e.name»", «IF !e.serializable»!«ENDIF»EPackageImpl.IS_SERIALIZABLE, !EPackageImpl.IS_GENERATED_INSTANCE_CLASS);
 					«ENDFOR»
 					«FOR EEnum e:enums»
@@ -287,15 +258,6 @@ class PackageImplGenerator extends TypeScriptVisitor{
 					«doSwitch(eclassifier)»
 				«ENDFOR»
 				
-				/*
-				public static Literals = {
-					«FOR EObject e: allLiterals SEPARATOR ', '»
-						«literals.doSwitch(e)»
-					«ENDFOR»
-				}
-				*/
-				
-
 		 
 		}
 		'''
@@ -308,46 +270,9 @@ class PackageImplGenerator extends TypeScriptVisitor{
 		«body»
 		'''
 	}
-	
-	var literals = new TypeScriptVisitor(){
-		override caseEClass(EClass eclass){
-			//tt.import_(EcorePackage.eINSTANCE,"EClass");
-			'''
-				«id.literal(eclass)»: «id.EPackagePackageImpl(eclass.EPackage)».eINSTANCE.«id.getEClass(eclass)»()
-
-			'''
-		}
 		
-		override caseEEnum(EEnum enumeration){
-			
-			//tt.import_(EcorePackage.eINSTANCE,"EEnum");
-			'''«id.literal(enumeration)»: «id.EPackagePackageImpl(enumeration.EPackage)».eINSTANCE.«id.getEEnum(enumeration)»()'''
-		}
-		
-		override caseEDataType(EDataType edatatype){
-			//tt.import_(EcorePackage.eINSTANCE,"EDataType");
-			'''«id.literal(edatatype)»: «id.EPackagePackageImpl(edatatype.EPackage)».eINSTANCE.«id.getEDataType(edatatype)»()'''
-			
-		}
 	
-		override caseEReference(EReference ereference){
-			//tt.import_(EcorePackage.eINSTANCE,"EReference");
-			'''«id.literal(ereference)»: «id.EPackagePackageImpl(ereference.EContainingClass.EPackage)».eINSTANCE.«id.getEReference(ereference)»()'''
-		}
-		
-		override caseEAttribute(EAttribute eattribute){
-			//tt.import_(EcorePackage.eINSTANCE,"EAttribute");			
-			'''«id.literal(eattribute)»: «id.EPackagePackageImpl(eattribute.EContainingClass.EPackage)».eINSTANCE.«id.getEAttribute(eattribute)»()'''
-		}
-		
-		override caseEOperation(EOperation eoperation){
-			
-			'''«id.literal(eoperation)»: «id.EPackagePackageImpl(eoperation.EContainingClass.EPackage)».eINSTANCE.«id.getEOperation(eoperation)»()'''
-		}	
-	}
-	
-	
-	var metaobjectid = new TypeScriptVisitor(){
+	var metaobjectid = new EcoreVisitor(epackage){
 		
 		override caseEEnum(EEnum enumeration)'''
 			public static «id.literal(enumeration)»:number = «enumeration.classifierID»;
@@ -359,22 +284,19 @@ class PackageImplGenerator extends TypeScriptVisitor{
 			
 		'''
 		
-		override caseEOperation(EOperation eoperation)'''
-			public static «id.literal(eoperation)»:number = «eoperation.operationID»;
-			
-		'''
 		
 		override caseEClass(EClass eclassifier){
 
 			var i = 0;
 			var j =0;
 			
-			tt.import_(eclassifier.EPackage, id.EPackagePackageImpl(eclassifier.EPackage));
+				
+			tt.import_(this.epackage as EPackage, eclassifier.EPackage, id.EPackagePackageImpl(eclassifier.EPackage));
 
 		'''
 			public static «id.literal(eclassifier)»:number = «eclassifier.classifierID»;
-			public static «id.EClassifier_FEATURE_COUNT(eclassifier)»:number = «FOR EClass _super:eclassifier.ESuperTypes SEPARATOR ' + '  AFTER ' + '»«id.EPackagePackageImpl(_super.EPackage)+"."+id.EClassifier_FEATURE_COUNT(_super)»«tt.import_(_super.EPackage, id.EPackagePackageImpl(_super.EPackage))»«ENDFOR»«eclassifier.EStructuralFeatures.size»;
-			public static «id.EClassifier_OPERATION_COUNT(eclassifier)»:number = «FOR EClass _super:eclassifier.ESuperTypes SEPARATOR ' + '  AFTER ' + '»«id.EPackagePackageImpl(_super.EPackage) + "." +id.EClassifier_OPERATION_COUNT(_super)»«tt.import_(_super.EPackage, id.EPackagePackageImpl(_super.EPackage))»«ENDFOR»«eclassifier.EOperations.size»;
+			public static «id.EClassifier_FEATURE_COUNT(eclassifier)»:number = «FOR EClass _super:eclassifier.ESuperTypes SEPARATOR ' + '  AFTER ' + '»«id.EPackagePackageImpl(_super.EPackage)+"."+id.EClassifier_FEATURE_COUNT(_super)»«tt.import_(this.epackage as EPackage, _super.EPackage, id.EPackagePackageImpl(_super.EPackage))»«ENDFOR»«eclassifier.EStructuralFeatures.size»;
+			public static «id.EClassifier_OPERATION_COUNT(eclassifier)»:number = «FOR EClass _super:eclassifier.ESuperTypes SEPARATOR ' + '  AFTER ' + '»«id.EPackagePackageImpl(_super.EPackage) + "." +id.EClassifier_OPERATION_COUNT(_super)»«tt.import_(this.epackage as EPackage, _super.EPackage, id.EPackagePackageImpl(_super.EPackage))»«ENDFOR»«eclassifier.EOperations.size»;
 			
 			«FOR EStructuralFeature feature:eclassifier.EAllStructuralFeatures»
 				public static «id.literal(eclassifier,feature)»:number = «i++»;
@@ -400,17 +322,12 @@ class PackageImplGenerator extends TypeScriptVisitor{
 		tt.import_(EcorePackage.eINSTANCE,"EEnum");
 		'''public «id.getEEnum(enumeration)»=():EEnum=>{return this.«id.EEnumEEnum(enumeration)»;}'''
 	}
-	
-	override caseEOperation(EOperation operation){
-		tt.import_(EcorePackage.eINSTANCE,"EOperation");
-		'''public «id.getEOperation(operation)»=():EOperation=>{return this.«id.EOperationEOperation(operation)»;}'''
-	}
-	
 
 	
 	override caseEClass(EClass eclass){
 		var featureIdx = 0;
 		var operationIdx = 0;
+		//TODO import only if needed
 		tt.import_(EcorePackage.eINSTANCE,"EClass");
 		tt.import_(EcorePackage.eINSTANCE,"EAttribute");
 		tt.import_(EcorePackage.eINSTANCE,"EReference");

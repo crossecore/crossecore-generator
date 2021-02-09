@@ -28,11 +28,8 @@ import com.crossecore.IdentifierProvider
 
 class SwitchGenerator extends EcoreVisitor {
 	
-	private IdentifierProvider id = new SwiftIdentifier();
+	IdentifierProvider id = new SwiftIdentifier();
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);
@@ -44,7 +41,7 @@ class SwitchGenerator extends EcoreVisitor {
 	override caseEPackage(EPackage epackage)
 		'''
 	 	«IF !Utils.isEcoreEPackage(epackage)»
-	 	using Ecore;
+		using Ecore;
 	 	«ENDIF»
 		class «id.doSwitch(epackage)»Switch<T> : Switch<T> {
 
@@ -87,7 +84,7 @@ class SwitchGenerator extends EcoreVisitor {
 		}
 	'''
 	
-	var cases = new EcoreVisitor(){
+	var cases = new EcoreVisitor(epackage){
 	
 		override caseEClass(EClass eclassifier){
 			var sortedEClasses = DependencyManager.sortEClasses(eclassifier.ESuperTypes)

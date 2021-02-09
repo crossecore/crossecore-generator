@@ -19,13 +19,11 @@
 package com.crossecore.typescript;
 
 import org.eclipse.emf.ecore.EPackage
+import com.crossecore.EcoreVisitor
 
-class TSConfigGenerator extends TypeScriptVisitor{
+class TSConfigGenerator extends EcoreVisitor{
 	
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);

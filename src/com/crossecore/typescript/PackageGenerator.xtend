@@ -18,32 +18,26 @@
  */
 package com.crossecore.typescript;
 
-import org.eclipse.emf.ecore.EDataType
-import org.eclipse.emf.ecore.EPackage
-import org.eclipse.emf.ecore.EAttribute
-import org.eclipse.emf.ecore.EClassifier
-import org.eclipse.emf.ecore.EClass
-import org.eclipse.emf.ecore.EReference
-import org.eclipse.emf.ecore.EEnum
-import com.crossecore.IdentifierProvider
 import com.crossecore.DependencyManager
-import org.eclipse.emf.ecore.util.EcoreUtil
-import org.eclipse.emf.ecore.EcorePackage
-import com.crossecore.Utils
-import com.crossecore.ImportManager
-import com.crossecore.TypeTranslator
+import com.crossecore.EcoreVisitor
 import java.util.ArrayList
+import org.eclipse.emf.ecore.EAttribute
+import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.ecore.EClassifier
+import org.eclipse.emf.ecore.EDataType
+import org.eclipse.emf.ecore.EEnum
+import org.eclipse.emf.ecore.EPackage
+import org.eclipse.emf.ecore.EReference
+import org.eclipse.emf.ecore.EcorePackage
+import org.eclipse.emf.ecore.util.EcoreUtil
 
-class PackageGenerator extends TypeScriptVisitor{
+class PackageGenerator extends EcoreVisitor{
 	
-	private TypeScriptIdentifier id = new TypeScriptIdentifier();
+	TypeScriptIdentifier id = new TypeScriptIdentifier();
 	//private TypeTranslator t = new TypeScriptTypeTranslator(id);
 	//private ImportManager imports = new ImportManager(t);
-	private TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2();
+	TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2();
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);

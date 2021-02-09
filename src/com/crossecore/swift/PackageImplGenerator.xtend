@@ -34,16 +34,12 @@ import org.eclipse.emf.ecore.EcorePackage
 import com.crossecore.IdentifierProvider
 import java.util.Collection
 import java.util.ArrayList
-import org.eclipse.emf.ecore.impl.EPackageImpl
 
 class PackageImplGenerator extends EcoreVisitor{
 	
-	private IdentifierProvider id = new SwiftIdentifier();
+	IdentifierProvider id = new SwiftIdentifier();
 	//private CSharpLiteralIdentifier literalId = new CSharpLiteralIdentifier();
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);
@@ -55,16 +51,16 @@ class PackageImplGenerator extends EcoreVisitor{
 	
 	
 	override caseEPackage(EPackage epackage){
-	var sortedEClasses = new ArrayList<EClassifier>(DependencyManager.sortEClasses(epackage)); 
-	
-	var Collection<EClass> eclasses =  EcoreUtil.getObjectsByType(epackage.EClassifiers, EcorePackage.Literals.ECLASS);
-	var Collection<EEnum> enums =  EcoreUtil.getObjectsByType(epackage.EClassifiers, EcorePackage.Literals.EENUM);
-	var Collection<EDataType> edatatypes = EcoreUtil.getObjectsByType(epackage.EClassifiers, EcorePackage.Literals.EDATA_TYPE);
-	sortedEClasses.addAll(edatatypes);
+		var sortedEClasses = new ArrayList<EClassifier>(DependencyManager.sortEClasses(epackage)); 
+		
+		var Collection<EClass> eclasses =  EcoreUtil.getObjectsByType(epackage.EClassifiers, EcorePackage.Literals.ECLASS);
+		var Collection<EEnum> enums =  EcoreUtil.getObjectsByType(epackage.EClassifiers, EcorePackage.Literals.EENUM);
+		var Collection<EDataType> edatatypes = EcoreUtil.getObjectsByType(epackage.EClassifiers, EcorePackage.Literals.EDATA_TYPE);
+		sortedEClasses.addAll(edatatypes);
 	
 		'''
 	 	«IF !Utils.isEcoreEPackage(epackage)»
-	 	using Ecore;
+		using Ecore;
 	 	«ENDIF»
 			class «id.EPackagePackageImpl(epackage)» : EPackageImpl, «id.EPackagePackage(epackage)»{
 					let eNAME = "«epackage.name»";
@@ -148,7 +144,7 @@ class PackageImplGenerator extends EcoreVisitor{
 							initEAttribute(a: «id.getEAttribute(a)»()!, 
 								type:«IF Utils.isEcoreEPackage(a.EType.EPackage)»ecorePackage.«id.getEClassifier(a.EType)»()!«ELSE»self.«id.getEClassifier(a.EType)»()!«ENDIF», 
 								name: "«id.doSwitch(a)»", 
-								defaultValue: «IF a.defaultValue==null»nil«ELSE»"«a.defaultValue»"«ENDIF», 
+								defaultValue: «IF a.defaultValue===null»nil«ELSE»"«a.defaultValue»"«ENDIF», 
 								lowerBound: «a.lowerBound», 
 								upperBound: «a.upperBound», 
 								containerClass: Mirror(reflecting: EAttribute), 
@@ -166,9 +162,9 @@ class PackageImplGenerator extends EcoreVisitor{
 							initEReference(
 								r: «id.getEReference(a)»()!, 
 								type: «IF Utils.isEcoreEPackage(a.EType.EPackage)»ecorePackage.«id.getEClassifier(a.EType)»()!«ELSE»self.«id.getEClassifier(a.EType)»()!«ENDIF», 
-								otherEnd: «IF a.EOpposite!=null»«id.getEReference(a.EOpposite)»()«ELSE»nil«ENDIF», 
+								otherEnd: «IF a.EOpposite!==null»«id.getEReference(a.EOpposite)»()«ELSE»nil«ENDIF», 
 								name: "«id.doSwitch(a)»", 
-								defaultValue: «IF a.defaultValue != null»«a.defaultValue»«ELSE»nil«ENDIF», 
+								defaultValue: «IF a.defaultValue !== null»«a.defaultValue»«ELSE»nil«ENDIF», 
 								lowerBound: «a.lowerBound», 
 								upperBound: «a.upperBound», 
 								containerClass: Mirror(reflecting: «e.name»), 
@@ -221,7 +217,7 @@ class PackageImplGenerator extends EcoreVisitor{
 	
 	}
 	
-	var metaobjectid = new EcoreVisitor(){
+	var metaobjectid = new EcoreVisitor(epackage){
 		
 
 		
@@ -259,7 +255,7 @@ class PackageImplGenerator extends EcoreVisitor{
 		
 	}
 	
-	val literals = new EcoreVisitor() {
+	val literals = new EcoreVisitor(epackage) {
 		
 		
 		

@@ -31,12 +31,9 @@ import org.eclipse.emf.ecore.EClassifier
 
 class HtmlVisitor extends EcoreVisitor{
 
-	private IdentifierProvider id = new IdentifierProvider();
-	private TypeTranslator t = new EcoreTypeTranslator(id);
+	IdentifierProvider id = new IdentifierProvider();
+	TypeTranslator t = new EcoreTypeTranslator(id);
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);
@@ -124,7 +121,7 @@ class HtmlVisitor extends EcoreVisitor{
 
 		var contraintsString = EcoreUtil.getAnnotation(eclass, "http://www.eclipse.org/emf/2002/Ecore", "constraints");
 		var String[] constraints = null;
-		if(contraintsString!=null){
+		if(contraintsString!==null){
 		  	
 			var constraintsInner = contraintsString.split(" ");
 		  	
@@ -139,7 +136,7 @@ class HtmlVisitor extends EcoreVisitor{
 		<div class="panel-body">
 		<h4>Description</h4>
 		<p>To be defined.</p>
-        «IF constraints!=null && constraints.size > 0»
+        «IF constraints!==null && constraints.size > 0»
 			<h4>Invariants</h4>
 			<table>
 				<tbody>
@@ -148,7 +145,7 @@ class HtmlVisitor extends EcoreVisitor{
 					<tr><td>
 					<pre><code class="cs hljs">«EcoreUtil.getAnnotation(eclass, "http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot", key)»</code></pre>
 					</td></tr>
-	            «ENDFOR»
+			    «ENDFOR»
 				</tbody>
 			</table>
 		«ENDIF»
@@ -198,7 +195,7 @@ class HtmlVisitor extends EcoreVisitor{
 					<td>Some description</td>
 					</tr>
 					«var derivationExpression = EcoreUtil.getAnnotation(feature, "http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot", "derivation")»
-					«IF derivationExpression!=null»
+					«IF derivationExpression!==null»
 					<tr>
 						<td colspan="5">
 							<pre><code class="cs hljs">«derivationExpression»</code></pre>

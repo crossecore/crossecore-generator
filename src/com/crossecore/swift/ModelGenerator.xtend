@@ -20,7 +20,6 @@ package com.crossecore.swift;
 
 import com.crossecore.DependencyManager
 import com.crossecore.EcoreVisitor
-import com.crossecore.TypeTranslator
 import com.crossecore.Utils
 import java.util.Collection
 import java.util.HashSet
@@ -39,12 +38,9 @@ import org.eclipse.emf.ecore.ETypeParameter
 
 class ModelGenerator extends EcoreVisitor{
 	
-	private SwiftIdentifier id = new SwiftIdentifier();
-	private SwiftTypeTranslator t = new SwiftTypeTranslator(id);
+	SwiftIdentifier id = new SwiftIdentifier();
+	SwiftTypeTranslator t = new SwiftTypeTranslator(id);
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);
@@ -181,7 +177,7 @@ class ModelGenerator extends EcoreVisitor{
 		}
 		
 		'''
-		func «id.doSwitch(e)»(«FOR EParameter parameter:e.EParameters SEPARATOR ','»«doSwitch(parameter)»«ENDFOR»)«IF e.EType!=null» -> «returntype»«ENDIF»;
+		func «id.doSwitch(e)»(«FOR EParameter parameter:e.EParameters SEPARATOR ','»«doSwitch(parameter)»«ENDFOR»)«IF e.EType!==null» -> «returntype»«ENDIF»;
 		'''
 	}
 	

@@ -27,8 +27,8 @@ import org.eclipse.emf.ecore.EPackage
 
 class SwitchGenerator extends CSharpVisitor {
 	
-	private IdentifierProvider id = new CSharpIdentifier();
-	private String header = '''
+	IdentifierProvider id = new CSharpIdentifier();
+	String header = '''
 	/* CrossEcore is a cross-platform modeling framework that generates C#, TypeScript, 
 	 * JavaScript, Swift code from Ecore models with embedded OCL (http://www.crossecore.org/).
 	 * The original Eclipse Modeling Framework is available at https://www.eclipse.org/modeling/emf/.
@@ -38,9 +38,6 @@ class SwitchGenerator extends CSharpVisitor {
 	 
 	 '''	
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);
@@ -55,7 +52,6 @@ class SwitchGenerator extends CSharpVisitor {
 	 	«ENDIF»
 		namespace «id.doSwitch(epackage)»{
 			public class «id.doSwitch(epackage)»Switch<T> : Switch<T> {
-	
 				protected static «id.doSwitch(epackage)»Package modelPackage;
 				
 				protected override bool isSwitchFor(EPackage ePackage)
@@ -95,7 +91,7 @@ class SwitchGenerator extends CSharpVisitor {
 		}
 	'''
 	
-	var cases = new CSharpVisitor(){
+	var cases = new CSharpVisitor(epackage){
 	
 		override caseEClass(EClass eclassifier){
 			var sortedEClasses = DependencyManager.sortEClasses(eclassifier.ESuperTypes)

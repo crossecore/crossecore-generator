@@ -21,7 +21,6 @@ package com.crossecore.csharp
 import com.crossecore.DependencyManager
 import com.crossecore.IdentifierProvider
 import com.crossecore.Utils
-import java.util.ArrayList
 import java.util.Collection
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EClass
@@ -39,11 +38,11 @@ import org.eclipse.emf.common.util.BasicEList
 
 class PackageImplGenerator extends CSharpVisitor{
 	
-	private IdentifierProvider id = new CSharpIdentifier();
+	IdentifierProvider id = new CSharpIdentifier();
 	//private CSharpLiteralIdentifier literalId = new CSharpLiteralIdentifier();
-	private TypeTranslator tt = new CSharpTypeTranslator(id);
+	TypeTranslator tt = new CSharpTypeTranslator(id);
 	
-	private String header = '''
+	String header = '''
 	/* CrossEcore is a cross-platform modeling framework that generates C#, TypeScript, 
 	 * JavaScript, Swift code from Ecore models with embedded OCL (http://www.crossecore.org/).
 	 * The original Eclipse Modeling Framework is available at https://www.eclipse.org/modeling/emf/.
@@ -53,9 +52,6 @@ class PackageImplGenerator extends CSharpVisitor{
 	 
 	 '''	
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);
@@ -160,7 +156,7 @@ class PackageImplGenerator extends CSharpVisitor{
 							initEAttribute(«id.getEAttribute(a)»(), 
 								«IF Utils.isEcoreEPackage(a.EType.EPackage)»ecorePackage.«id.getEClassifier(a.EType)»()«ELSE»this.«id.getEClassifier(a.EType)»()«ENDIF», 
 								"«id.doSwitch(a)»", 
-								«IF a.defaultValue==null»null«ELSE»"«a.defaultValue»"«ENDIF», 
+								«IF a.defaultValue===null»null«ELSE»"«a.defaultValue»"«ENDIF», 
 								«a.lowerBound», 
 								«a.upperBound», 
 								typeof(«e.name»), 
@@ -178,9 +174,9 @@ class PackageImplGenerator extends CSharpVisitor{
 							initEReference(
 								«id.getEReference(a)»(), 
 								«IF Utils.isEcoreEPackage(a.EType.EPackage)»ecorePackage.«id.getEClassifier(a.EType)»()«ELSE»this.«id.getEClassifier(a.EType)»()«ENDIF», 
-								«IF a.EOpposite!=null»«id.getEReference(a.EOpposite)»()«ELSE»null«ENDIF», 
+								«IF a.EOpposite!==null»«id.getEReference(a.EOpposite)»()«ELSE»null«ENDIF», 
 								"«id.doSwitch(a)»", 
-								«IF a.defaultValue != null»«a.defaultValue»«ELSE»null«ENDIF», 
+								«IF a.defaultValue !== null»«a.defaultValue»«ELSE»null«ENDIF», 
 								«a.lowerBound», 
 								«a.upperBound», 
 								typeof(«e.name»), 
@@ -239,7 +235,7 @@ class PackageImplGenerator extends CSharpVisitor{
 	
 	}
 	
-	var metaobjectid = new CSharpVisitor(){
+	var metaobjectid = new CSharpVisitor(epackage){
 		
 
 		override caseEEnum(EEnum enumeration){
@@ -275,7 +271,7 @@ class PackageImplGenerator extends CSharpVisitor{
 		
 	}
 	
-	val literals = new CSharpVisitor() {
+	val literals = new CSharpVisitor(epackage) {
 		
 
 		

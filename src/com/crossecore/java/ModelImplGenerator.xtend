@@ -19,23 +19,16 @@
 package com.crossecore.java;
 
 import com.crossecore.DependencyManager
-import com.crossecore.Utils
 import java.util.List
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.ETypeParameter
 import com.crossecore.EcoreVisitor
-import com.crossecore.csharp.CSharpOCLVisitor
 
 class ModelImplGenerator extends EcoreVisitor{
 	
-	private JavaIdentifier id = new JavaIdentifier();
-	//private CSharpLiteralIdentifier literalId = new CSharpLiteralIdentifier();
-	private CSharpOCLVisitor ocl2csharp = new CSharpOCLVisitor();
+	JavaIdentifier id = new JavaIdentifier();
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);

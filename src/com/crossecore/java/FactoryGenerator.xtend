@@ -21,18 +21,14 @@ package com.crossecore.java
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EPackage
-import com.crossecore.Utils
 import com.crossecore.IdentifierProvider
 import com.crossecore.EcoreVisitor
 
 class FactoryGenerator extends EcoreVisitor {
 	
-	private IdentifierProvider id = new JavaIdentifier();
-	private JavaTypeTranslator t = new JavaTypeTranslator(id);
+	IdentifierProvider id = new JavaIdentifier();
+	JavaTypeTranslator t = new JavaTypeTranslator(id);
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);

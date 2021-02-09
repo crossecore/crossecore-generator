@@ -34,12 +34,9 @@ import com.crossecore.IdentifierProvider
 
 class PackageGenerator extends EcoreVisitor{
 	
-	private IdentifierProvider id = new SwiftIdentifier();
+	IdentifierProvider id = new SwiftIdentifier();
 	
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);
@@ -55,7 +52,7 @@ class PackageGenerator extends EcoreVisitor{
 		sortedEClasses.addAll(edatatypes);
 		'''
 	 	«IF !Utils.isEcoreEPackage(epackage)»
-	 	using Ecore;
+		using Ecore;
 	 	«ENDIF»
 		protocol «id.doSwitch(epackage)»Package : EPackage {
 				

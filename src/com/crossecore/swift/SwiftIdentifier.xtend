@@ -42,7 +42,7 @@ class SwiftIdentifier extends IdentifierProvider {
 		return identifier
 	}
 	
-	public def escapeIdentifier(String str){
+	def escapeIdentifier(String str){
 		
 		var s = str;
 		s = s.replace("-","_");

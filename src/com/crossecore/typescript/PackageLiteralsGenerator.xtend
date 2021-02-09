@@ -18,32 +18,28 @@
  */
 package com.crossecore.typescript
 
-import org.eclipse.emf.ecore.EPackage
-import org.eclipse.emf.ecore.EClassifier
-import java.util.ArrayList
 import com.crossecore.DependencyManager
+import com.crossecore.EcoreVisitor
+import java.util.ArrayList
 import java.util.Collection
-import org.eclipse.emf.ecore.util.EcoreUtil
-import org.eclipse.emf.ecore.EClass
-import org.eclipse.emf.ecore.EEnum
-import org.eclipse.emf.ecore.EDataType
-import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EAttribute
-import com.crossecore.ImportManager
-import org.eclipse.emf.ecore.EcorePackage
+import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.ecore.EClassifier
+import org.eclipse.emf.ecore.EDataType
+import org.eclipse.emf.ecore.EEnum
+import org.eclipse.emf.ecore.EPackage
+import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EStructuralFeature
-import com.crossecore.TypeTranslator
+import org.eclipse.emf.ecore.EcorePackage
+import org.eclipse.emf.ecore.util.EcoreUtil
 
-class PackageLiteralsGenerator extends TypeScriptVisitor{
+class PackageLiteralsGenerator extends EcoreVisitor{
 	
-	private TypeScriptIdentifier id = new TypeScriptIdentifier();
+	TypeScriptIdentifier id = new TypeScriptIdentifier();
 	//private TypeTranslator t = new TypeScriptTypeTranslator(id);
 	//private ImportManager imports = new ImportManager(t);
-	private TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2();
+	TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2();
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);
@@ -55,8 +51,6 @@ class PackageLiteralsGenerator extends TypeScriptVisitor{
 	
 		var sortedEClasses = new ArrayList<EClassifier>(DependencyManager.sortEClasses(epackage)); 
 	
-		var Collection<EClass> eclasses =  EcoreUtil.getObjectsByType(epackage.EClassifiers, EcorePackage.Literals.ECLASS);
-		var Collection<EEnum> enums =  EcoreUtil.getObjectsByType(epackage.EClassifiers, EcorePackage.Literals.EENUM);
 		var Collection<EDataType> edatatypes = EcoreUtil.getObjectsByType(epackage.EClassifiers, EcorePackage.Literals.EDATA_TYPE);
 		sortedEClasses.addAll(edatatypes);
 		
@@ -123,7 +117,7 @@ class PackageLiteralsGenerator extends TypeScriptVisitor{
 	}
 	
 	
-	var metaobjectid = new TypeScriptVisitor(){
+	var metaobjectid = new EcoreVisitor(epackage){
 		
 		override caseEEnum(EEnum enumeration)'''
 			public static «id.literal(enumeration)»:number = «enumeration.classifierID»;
@@ -141,8 +135,8 @@ class PackageLiteralsGenerator extends TypeScriptVisitor{
 
 		'''
 			public static «id.literal(eclassifier)»:number = «eclassifier.classifierID»;
-			public static «id.EClassifier_FEATURE_COUNT(eclassifier)»:number = «FOR EClass _super:eclassifier.ESuperTypes SEPARATOR ' + '  AFTER ' + '»«id.EPackagePackageLiterals(_super.EPackage)+"."+id.EClassifier_FEATURE_COUNT(_super)»«tt.import_(_super.EPackage, id.EPackagePackageLiterals(_super.EPackage))»«ENDFOR»«eclassifier.EStructuralFeatures.size»;
-			public static «id.EClassifier_OPERATION_COUNT(eclassifier)»:number = «FOR EClass _super:eclassifier.ESuperTypes SEPARATOR ' + '  AFTER ' + '»«id.EPackagePackageLiterals(_super.EPackage) + "." +id.EClassifier_OPERATION_COUNT(_super)»«tt.import_(_super.EPackage, id.EPackagePackageLiterals(_super.EPackage))»«ENDFOR»«eclassifier.EOperations.size»;
+			public static «id.EClassifier_FEATURE_COUNT(eclassifier)»:number = «FOR EClass _super:eclassifier.ESuperTypes SEPARATOR ' + '  AFTER ' + '»«id.EPackagePackageLiterals(_super.EPackage)+"."+id.EClassifier_FEATURE_COUNT(_super)»«tt.import_(epackage as EPackage, _super.EPackage, id.EPackagePackageLiterals(_super.EPackage))»«ENDFOR»«eclassifier.EStructuralFeatures.size»;
+			public static «id.EClassifier_OPERATION_COUNT(eclassifier)»:number = «FOR EClass _super:eclassifier.ESuperTypes SEPARATOR ' + '  AFTER ' + '»«id.EPackagePackageLiterals(_super.EPackage) + "." +id.EClassifier_OPERATION_COUNT(_super)»«tt.import_(epackage as EPackage, _super.EPackage, id.EPackagePackageLiterals(_super.EPackage))»«ENDFOR»«eclassifier.EOperations.size»;
 			
 			«FOR EStructuralFeature feature:eclassifier.EAllStructuralFeatures»
 				public static «id.literal(eclassifier,feature)»:number = «i++»;

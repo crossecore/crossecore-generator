@@ -19,22 +19,17 @@
 package com.crossecore.java;
 
 import com.crossecore.DependencyManager
+import com.crossecore.EcoreVisitor
 import com.crossecore.IdentifierProvider
-import com.crossecore.Utils
+import com.crossecore.TypeTranslator
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EPackage
-import com.crossecore.EcoreVisitor
-import com.crossecore.TypeTranslator
 
 class SwitchGenerator extends EcoreVisitor {
 	
-	private IdentifierProvider id = new JavaIdentifier();
-	private TypeTranslator t = new JavaTypeTranslator(id);
-	
-	new(){
-		super();
-	}
+	IdentifierProvider id = new JavaIdentifier();
+	TypeTranslator t = new JavaTypeTranslator(id);
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);
@@ -58,7 +53,6 @@ class SwitchGenerator extends EcoreVisitor {
 			{
 				return ePackage == modelPackage;
 			}
-	
 			public «id.doSwitch(epackage)»Switch()
 			{
 				if (modelPackage == null)
@@ -92,7 +86,7 @@ class SwitchGenerator extends EcoreVisitor {
 		}
 	'''
 	
-	var cases = new EcoreVisitor(){
+	var cases = new EcoreVisitor(epackage){
 	
 		override caseEClass(EClass eclassifier){
 			var sortedEClasses = DependencyManager.sortEClasses(eclassifier.ESuperTypes)

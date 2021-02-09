@@ -18,26 +18,23 @@
  */
 package com.crossecore.typescript;
 
+import com.crossecore.EcoreVisitor
 import com.crossecore.IdentifierProvider
+import com.crossecore.Utils
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EDataType
+import org.eclipse.emf.ecore.EEnum
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EcorePackage
-import org.eclipse.emf.ecore.EcoreFactory
-import org.eclipse.emf.ecore.EEnum
-import com.crossecore.Utils
 
-class FactoryImplGenerator extends TypeScriptVisitor{
+class FactoryImplGenerator extends EcoreVisitor{
 	
-	private IdentifierProvider id = new TypeScriptIdentifier();
+	IdentifierProvider id = new TypeScriptIdentifier();
 	//private TypeTranslator t = new TypeScriptTypeTranslator(id);
-	private TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2();
+	TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2();
 	//private ImportManager imports = new ImportManager(t);
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);
@@ -49,8 +46,8 @@ class FactoryImplGenerator extends TypeScriptVisitor{
 		var eclasses = epackage.EClassifiers.filter[c|c instanceof EClass].map[c|c as EClass].filter[c|!c.interface && !c.abstract];
 		var edatatypes = epackage.EClassifiers.filter[c|c instanceof EDataType && (c as EDataType).serializable].map[c|c as EDataType];//TODO propagate serializable check
 		tt.import_(epackage, id.EPackageFactory(epackage));
+		tt.import_(epackage, id.EPackagePackageImpl(epackage));
 		tt.import_(EcorePackage.eINSTANCE, "EFactoryImpl");
-		tt.import_(EcorePackage.eINSTANCE, "AllInstances");
 		
 		var body = '''
 		export class «id.EPackageFactoryImpl(epackage)» extends EFactoryImpl implements «id.EPackageFactory(epackage)»{
@@ -101,9 +98,6 @@ class FactoryImplGenerator extends TypeScriptVisitor{
 					throw new Error("The datatype '" + eDataType.name + "' is not a valid classifier");
 				}
 			}
-			«ENDIF»
-			
-			«IF !edatatypes.empty»
 			public convertToString(eDataType:EDataType, instanceValue:any):string {
 				switch (eDataType.getClassifierID()) {
 				«FOR EDataType e : edatatypes»
@@ -128,7 +122,7 @@ class FactoryImplGenerator extends TypeScriptVisitor{
 				let result:«id.doSwitch(e)» = «id.doSwitch(e)».get_string(initialValue);
 				if (result == null)
 					throw new Error(
-	                        "The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.name + "'");
+						"The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.name + "'");
 				return result;
 			}
 			
@@ -172,7 +166,6 @@ class FactoryImplGenerator extends TypeScriptVisitor{
 				public «id.createEClass(e)» = () : «id.doSwitch(e)» => {
 					let «id.variable(e)» = new «id.EClassImpl(e)»();
 					
-					AllInstances.INSTANCE.put(«id.variable(e)», "«id.doSwitch(e)»");
 					
 					return «id.variable(e)»;
 				}

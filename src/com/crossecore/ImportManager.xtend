@@ -33,17 +33,17 @@ import java.util.HashMap
 
 class ImportManager extends EcoreSwitch<Boolean>{
 	
-	private char separator = '/';
+	char separator = '/';
 	
 	
 	//qualified name to local name
 	//private HashMap<String, EPackage> imports= new HashMap<String, String>();
-	private HashSet<String> qualifiers = new HashSet<String>();
-	private HashMap<String, EPackage> packages = new HashMap<String, EPackage>();
+	HashSet<String> qualifiers = new HashSet<String>();
+	HashMap<String, EPackage> packages = new HashMap<String, EPackage>();
 	
 	
-	private IdentifierProvider id= new TypeScriptIdentifier();
-	private TypeTranslator t;
+	IdentifierProvider id= new TypeScriptIdentifier();
+	TypeTranslator t;
 	
 	new(TypeTranslator typetranslator){
 		t = typetranslator
@@ -85,7 +85,7 @@ class ImportManager extends EcoreSwitch<Boolean>{
 		return true;
 	}
 	
-	public def void add(EPackage pack, String name){
+	def void add(EPackage pack, String name){
 		//imports.add('''«id.caseEPackage(pack)»/«name»''');
 		//add(id.caseEPackage(pack), name);
 //		add(id.caseEPackage(pack), name);
@@ -115,31 +115,31 @@ class ImportManager extends EcoreSwitch<Boolean>{
 
 
 	
-	public def clear(){
+	def clear(){
 		//imports.clear();
 		qualifiers.clear();
 		packages.clear();
 		
 	}
 			
-	public def void filter(EGenericType generictype){
+	def void filter(EGenericType generictype){
 		//have to call a void method from the outside, because otherwise the return value can appear in template expressions
 		//doSwitch(t.translateType(generictype.EClassifier));
 
 		if(generictype.EClassifier!==null && 
 			generictype.EClassifier instanceof EDataType &&
-			t.mapPrimitiveType(generictype.EClassifier as EDataType)!=null
+			t.mapPrimitiveType(generictype.EClassifier as EDataType)!==null
 		){
 			//case e.g. EInt => int (no import required)
 			return;
 		}
-		else if(generictype.EClassifier!=null && 
+		else if(generictype.EClassifier!==null && 
 			generictype.EClassifier instanceof EDataType &&
-			t.mapComplexType(generictype.EClassifier as EDataType)!=null){
+			t.mapComplexType(generictype.EClassifier as EDataType)!==null){
 			//case e.g. Resource => Resource (import required)
 			_add(generictype.EClassifier.EPackage, t.mapComplexType(generictype.EClassifier as EDataType));
 		}
-		else if(generictype.EClassifier!=null){
+		else if(generictype.EClassifier!==null){
 			//case e.g. MyClass => MyClass (import required)
 			_add(generictype.EClassifier);
 		}
@@ -189,7 +189,7 @@ class ImportManager extends EcoreSwitch<Boolean>{
 		
 	}
 	
-	public def void filter(EClassifier eclassifier){
+	def void filter(EClassifier eclassifier){
 		//imports.add(id.doSwitch(eclassifier));
 //		imports.put('''«id.doSwitch(eclassifier.EPackage)»/«id.doSwitch(eclassifier)»''',id.doSwitch(eclassifier));
 //		imports.put(eclassifier.EPackage,id.doSwitch(eclassifier));
@@ -200,15 +200,15 @@ class ImportManager extends EcoreSwitch<Boolean>{
 		}
 	}
 	
-	public def Set<String> getFullyQualifiedImports(){
+	def Set<String> getFullyQualifiedImports(){
 		return qualifiers;
 	}
 	
-	public def EPackage getPackage(String fullyQualifiedName){
+	def EPackage getPackage(String fullyQualifiedName){
 		return packages.get(fullyQualifiedName);
 	}
 	
-	public def String getLocalName(String fullyQualifiedName){
+	def String getLocalName(String fullyQualifiedName){
 		return fullyQualifiedName.substring(fullyQualifiedName.indexOf(this.separator)+1);
 	}
 	

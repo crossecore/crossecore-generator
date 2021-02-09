@@ -18,25 +18,20 @@
  */
 package com.crossecore.typescript;
 
-import org.eclipse.emf.ecore.EClassifier
-import org.eclipse.emf.ecore.EDataType
-import org.eclipse.emf.ecore.EPackage
-import org.eclipse.emf.ecore.EClass
 import com.crossecore.DependencyManager
-import com.crossecore.ImportManager
+import com.crossecore.EcoreVisitor
+import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.ecore.EClassifier
+import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EcorePackage
-import com.crossecore.TypeTranslator
 
-class SwitchGenerator extends TypeScriptVisitor {
+class SwitchGenerator extends EcoreVisitor {
 	
-	private TypeScriptIdentifier id = new TypeScriptIdentifier();
+	TypeScriptIdentifier id = new TypeScriptIdentifier();
 	//private TypeTranslator t = new TypeScriptTypeTranslator(id);
 	//private ImportManager imports = new ImportManager(t);
-	private TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2();
+	TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2();
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);
@@ -67,7 +62,7 @@ class SwitchGenerator extends TypeScriptVisitor {
 				return ePackage === «id.EPackageSwitch(epackage)».modelPackage;
 			}
 			
-			public doSwitch(classifierID:number, theEObject:EObject):T {
+			public doSwitch3(classifierID:number, theEObject:EObject):T {
 				switch (classifierID) {
 					«FOR EClassifier eclassifier: epackage.EClassifiers»
 						«cases.doSwitch(eclassifier)»
@@ -105,7 +100,7 @@ class SwitchGenerator extends TypeScriptVisitor {
 		
 	}
 	
-	var cases = new TypeScriptVisitor(){
+	var cases = new EcoreVisitor(epackage){
 	
 		override caseEClass(EClass eclassifier){
 			var sortedEClasses_ = DependencyManager.sortEClasses(eclassifier.EAllSuperTypes);

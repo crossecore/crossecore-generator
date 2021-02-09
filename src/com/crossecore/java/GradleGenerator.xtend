@@ -19,14 +19,10 @@
 package com.crossecore.java
 
 import com.crossecore.EcoreVisitor
-import com.crossecore.IdentifierProvider
 import org.eclipse.emf.ecore.EPackage
 
 class GradleGenerator extends EcoreVisitor{
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);

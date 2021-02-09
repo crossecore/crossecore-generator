@@ -20,12 +20,9 @@ package com.crossecore.java
 
 import org.eclipse.emf.ecore.EObject
 import com.crossecore.IdentifierProvider
-import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EStructuralFeature
 
 class JavaIdentifier extends IdentifierProvider {
-	
-	
 	
 	override escapeKeyword(String identifier) {
 		switch(identifier){
@@ -39,7 +36,7 @@ class JavaIdentifier extends IdentifierProvider {
 		}
 	}
 	
-	public def escapeIdentifier(String str){
+	def escapeIdentifier(String str){
 		
 		var s = str;
 		s = s.replace("-","_");

@@ -23,9 +23,6 @@ import org.eclipse.emf.ecore.EPackage
 
 class GradleSettingsGenerator extends EcoreVisitor{
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);

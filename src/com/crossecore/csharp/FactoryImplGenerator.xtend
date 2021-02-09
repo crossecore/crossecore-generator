@@ -29,10 +29,10 @@ import com.crossecore.TypeTranslator
 
 class FactoryImplGenerator extends CSharpVisitor {
 	
-	private IdentifierProvider id = new CSharpIdentifier();
+	IdentifierProvider id = new CSharpIdentifier();
 	TypeTranslator tt = new CSharpTypeTranslator(id);
 	
-	private String header = '''
+	String header = '''
 	/* CrossEcore is a cross-platform modeling framework that generates C#, TypeScript, 
 	 * JavaScript, Swift code from Ecore models with embedded OCL (http://www.crossecore.org/).
 	 * The original Eclipse Modeling Framework is available at https://www.eclipse.org/modeling/emf/.
@@ -42,9 +42,6 @@ class FactoryImplGenerator extends CSharpVisitor {
 	 
 	 '''
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);
@@ -170,8 +167,6 @@ class FactoryImplGenerator extends CSharpVisitor {
 			'''
 			public «id.doSwitch(e)» «id.createEClass(e)»(){
 				var «id.variable(e)» = new «id.EClassImpl(e)»();
-				«id.EClassImpl(e)».allInstances_.Add(«id.variable(e)»);
-				
 				return «id.variable(e)»;
 			}
 			'''

@@ -27,21 +27,22 @@ import java.nio.charset.Charset
 import java.util.Formatter
 import java.util.Locale
 import org.eclipse.emf.ecore.ENamedElement
-import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.util.EcoreSwitch
+import org.eclipse.emf.ecore.EPackage
 
 abstract class EcoreVisitor extends EcoreSwitch<CharSequence>{
 	
 	protected String filenamePattern = "%s.cs";
 	protected String path = "";
-	protected ENamedElement epackage = null;
+	protected EPackage epackage = null;
 	
 	
-	new(){
-		super();
+	
+	new(EPackage epackage){
+		this.epackage = epackage
 	}
 	
-	new(String path, String filenamePattern, ENamedElement epackage){
+	new(String path, String filenamePattern, EPackage epackage){
 		super();
 		this.path = path;
 		this.filenamePattern = filenamePattern;
@@ -49,14 +50,12 @@ abstract class EcoreVisitor extends EcoreSwitch<CharSequence>{
 	}
 	
 	
-	public def write(){
+	def write(){
 		write(epackage, this.doSwitch(epackage).toString);
 	}
 	
-	public def write(ENamedElement element, String contents, Boolean override_){
+	def write(ENamedElement element, String contents, Boolean override_){
 		
-		
-		//TODO use FileWriter
 		
 		var sb = new StringBuilder();
 		
@@ -89,7 +88,7 @@ abstract class EcoreVisitor extends EcoreSwitch<CharSequence>{
 
 	}
 	
-	public def write(ENamedElement element, String contents){
+	def write(ENamedElement element, String contents){
 		write(element, contents, true);
 	}
 	

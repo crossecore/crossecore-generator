@@ -44,7 +44,7 @@ class CSharpTypeTranslator extends TypeTranslator {
 	
 
 	
-	public override String mapComplexType(EDataType type){
+	override String mapComplexType(EDataType type){
 
 		//TODO is EDataType correct or should it be EClassifier or something?		
 		switch type.name{
@@ -57,10 +57,10 @@ class CSharpTypeTranslator extends TypeTranslator {
 				
 	}
 	
-	public override String mapPrimitiveType(EDataType type){
+	override String mapPrimitiveType(EDataType type){
 		
 		//nsURI is null in case of OCL Sequence, e.g. SequenceTypeImpl
-		if(type.eContainer instanceof EPackage && (type.eContainer as EPackage).nsURI != null &&
+		if(type.eContainer instanceof EPackage && (type.eContainer as EPackage).nsURI !== null &&
 			(type.eContainer as EPackage).nsURI.equals("http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore")
 		){
 			

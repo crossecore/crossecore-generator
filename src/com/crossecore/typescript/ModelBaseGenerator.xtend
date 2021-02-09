@@ -19,19 +19,17 @@
 package com.crossecore.typescript;
 
 import com.crossecore.DependencyManager
-import com.crossecore.ImportManager
-import com.crossecore.TypeTranslator
+import com.crossecore.EcoreVisitor
 import com.crossecore.Utils
 import com.crossecore.csharp.CSharpOCLVisitor
 import java.util.ArrayList
 import java.util.HashMap
 import java.util.HashSet
 import java.util.List
+import org.eclipse.emf.common.util.BasicEList
+import org.eclipse.emf.common.util.BasicEMap
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EClass
-import org.eclipse.emf.ecore.EDataType
-import org.eclipse.emf.ecore.EEnum
-import org.eclipse.emf.ecore.EEnumLiteral
 import org.eclipse.emf.ecore.EOperation
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EParameter
@@ -39,29 +37,21 @@ import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.ETypeParameter
 import org.eclipse.emf.ecore.EcorePackage
-import org.eclipse.emf.common.util.BasicEMap
-import org.eclipse.emf.common.util.BasicEList
 
-class ModelBaseGenerator extends TypeScriptVisitor{ 
+class ModelBaseGenerator extends EcoreVisitor{ 
 	
 
-	private TypeScriptIdentifier id = new TypeScriptIdentifier();
-	private CSharpOCLVisitor ocl2csharp = new CSharpOCLVisitor();
+	TypeScriptIdentifier id = new TypeScriptIdentifier();
+	CSharpOCLVisitor ocl2csharp = new CSharpOCLVisitor();
 	
-	private TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2();
-	//private TypeTranslator t = new TypeScriptTypeTranslator(id);
+	TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2();
 	//private ImportManager imports = new ImportManager(t);
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);
 
 	}
-		
-	
 		
 	
 	override caseEPackage (EPackage epackage){
@@ -117,29 +107,26 @@ class ModelBaseGenerator extends TypeScriptVisitor{
 			var referencesWithOppositeNonMany = new HashSet<EReference>();
 			
 			allReferences = new BasicEList<EReference>(e.EAllReferences);
-			allAttributes = new BasicEList<EAttribute>(e.EAllAttributes);
-
-
-			
 			if(e.ESuperTypes.length>0){
 				
-				if(!e.ESuperTypes.get(0).interface){
-					
-					var minus = e.ESuperTypes.get(0).EAllAttributes;
-					allAttributes.removeAll(minus); 
-					
-					var minus2 = e.ESuperTypes.get(0).EAllReferences;
-					allReferences.removeAll(minus2); 
-				}
-				
+				var minus = e.ESuperTypes.get(0).EAllReferences;
+				allReferences.removeAll(minus); 
 			}
+			
+			allAttributes = new BasicEList<EAttribute>(e.EAllAttributes);
+			if(e.ESuperTypes.length>0){
+				
+				var minus = e.ESuperTypes.get(0).EAllAttributes;
+				allAttributes.removeAll(minus); 
+			}
+
 			
 			var nonDirectSupertypes = new BasicEList<EClass>();
 			
 			if(e.ESuperTypes.size>1){
 				
 
-				nonDirectSupertypes.addAll(e.ESuperTypes.subList(1, e.ESuperTypes.size));
+				nonDirectSupertypes.addAll(e.ESuperTypes.subList(1, e.ESuperTypes.size).filter[c | !c.abstract && !c.interface])
 			}
 			
 			allEStructuralFeatures.addAll(allAttributes);
@@ -148,7 +135,7 @@ class ModelBaseGenerator extends TypeScriptVisitor{
 			
 			for(EReference ref:allReferences){
 				
-				if(!ref.many && !ref.derived){
+				if(!ref.many && ref.changeable){
 					referencesSingle.add(ref);
 				}
 				
@@ -169,17 +156,8 @@ class ModelBaseGenerator extends TypeScriptVisitor{
 				//allAttributes.addAll(e.EAttributes);
 				//allReferences.addAll(e.EReferences);
 				
-				var inheritedOperations = new HashSet<String>();
-				for(EOperation op:e.EAllOperations){
-					inheritedOperations.add(op.name);
-				}
-				
-				for(EOperation op:e.EOperations){
-					
-					if(!inheritedOperations.contains(op)){
-						allOperations.add(op);
-					}
-				}
+				allOperations = new HashSet<EOperation>(e.EAllOperations);
+				allOperations.removeAll(Utils.getInheritedOperations(e));
 			}
 			else{
 				//EClass inherits from EObject, but do want to exclude the EOperations from EObject, because we want to use the implementation from BasicEObjectImpl
@@ -235,7 +213,6 @@ class ModelBaseGenerator extends TypeScriptVisitor{
 				
 					«IF !referencesWithOpposite.empty»
 					public eInverseAdd(otherEnd:InternalEObject, featureID:number, msgs:NotificationChain): NotificationChain{
-						«IF !referencesWithOpposite.empty»
 						switch (featureID) {
 							«FOR EReference ref:referencesWithOpposite»
 								case «id.literalRef(e, ref)»:
@@ -245,8 +222,8 @@ class ModelBaseGenerator extends TypeScriptVisitor{
 											msgs = this.eBasicRemoveFromContainer(msgs);
 										}
 										«ELSE»
-										if (this.«id.privateEStructuralFeature(ref)» != null){
-											msgs = this.«id.privateEStructuralFeature(ref)».eInverseRemove(this, «id.literalRef(ref)», /*«id.doSwitch(ref.EType)»*/ null, msgs);
+										if (this.«ref.name» != null){
+											msgs = this.«ref.name».eInverseRemove(this, «id.literalRef(ref)», /*«id.doSwitch(ref.EType)»*/ null, msgs);
 										}
 										«ENDIF»
 										return this.«id.basicSetEReference(ref)»(otherEnd as «id.doSwitch(ref.EType)», msgs);
@@ -255,14 +232,10 @@ class ModelBaseGenerator extends TypeScriptVisitor{
 									«ENDIF»
 							«ENDFOR»
 						}
-						«ENDIF»
-						//return this.«id.super_eInverseAddRef(e)»(otherEnd, featureID, msgs);
 						return super.eInverseAdd(otherEnd, featureID, msgs);
 					}
-					//public «id.super_eInverseAdd(e)» = this.eInverseAdd;
 					
 					public eInverseRemove(otherEnd:InternalEObject, featureID:number, msgs:NotificationChain):NotificationChain{
-						«IF !referencesWithOpposite.empty»
 						switch (featureID) {
 							«FOR EReference ref:referencesWithOpposite»
 								case «id.literalRef(e, ref)»:
@@ -273,25 +246,22 @@ class ModelBaseGenerator extends TypeScriptVisitor{
 									«ENDIF»
 							«ENDFOR»
 						}
-						«ENDIF»
-						//return this.«id.super_eInverseRemoveRef(e)»(otherEnd, featureID, msgs);
 						return super.eInverseRemove(otherEnd, featureID, msgs);
 					}
 					
-					//public «id.super_eInverseRemove(e)» = this.eInverseRemove;
 					«ENDIF»
 				
 					«IF !referencesSingle.empty»
 						«FOR EReference ref:referencesSingle»
-							«IF ref.EOpposite != null && ref.EOpposite.containment»
+							«IF ref.EOpposite !== null && ref.EOpposite.containment»
 							public «id.basicSetEReference(ref)»(newobj:«id.doSwitch(ref.EType)», msgs:NotificationChain):NotificationChain {
 									msgs = this.eBasicSetContainer(newobj, «id.literalRef(ref)», msgs);
 									return msgs;
 							}
 							«ELSE»
 							public «id.basicSetEReference(ref)»(newobj:«id.doSwitch(ref.EType)», msgs:NotificationChain):NotificationChain {
-								let oldobj = this.«id.privateEStructuralFeature(ref)»;
-								this.«id.privateEStructuralFeature(ref)» = newobj;
+								let oldobj = this.«ref.name»;
+								this.«ref.name» = newobj;
 								if (this.eNotificationRequired()) {
 									let notification = new ENotificationImpl(this, NotificationImpl.SET, «id.literalRef(ref)», oldobj, newobj);
 									if (msgs == null){
@@ -389,13 +359,13 @@ class ModelBaseGenerator extends TypeScriptVisitor{
 						/*
 						«invariants.get(invariant)»;
 						*/
-						return true;
+						return true;«/*TODO OCL Translator*/»
 					}
 		        	«ENDFOR»
 				}
 				
 			'''
-		
+			
 		}
 	
 	}
@@ -434,22 +404,6 @@ class ModelBaseGenerator extends TypeScriptVisitor{
 	}
 	
 	
-	override caseEEnum(EEnum eenum) '''
-
-		export enum «eenum.name»{
-			«FOR EEnumLiteral eenumliteral : eenum.ELiterals SEPARATOR ','»
-				«caseEEnumLiteral(eenumliteral)»
-			«ENDFOR»
-		}
-
-		
-	'''
-	
-	override caseEEnumLiteral(EEnumLiteral eenumliteral)'''
-	
-		«eenumliteral.name» = «eenumliteral.value»
-	'''
-	
 	override caseEAttribute(EAttribute eattribute){
 	
 		var listType = tt.listType(eattribute.unique, eattribute.ordered);
@@ -464,10 +418,10 @@ class ModelBaseGenerator extends TypeScriptVisitor{
 			
 			var eAnnotation = eattribute.getEAnnotation("http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot");
 
-			if(eAnnotation!=null){
+			if(eAnnotation !== null){
 				
 				oclDeriveExpr = eAnnotation.getDetails().get("derivation");
-				if(oclDeriveExpr!=null){
+				if(oclDeriveExpr !== null){
 					deriveExpr = ocl2csharp.translate(oclDeriveExpr, eattribute.EContainingClass);
 					isOcl= true;
 				}
@@ -478,6 +432,7 @@ class ModelBaseGenerator extends TypeScriptVisitor{
 		}
 		
 		//TODO is there a set method for multi-valued EReferences?
+		//TODO case derived && !ocl
 		var es5plus = 
 		'''
 		«IF eattribute.many»
@@ -528,11 +483,6 @@ class ModelBaseGenerator extends TypeScriptVisitor{
 	
 	}
 	
-	override caseEParameter(EParameter parameter)'''
-		«tt.translateType(parameter.EGenericType)» «id.doSwitch(parameter)»
-	'''
-	
-
 	
 	override caseEReference(EReference ereference){
 		var listType = tt.listType(ereference.unique, ereference.ordered);
@@ -545,16 +495,14 @@ class ModelBaseGenerator extends TypeScriptVisitor{
 			
 			var eAnnotation = ereference.getEAnnotation("http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot");
 
-			if(eAnnotation!=null){
+			if(eAnnotation!==null){
 				
 				oclDeriveExpr = eAnnotation.getDetails().get("derivation");
-				if(oclDeriveExpr!=null){
+				if(oclDeriveExpr!==null){
 					deriveExpr = ocl2csharp.translate(oclDeriveExpr, ereference.EContainingClass);
 					isOcl= true;
 				}
 				
-							
-			
 			}
 		}
 	
@@ -589,7 +537,7 @@ class ModelBaseGenerator extends TypeScriptVisitor{
 					return this.«id.privateEStructuralFeature(ereference)»;
 					«ELSE»
 					if(this.«id.privateEStructuralFeature(ereference)»===null){
-						this.«id.privateEStructuralFeature(ereference)» = new «listType»<«tt.translateType(ereference.EGenericType)»>(this, «id.literalRef(ereference)», «IF ereference.EOpposite!=null»«id.literalRef(ereference.EOpposite)»«ELSE»BasicEObjectImpl.EOPPOSITE_FEATURE_BASE - «id.literalRef(ereference)»«ENDIF»);
+						this.«id.privateEStructuralFeature(ereference)» = new «listType»<«tt.translateType(ereference.EGenericType)»>(this, «id.literalRef(ereference)», «IF ereference.EOpposite!==null»«id.literalRef(ereference.EOpposite)»«ELSE»BasicEObjectImpl.EOPPOSITE_FEATURE_BASE - «id.literalRef(ereference)»«ENDIF»);
 							
 					}
 					return this.«id.privateEStructuralFeature(ereference)»;
@@ -610,7 +558,7 @@ class ModelBaseGenerator extends TypeScriptVisitor{
 					«ELSEIF ereference.derived && !isOcl»
 					//TODO implement derivation
 					return null;
-					«ELSEIF ereference.EOpposite!= null && ereference.EOpposite.containment»
+					«ELSEIF ereference.EOpposite!== null && ereference.EOpposite.containment»
 					if (this.eContainerFeatureID() != «id.literalRef(ereference)») return null;
 					return this.eInternalContainer() as «id.doSwitch(ereference.EType)»;
 					«ELSE»
@@ -626,9 +574,9 @@ class ModelBaseGenerator extends TypeScriptVisitor{
 						this.eNotify(new ENotificationImpl(this, NotificationImpl.SET,«id.literalRef(ereference)» , oldvalue, value));
 					}
 					«ELSE»
-					«var featureId = if(ereference.EOpposite!=null) id.literalRef(ereference.EOpposite) else "BasicEObjectImpl.EOPPOSITE_FEATURE_BASE - " + id.literalRef(ereference) »
-					«var featureClass = if(ereference.EOpposite!=null) '''«id.doSwitch(ereference.EOpposite.EType)»''' else "null"»
-					«var getcurrentvalue = if(ereference.EOpposite!=null && ereference.EOpposite.containment) '''this.eInternalContainer() as «id.doSwitch(ereference.EType)»''' else "this."+id.privateEStructuralFeature(ereference)»
+					«var featureId = if(ereference.EOpposite!==null) id.literalRef(ereference.EOpposite) else "BasicEObjectImpl.EOPPOSITE_FEATURE_BASE - " + id.literalRef(ereference) »
+					«var featureClass = if(ereference.EOpposite!==null) '''«id.doSwitch(ereference.EOpposite.EType)»''' else "null"»
+					«var getcurrentvalue = if(ereference.EOpposite!==null && ereference.EOpposite.containment) '''this.eInternalContainer() as «id.doSwitch(ereference.EType)»''' else "this."+ereference.name»
 					if (value != «getcurrentvalue») {
 						let msgs:NotificationChain = null;
 						if («getcurrentvalue» != null){
@@ -651,18 +599,6 @@ class ModelBaseGenerator extends TypeScriptVisitor{
 			«ENDIF»
 		'''
 		
-		var back = 
-		'''
-			
-			«IF ereference.many»
-			public «ereference.name»= new «listType»<«ereference.EType.name»>();
-	
-			«ELSE»
-			
-			public «ereference.name»:«ereference.EType.name» = null;
-			
-			«ENDIF»
-		'''
 		return ec5plus;
 	
 	

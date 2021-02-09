@@ -36,7 +36,7 @@ class SwiftTypeTranslator extends TypeTranslator {
 	}
 	
 	
-	override def String defaultValue(EClassifier type){
+	override String defaultValue(EClassifier type){
 		
 		if(type.name == EcorePackage.Literals.EENUMERATOR.name){
 			return "nil"
@@ -56,9 +56,9 @@ class SwiftTypeTranslator extends TypeTranslator {
 		return "Any";
 	}
 	
-	public def translateTypeImpl(EGenericType type){
+	def translateTypeImpl(EGenericType type){
 		
-		if(type.EClassifier instanceof EDataType && (mapComplexType(type.EClassifier as EDataType)!=null || mapPrimitiveType(type.EClassifier as EDataType)!=null)){
+		if(type.EClassifier instanceof EDataType && (mapComplexType(type.EClassifier as EDataType)!==null || mapPrimitiveType(type.EClassifier as EDataType)!==null)){
 			return translateType(type);
 		}
 		else{
@@ -69,7 +69,7 @@ class SwiftTypeTranslator extends TypeTranslator {
 	
 
 	
-	public override String mapComplexType(EDataType type){
+	override String mapComplexType(EDataType type){
 
 		//TODO is EDataType correct or should it be EClassifier or something?		
 		switch type.name{
@@ -82,10 +82,10 @@ class SwiftTypeTranslator extends TypeTranslator {
 				
 	}
 	
-	public override String mapPrimitiveType(EDataType type){
+	override String mapPrimitiveType(EDataType type){
 		
 		//nsURI is null in case of OCL Sequence, e.g. SequenceTypeImpl
-		if(type.eContainer instanceof EPackage && (type.eContainer as EPackage).nsURI != null &&
+		if(type.eContainer instanceof EPackage && (type.eContainer as EPackage).nsURI !== null &&
 			(type.eContainer as EPackage).nsURI.equals("http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore")
 		){
 			

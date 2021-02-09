@@ -18,23 +18,21 @@
  */
  package com.crossecore.typescript;
 
+import com.crossecore.EcoreVisitor
 import com.crossecore.IdentifierProvider
-import com.crossecore.ImportManager
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EPackage
 import com.crossecore.Utils
+import org.eclipse.emf.ecore.EcorePackage
 
-class FactoryGenerator extends TypeScriptVisitor{
+class FactoryGenerator extends EcoreVisitor{
 	
-	private IdentifierProvider id = new TypeScriptIdentifier();
+	IdentifierProvider id = new TypeScriptIdentifier();
 	//private ImportManager imports = new ImportManager(new TypeScriptTypeTranslator(id));
-	private TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2();
+	TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2();
 	
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);
@@ -43,7 +41,7 @@ class FactoryGenerator extends TypeScriptVisitor{
 
 	override caseEPackage (EPackage epackage){
 		
-		
+		tt.import_(EcorePackage.eINSTANCE, "EFactory");
 		var body = '''
 		export interface «id.EPackageFactory(epackage)» extends EFactory{
 			«FOR EClassifier classifier: epackage.EClassifiers»

@@ -28,10 +28,10 @@ import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.impl.EcorePackageImpl
 import org.eclipse.emf.ecore.EPackage
 
-public class EcoreLoader {
+class EcoreLoader {
 
 
-	private ResourceSet resourceSet = new ResourceSetImpl();
+	ResourceSet resourceSet = new ResourceSetImpl();
 
 	new(){
 		
@@ -43,7 +43,7 @@ public class EcoreLoader {
 	    m.put("ecore", new XMIResourceFactoryImpl());
 	    m.put("xmi", new XMIResourceFactoryImpl());
 	}
-	public def EObject load(File ecoreFile){
+	def EObject load(File ecoreFile){
 		
 
 		var resource = resourceSet.getResource(URI.createFileURI(ecoreFile.absolutePath), true);
@@ -54,7 +54,7 @@ public class EcoreLoader {
 		return eobject;
 	}
 	
-	public def void registerURI(String nsURI, EPackage instance){
+	def void registerURI(String nsURI, EPackage instance){
 		resourceSet.getPackageRegistry().put(nsURI, instance);
 	}
 	

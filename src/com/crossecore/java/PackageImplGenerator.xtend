@@ -38,12 +38,9 @@ import org.eclipse.emf.ecore.EEnumLiteral
 
 class PackageImplGenerator extends EcoreVisitor{
 	
-	private IdentifierProvider id = new JavaIdentifier();
+	IdentifierProvider id = new JavaIdentifier();
 	//private CSharpLiteralIdentifier literalId = new CSharpLiteralIdentifier();
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);
@@ -82,18 +79,8 @@ class PackageImplGenerator extends EcoreVisitor{
 				private static boolean isInited = false;
 				
 				
-				public static void unload(){
-				
-					«FOR e:eclasses»
-						«id.doSwitch(e)».allInstances_.clear();
-					«ENDFOR»
-					
-				}
-				
 				public static «id.EPackagePackage(epackage)» init()
 				{
-					
-					unload();
 					
 					if (isInited) return («id.EPackagePackage(epackage)»)EPackage.Registry.INSTANCE.getEPackage(«id.EPackagePackageImpl(epackage)».eNS_URI);
 
@@ -126,10 +113,10 @@ class PackageImplGenerator extends EcoreVisitor{
 		        }
 		        
 		        private boolean isCreated = false;
-	            public void createPackageContents()
-	            {
-	                if (isCreated) return;
-	                isCreated = true;
+				public void createPackageContents()
+				{
+					if (isCreated) return;
+					isCreated = true;
 					«FOR EClass eclass:eclasses»
 						«id.EClassEClass(eclass)» = createEClass(«id.literal(eclass)»);
 						«FOR EStructuralFeature feature:eclass.EStructuralFeatures»
@@ -149,8 +136,8 @@ class PackageImplGenerator extends EcoreVisitor{
 		        private boolean isInitialized = false;
 		        public void initializePackageContents()
 		        {
-	                if (isInitialized) return;
-	                isInitialized = true;
+		        	if (isInitialized) return;
+		        	isInitialized = true;
 		            // Initialize package
 					setName(eNAME);
 					setNsPrefix(eNS_PREFIX);
@@ -257,7 +244,7 @@ class PackageImplGenerator extends EcoreVisitor{
 	
 	}
 	
-	var metaobjectid = new EcoreVisitor(){
+	var metaobjectid = new EcoreVisitor(epackage){
 		
 
 		
@@ -295,7 +282,7 @@ class PackageImplGenerator extends EcoreVisitor{
 		
 	}
 	
-	val literals = new EcoreVisitor() {
+	val literals = new EcoreVisitor(epackage) {
 		
 		override caseEClass(EClass eclass){
 			'''

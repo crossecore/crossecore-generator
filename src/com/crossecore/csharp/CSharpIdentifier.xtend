@@ -138,7 +138,7 @@ class CSharpIdentifier extends IdentifierProvider {
 		}
 	}
 
-	public def escapeIdentifier(String str) {
+	def escapeIdentifier(String str) {
 
 		var s = str;
 		s = s.replace("-", "_");
