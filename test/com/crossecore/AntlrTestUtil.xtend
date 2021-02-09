@@ -20,7 +20,7 @@ class AntlrTestUtil {
 		
 		val ruleNamesList = Arrays.asList(parser.getRuleNames());
 		val prettyTree = TreeUtils.toPrettyTree(tree, ruleNamesList);
-		System.out.println(prettyTree)
+		//System.out.println(prettyTree)
 		
 		return XPath.findAll(tree, xpath, parser);
 	}
