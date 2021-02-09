@@ -145,13 +145,6 @@ class FactoryImplGenerator extends EcoreVisitor {
 			public «t.translateType(e)» «id.createEClass(e)»(){
 				«id.EClassImpl(e)» «id.variable(e)» = new «id.EClassImpl(e)»();
 				
-				«id.doSwitch(e)».allInstances_.add(«id.variable(e)»);
-				/*
-				«FOR sup: superclasses»
-					«id.doSwitch(sup)».allInstances.add(«id.variable(e)»);
-				«ENDFOR»
-				*/
-				
 				return «id.variable(e)»;
 			}
 			'''

@@ -82,18 +82,8 @@ class PackageImplGenerator extends EcoreVisitor{
 				private static boolean isInited = false;
 				
 				
-				public static void unload(){
-				
-					«FOR e:eclasses»
-						«id.doSwitch(e)».allInstances_.clear();
-					«ENDFOR»
-					
-				}
-				
 				public static «id.EPackagePackage(epackage)» init()
 				{
-					
-					unload();
 					
 					if (isInited) return («id.EPackagePackage(epackage)»)EPackage.Registry.INSTANCE.getEPackage(«id.EPackagePackageImpl(epackage)».eNS_URI);
 

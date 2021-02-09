@@ -97,23 +97,6 @@ class ModelGenerator extends EcoreVisitor{
 		«ENDIF»
 		{
 			
-			public static com.crossecore.ocl.QuickSet<«id.doSwitch(e)»> allInstances_ = new com.crossecore.ocl.QuickSet<«id.doSwitch(e)»>(«id.doSwitch(e)».class);
-			
-				
-			public static com.crossecore.ocl.QuickSet<«id.doSwitch(e)»> allInstances(){
-				
-				com.crossecore.ocl.QuickSet<«id.doSwitch(e)»> result = new com.crossecore.ocl.QuickSet<«id.doSwitch(e)»>(«id.doSwitch(e)».class);
-				result.addAll(«id.doSwitch(e)».allInstances_);
-				
-				«FOR s:closure»
-				result.addAll(«id.doSwitch(s)».allInstances_);
-				«ENDFOR»
-				
-				return result;
-			}
-			
-			//public static com.crossecore.ocl.QuickSet<«id.doSwitch(e)»> allInstances = new com.crossecore.ocl.QuickSet<«id.doSwitch(e)»>(«id.doSwitch(e)».class);
-			
 			«FOR EStructuralFeature feature:e.EStructuralFeatures»«doSwitch(feature)»«ENDFOR»
 			«FOR EOperation operation:e.EOperations»«doSwitch(operation)»«ENDFOR»
 			«FOR String invariant:invariants.keySet»

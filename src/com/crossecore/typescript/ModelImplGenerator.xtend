@@ -85,7 +85,6 @@ class ModelImplGenerator extends EcoreVisitor{
 			export class «id.EClassImpl(e)»«FOR ETypeParameter param : e.ETypeParameters BEFORE '<' SEPARATOR ',' AFTER '>'»«id.doSwitch(param)»«ENDFOR»
 			extends «id.EClassBase(e)»«FOR ETypeParameter param : e.ETypeParameters BEFORE '<' SEPARATOR ',' AFTER '>'»«id.doSwitch(param)»«ENDFOR»
 			{
-				public static allInstances_:Set<«id.doSwitch(e)»> = new Set<«id.doSwitch(e)»>();
 				//implement your generated class here
 			}
 			'''

@@ -51,7 +51,6 @@ class FactoryImplGenerator extends EcoreVisitor{
 		tt.import_(epackage, id.EPackageFactory(epackage));
 		tt.import_(epackage, id.EPackagePackageImpl(epackage));
 		tt.import_(EcorePackage.eINSTANCE, "EFactoryImpl");
-		tt.import_(EcorePackage.eINSTANCE, "AllInstances");
 		
 		var body = '''
 		export class «id.EPackageFactoryImpl(epackage)» extends EFactoryImpl implements «id.EPackageFactory(epackage)»{
@@ -170,7 +169,6 @@ class FactoryImplGenerator extends EcoreVisitor{
 				public «id.createEClass(e)» = () : «id.doSwitch(e)» => {
 					let «id.variable(e)» = new «id.EClassImpl(e)»();
 					
-					AllInstances.INSTANCE.put(«id.variable(e)», "«id.doSwitch(e)»");
 					
 					return «id.variable(e)»;
 				}

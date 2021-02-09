@@ -170,8 +170,6 @@ class FactoryImplGenerator extends CSharpVisitor {
 			'''
 			public «id.doSwitch(e)» «id.createEClass(e)»(){
 				var «id.variable(e)» = new «id.EClassImpl(e)»();
-				«id.EClassImpl(e)».allInstances_.Add(«id.variable(e)»);
-				
 				return «id.variable(e)»;
 			}
 			'''
