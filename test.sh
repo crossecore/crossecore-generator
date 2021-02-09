@@ -34,7 +34,7 @@ done
 
 #ascii art from http://patorjk.com/software/taag/#p=display&c=echo&f=Graffiti&t=typescript
 
-for file in Java; do
+for file in Java Testmodel; do
     modelfile="$model_path$file.ecore"
 
     package_name="$file"
