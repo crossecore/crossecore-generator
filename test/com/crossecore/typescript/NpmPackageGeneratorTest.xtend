@@ -14,7 +14,7 @@ class NpmPackageGeneratorTest {
 		val epackage = EcoreFactory.eINSTANCE.createEPackage()
 		epackage.name = "MyPackage"
 		epackage.nsURI = "com.mypackage"
-		val generator = new NpmPackageGenerator();
+		val generator = new NpmPackageGenerator("","",epackage);
 		
 		//Action
 		val result = generator.caseEPackage(epackage).toString()

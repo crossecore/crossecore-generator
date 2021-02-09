@@ -22,7 +22,7 @@ class SwitchGeneratorTest {
 		
 		epackage.EClassifiers.add(eclass)
 		
-		val generator = new SwitchGenerator();
+		val generator = new SwitchGenerator("","",epackage);
 		
 		//Action
 		val result = generator.caseEPackage(epackage).toString()

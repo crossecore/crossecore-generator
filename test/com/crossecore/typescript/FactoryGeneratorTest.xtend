@@ -20,14 +20,14 @@ class FactoryGeneratorTest {
 		eclass.name = "MyClass"
 		epackage.EClassifiers.add(eclass)	
 				
-		val factory = new FactoryGenerator();
+		val factory = new FactoryGenerator("","",epackage);
 		
 		//Action
 		val result = factory.caseEPackage(epackage).toString()
 	
 		//Assert
 		val nodes = AntlrTestUtil.xpath(result, "//methodSignature")
-		assertTrue("Factory has method for EClass", nodes.size===1)
+		assertTrue(nodes.size===1)
 		
 	}	
 	
@@ -42,14 +42,14 @@ class FactoryGeneratorTest {
 		abstractclass.abstract = true
 		epackage.EClassifiers.add(abstractclass)	
 				
-		val factory = new FactoryGenerator();
+		val factory = new FactoryGenerator("","",epackage);
 		
 		//Action
 		val result = factory.caseEPackage(epackage).toString()
 	
 		//Assert
 		val nodes = AntlrTestUtil.xpath(result, "//methodSignature")
-		assertTrue("Factory has method for abstract EClass", nodes.size===1)
+		assertTrue(nodes.size===1)
 		
 	}
 	
@@ -64,14 +64,14 @@ class FactoryGeneratorTest {
 		einterface.interface = true
 		epackage.EClassifiers.add(einterface)	
 				
-		val factory = new FactoryGenerator();
+		val factory = new FactoryGenerator("","",epackage);
 		
 		//Action
 		val result = factory.caseEPackage(epackage).toString()
 	
 		//Assert
 		val nodes = AntlrTestUtil.xpath(result, "//methodSignature")
-		assertTrue("Factory has no method for interface", nodes.size===0)
+		assertTrue(nodes.size===0)
 		
 	}
 	

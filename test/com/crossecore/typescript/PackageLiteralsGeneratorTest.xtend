@@ -33,7 +33,7 @@ class PackageLiteralsGeneratorTest {
 		epackage.EClassifiers.add(enum)
 		epackage.EClassifiers.add(edatatype)
 		
-		val generator = new PackageLiteralsGenerator();
+		val generator = new PackageLiteralsGenerator("","",epackage);
 
 		//Action
 		val result = generator.caseEPackage(epackage).toString

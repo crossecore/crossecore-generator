@@ -40,7 +40,7 @@ class FactoryImplGeneratorTest {
 	@Test def void test_caseEPackage() {
 		
 		//Arrange
-		val generator = new FactoryImplGenerator();
+		val generator = new FactoryImplGenerator("","",epackage);
 		
 		//Action
 		val result = generator.caseEPackage(epackage).toString()

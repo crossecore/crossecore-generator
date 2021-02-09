@@ -52,9 +52,6 @@ class PackageImplGenerator extends CSharpVisitor{
 	 
 	 '''	
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);
@@ -238,7 +235,7 @@ class PackageImplGenerator extends CSharpVisitor{
 	
 	}
 	
-	var metaobjectid = new CSharpVisitor(){
+	var metaobjectid = new CSharpVisitor(epackage){
 		
 
 		override caseEEnum(EEnum enumeration){
@@ -274,7 +271,7 @@ class PackageImplGenerator extends CSharpVisitor{
 		
 	}
 	
-	val literals = new CSharpVisitor() {
+	val literals = new CSharpVisitor(epackage) {
 		
 
 		

@@ -29,9 +29,6 @@ class ModelImplGenerator extends EcoreVisitor{
 	
 	JavaIdentifier id = new JavaIdentifier();
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);

@@ -22,7 +22,7 @@ class PackageGeneratorTest {
 		
 		epackage.EClassifiers.add(eenum)
 		
-		val generator = new PackageGenerator();
+		val generator = new PackageGenerator("","",epackage);
 		
 		//Action
 		val result = generator.caseEPackage(epackage).toString()
@@ -48,7 +48,7 @@ class PackageGeneratorTest {
 		
 		epackage.EClassifiers.add(edatatype)
 		
-		val generator = new PackageGenerator();
+		val generator = new PackageGenerator("","",epackage);
 		
 		//Action
 		val result = generator.caseEPackage(epackage).toString()
@@ -80,7 +80,7 @@ class PackageGeneratorTest {
 		
 		epackage.EClassifiers.add(eclass)
 		
-		val generator = new PackageGenerator();
+		val generator = new PackageGenerator("","",epackage);
 		
 		//Action
 		val result = generator.caseEPackage(epackage).toString()
@@ -116,7 +116,7 @@ class PackageGeneratorTest {
 		epackage.EClassifiers.add(eclass)
 		epackage.EClassifiers.add(referencetype)
 		
-		val generator = new PackageGenerator();
+		val generator = new PackageGenerator("","",epackage);
 		
 		//Action
 		val result = generator.caseEPackage(epackage).toString()
@@ -143,7 +143,7 @@ class PackageGeneratorTest {
 		
 		epackage.EClassifiers.add(eclass)
 		
-		val generator = new PackageGenerator();
+		val generator = new PackageGenerator("","",epackage);
 		
 		//Action
 		val result = generator.caseEPackage(epackage).toString()

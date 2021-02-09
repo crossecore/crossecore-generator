@@ -33,9 +33,6 @@ class FactoryGenerator extends EcoreVisitor{
 	TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2();
 	
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);

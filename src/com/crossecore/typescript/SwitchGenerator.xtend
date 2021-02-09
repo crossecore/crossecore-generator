@@ -32,9 +32,6 @@ class SwitchGenerator extends EcoreVisitor {
 	//private ImportManager imports = new ImportManager(t);
 	TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2();
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);
@@ -103,7 +100,7 @@ class SwitchGenerator extends EcoreVisitor {
 		
 	}
 	
-	var cases = new EcoreVisitor(){
+	var cases = new EcoreVisitor(epackage){
 	
 		override caseEClass(EClass eclassifier){
 			var sortedEClasses_ = DependencyManager.sortEClasses(eclassifier.EAllSuperTypes);

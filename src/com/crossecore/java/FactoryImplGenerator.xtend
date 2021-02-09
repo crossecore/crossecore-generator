@@ -32,9 +32,6 @@ class FactoryImplGenerator extends EcoreVisitor {
 	IdentifierProvider id = new JavaIdentifier();
 	TypeTranslator t = new JavaTypeTranslator(id);
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);

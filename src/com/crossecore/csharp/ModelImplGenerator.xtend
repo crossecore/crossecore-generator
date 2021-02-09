@@ -40,9 +40,6 @@ class ModelImplGenerator extends CSharpVisitor{
 	 
 	 '''	
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);

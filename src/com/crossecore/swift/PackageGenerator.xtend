@@ -37,9 +37,6 @@ class PackageGenerator extends EcoreVisitor{
 	IdentifierProvider id = new SwiftIdentifier();
 	
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);

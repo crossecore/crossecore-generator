@@ -21,7 +21,7 @@ class ModelImplGeneratorTest {
 		
 		epackage.EClassifiers.add(eclass)
 		
-		val generator = new ModelImplGenerator();
+		val generator = new ModelImplGenerator("","",epackage);
 		
 		//Action
 		val result = generator.caseEClass(eclass).toString	
@@ -47,7 +47,7 @@ class ModelImplGeneratorTest {
 		
 		epackage.EClassifiers.add(eclass)
 		
-		val generator = new ModelImplGenerator();
+		val generator = new ModelImplGenerator("","",epackage);
 		
 		//Action
 		val result = generator.caseEClass(eclass).toString	

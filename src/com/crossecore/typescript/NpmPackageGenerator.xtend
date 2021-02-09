@@ -24,9 +24,6 @@ import org.eclipse.emf.ecore.EPackage
 class NpmPackageGenerator extends EcoreVisitor{
 	
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);

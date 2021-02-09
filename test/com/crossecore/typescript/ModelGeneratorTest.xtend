@@ -37,7 +37,7 @@ class ModelGeneratorTest {
 		eclass.EOperations.add(eoperation)
 		eclass.EOperations.add(eoperation2)
 		
-		val modelGenerator = new ModelGenerator();
+		val modelGenerator = new ModelGenerator("","",epackage);
 		
 		//Action
 		val result = modelGenerator.caseEClass(eclass).toString()
@@ -59,7 +59,7 @@ class ModelGeneratorTest {
 		eclass.name = "MyClass"
 		epackage.EClassifiers.add(eclass)
 		
-		val modelGenerator = new ModelGenerator();
+		val modelGenerator = new ModelGenerator("","",epackage);
 		
 		//Action
 		val result = modelGenerator.caseEClass(eclass).toString()
@@ -74,7 +74,7 @@ class ModelGeneratorTest {
 		
 		//Arrange
 		
-		val modelGenerator = new ModelGenerator();
+		val modelGenerator = new ModelGenerator("","",EcorePackage.eINSTANCE);
 		
 		//Action
 		val result = modelGenerator.caseEClass(EcorePackage.Literals.EOBJECT).toString()
@@ -101,7 +101,7 @@ class ModelGeneratorTest {
 		eclass.ESuperTypes.add(supertype)
 		epackage.EClassifiers.add(eclass)
 		
-		val modelGenerator = new ModelGenerator();
+		val modelGenerator = new ModelGenerator("","",epackage);
 		
 		//Action
 		val result = modelGenerator.caseEClass(EcorePackage.Literals.EOBJECT).toString()
@@ -133,7 +133,7 @@ class ModelGeneratorTest {
 		eclass.ESuperTypes.add(supertype2)
 		epackage.EClassifiers.add(eclass)
 		
-		val modelGenerator = new ModelGenerator();
+		val modelGenerator = new ModelGenerator("","",epackage);
 		
 		//Action
 		val result = modelGenerator.caseEClass(eclass).toString()
@@ -159,7 +159,7 @@ class ModelGeneratorTest {
 		attribute.EType = EcorePackage.Literals.ESTRING
 		eclass.EStructuralFeatures.add(attribute)
 		
-		val modelGenerator = new ModelGenerator();
+		val modelGenerator = new ModelGenerator("","",epackage);
 		
 		//Action
 		val result = modelGenerator.caseEClass(eclass).toString()
@@ -188,7 +188,7 @@ class ModelGeneratorTest {
 		attribute.upperBound = -1
 		eclass.EStructuralFeatures.add(attribute)
 		
-		val modelGenerator = new ModelGenerator();
+		val modelGenerator = new ModelGenerator("","",epackage);
 		
 		//Action
 		val result = modelGenerator.caseEClass(eclass).toString()
@@ -218,7 +218,7 @@ class ModelGeneratorTest {
 		
 		eclass.EStructuralFeatures.add(reference)
 		
-		val modelGenerator = new ModelGenerator();
+		val modelGenerator = new ModelGenerator("","",epackage);
 		
 		//Action
 		val result = modelGenerator.caseEClass(eclass).toString()
@@ -253,7 +253,7 @@ class ModelGeneratorTest {
 		reference.EType = referencedType
 		eclass.EStructuralFeatures.add(reference)
 		
-		val modelGenerator = new ModelGenerator();
+		val modelGenerator = new ModelGenerator("","",epackage);
 		
 		//Action
 		val result = modelGenerator.caseEClass(eclass).toString()
@@ -286,7 +286,7 @@ class ModelGeneratorTest {
 		reference.upperBound = -1
 		eclass.EStructuralFeatures.add(reference)
 		
-		val modelGenerator = new ModelGenerator();
+		val modelGenerator = new ModelGenerator("","",epackage);
 		
 		//Action
 		val result = modelGenerator.caseEClass(eclass).toString()
@@ -304,13 +304,19 @@ class ModelGeneratorTest {
 		
 		
 		//Arrange
+		val epackage = EcoreFactory.eINSTANCE.createEPackage()
+		epackage.name = "MyPackage"
+		epackage.nsURI = "com.mypackage"
+		
 		val eenum = EcoreFactory.eINSTANCE.createEEnum();
 		eenum.name = "MyEnum"
 		
 		val literal1 = EcoreFactory.eINSTANCE.createEEnumLiteral();
 		literal1.name = "LITERAL"
 		literal1.value = 3
-		val modelGenerator = new ModelGenerator();
+		
+		epackage.EClassifiers.add(eenum)
+		val modelGenerator = new ModelGenerator("","",epackage);
 		
 		//Action
 		val result = modelGenerator.caseEEnum(eenum).toString

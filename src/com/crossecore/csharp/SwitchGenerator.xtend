@@ -38,9 +38,6 @@ class SwitchGenerator extends CSharpVisitor {
 	 
 	 '''	
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);
@@ -94,7 +91,7 @@ class SwitchGenerator extends CSharpVisitor {
 		}
 	'''
 	
-	var cases = new CSharpVisitor(){
+	var cases = new CSharpVisitor(epackage){
 	
 		override caseEClass(EClass eclassifier){
 			var sortedEClasses = DependencyManager.sortEClasses(eclassifier.ESuperTypes)

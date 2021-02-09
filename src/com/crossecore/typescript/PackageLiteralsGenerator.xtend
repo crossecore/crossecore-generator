@@ -40,9 +40,6 @@ class PackageLiteralsGenerator extends EcoreVisitor{
 	//private ImportManager imports = new ImportManager(t);
 	TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2();
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);

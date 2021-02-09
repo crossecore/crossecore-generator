@@ -42,7 +42,7 @@ class PackageImplGeneratorTest {
 		epackage.EClassifiers.add(enum)
 		epackage.EClassifiers.add(edatatype)
 		
-		val generator = new PackageImplGenerator();
+		val generator = new PackageImplGenerator("","",epackage);
 
 		//Action
 		val result = generator.caseEPackage(epackage).toString
@@ -96,7 +96,7 @@ class PackageImplGeneratorTest {
 		
 		epackage.EClassifiers.add(eclass)
 		
-		val generator = new PackageImplGenerator();
+		val generator = new PackageImplGenerator("","",epackage);
 
 		//Action
 		val result = generator.caseEPackage(epackage).toString
@@ -125,7 +125,7 @@ class PackageImplGeneratorTest {
 		
 		epackage.EClassifiers.add(eclass)
 		
-		val generator = new PackageImplGenerator();
+		val generator = new PackageImplGenerator("","",epackage);
 
 		//Action
 		val result = generator.caseEPackage(epackage).toString
@@ -160,7 +160,7 @@ class PackageImplGeneratorTest {
 		
 		epackage.EClassifiers.add(eclass)
 		
-		val generator = new PackageImplGenerator();
+		val generator = new PackageImplGenerator("","",epackage);
 
 		//Action
 		val result = generator.caseEPackage(epackage).toString
@@ -173,7 +173,7 @@ class PackageImplGeneratorTest {
 	@Test def void test_caseEPackage34() {
 		
 		//Arrange
-		val generator = new PackageImplGenerator();
+		val generator = new PackageImplGenerator("","",EcorePackage.eINSTANCE);
 
 		//Action
 		val result = generator.caseEPackage(EcorePackage.eINSTANCE).toString

@@ -34,9 +34,6 @@ class HtmlVisitor extends EcoreVisitor{
 	IdentifierProvider id = new IdentifierProvider();
 	TypeTranslator t = new EcoreTypeTranslator(id);
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);

@@ -20,8 +20,6 @@ package com.crossecore.typescript;
 
 import com.crossecore.DependencyManager
 import com.crossecore.EcoreVisitor
-import com.crossecore.Utils
-import com.crossecore.csharp.CSharpOCLVisitor
 import java.util.List
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EPackage
@@ -35,9 +33,6 @@ class ModelImplGenerator extends EcoreVisitor{
 	TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2();
 	//private ImportManager imports = new ImportManager(t);
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);

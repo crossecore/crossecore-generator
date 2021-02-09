@@ -40,9 +40,6 @@ class PackageImplGenerator extends EcoreVisitor{
 	IdentifierProvider id = new SwiftIdentifier();
 	//private CSharpLiteralIdentifier literalId = new CSharpLiteralIdentifier();
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);
@@ -220,7 +217,7 @@ class PackageImplGenerator extends EcoreVisitor{
 	
 	}
 	
-	var metaobjectid = new EcoreVisitor(){
+	var metaobjectid = new EcoreVisitor(epackage){
 		
 
 		
@@ -258,7 +255,7 @@ class PackageImplGenerator extends EcoreVisitor{
 		
 	}
 	
-	val literals = new EcoreVisitor() {
+	val literals = new EcoreVisitor(epackage) {
 		
 		
 		

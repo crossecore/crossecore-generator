@@ -24,9 +24,6 @@ class VisualStudioProjectGenerator extends CSharpVisitor{
 	
 	CSharpIdentifier id = new CSharpIdentifier();
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);

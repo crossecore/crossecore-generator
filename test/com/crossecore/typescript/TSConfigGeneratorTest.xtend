@@ -15,7 +15,7 @@ class TSConfigGeneratorTest {
 		val epackage = EcoreFactory.eINSTANCE.createEPackage()
 		epackage.name = "MyPackage"
 		epackage.nsURI = "com.mypackage"
-		val generator = new TSConfigGenerator();
+		val generator = new TSConfigGenerator("","",epackage);
 		
 		//Action
 		val result = generator.caseEPackage(epackage).toString()

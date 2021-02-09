@@ -30,9 +30,6 @@ class ModelImplGenerator extends EcoreVisitor{
 	
 	SwiftIdentifier id = new SwiftIdentifier();
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);

@@ -24,9 +24,6 @@ import com.crossecore.EcoreVisitor
 class TSConfigGenerator extends EcoreVisitor{
 	
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);

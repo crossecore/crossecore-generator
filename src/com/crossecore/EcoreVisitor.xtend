@@ -28,23 +28,21 @@ import java.util.Formatter
 import java.util.Locale
 import org.eclipse.emf.ecore.ENamedElement
 import org.eclipse.emf.ecore.util.EcoreSwitch
+import org.eclipse.emf.ecore.EPackage
 
 abstract class EcoreVisitor extends EcoreSwitch<CharSequence>{
 	
 	protected String filenamePattern = "%s.cs";
 	protected String path = "";
-	protected ENamedElement epackage = null;
+	protected EPackage epackage = null;
 	
 	
-	new(){
-		super();
-	}
 	
-	new(ENamedElement epackage){
+	new(EPackage epackage){
 		this.epackage = epackage
 	}
 	
-	new(String path, String filenamePattern, ENamedElement epackage){
+	new(String path, String filenamePattern, EPackage epackage){
 		super();
 		this.path = path;
 		this.filenamePattern = filenamePattern;

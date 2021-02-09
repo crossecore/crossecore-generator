@@ -42,10 +42,6 @@ class ModelBaseGenerator extends EcoreVisitor{
 	CSharpOCLVisitor ocl2csharp = new CSharpOCLVisitor();
 	
 	
-	new(){
-		super();
-	}
-	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);
 

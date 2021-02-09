@@ -41,9 +41,6 @@ class ModelGenerator extends EcoreVisitor{
 	SwiftIdentifier id = new SwiftIdentifier();
 	SwiftTypeTranslator t = new SwiftTypeTranslator(id);
 	
-	new(){
-		super();
-	}
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);
