@@ -260,8 +260,8 @@ class ModelBaseGenerator extends EcoreVisitor{
 							}
 							«ELSE»
 							public «id.basicSetEReference(ref)»(newobj:«id.doSwitch(ref.EType)», msgs:NotificationChain):NotificationChain {
-								let oldobj = this.«ref.name»;
-								this.«ref.name» = newobj;
+								const oldobj = this.«id.privateEStructuralFeature(ref)»;
+								this.«id.privateEStructuralFeature(ref)» = newobj;
 								if (this.eNotificationRequired()) {
 									let notification = new ENotificationImpl(this, NotificationImpl.SET, «id.literalRef(ref)», oldobj, newobj);
 									if (msgs == null){
