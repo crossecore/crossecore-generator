@@ -8,6 +8,7 @@
     singleAttribute="2"
     singleReference="/"
     manyReference="/"
+    manyChildren="//@singleChild"
     boolean="true"
     char="38"
     date="2021-03-08T21:33:50.000+0100"
