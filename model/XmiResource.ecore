@@ -15,7 +15,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="singleChild" eType="#//Child"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="manyChildren" upperBound="-1"
-        eType="#//Child"/>
+        eType="#//Child" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="boolean" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="char" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EChar"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="date" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
@@ -25,6 +25,10 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="long" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELong"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="short" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EShort"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="string" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="enum" eType="#//MyEnum"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Child"/>
+  <eClassifiers xsi:type="ecore:EEnum" name="MyEnum">
+    <eLiterals name="EINS" value="1"/>
+  </eClassifiers>
 </ecore:EPackage>
