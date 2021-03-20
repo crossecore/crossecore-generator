@@ -67,7 +67,7 @@ class PackageImplGenerator extends EcoreVisitor{
 		
 		tt.import_(EcorePackage.eINSTANCE, "EPackageImpl");
 		tt.import_(EcorePackage.eINSTANCE, "EFactory");
-		//tt.import_(epackage, id.EPackageFactoryImpl(epackage)); //causes circular dependency!
+		tt.import_(epackage, id.EPackageFactoryImpl(epackage));
 		tt.import_(epackage, id.EPackagePackage(epackage));
 		if(!Utils.isEcoreEPackage(epackage)){
 			
@@ -84,13 +84,10 @@ class PackageImplGenerator extends EcoreVisitor{
 				public static eNS_PREFIX:string = "«epackage.nsPrefix»";
 				
 				
-				
-				/*
 				constructor(){
-					//no private constructors in TypeScript
-					super(«id.EPackagePackageImpl(epackage)».eNS_URI, «id.EPackageFactoryImpl(epackage)».eINSTANCE as any as EFactory);
+					super(«id.EPackagePackageImpl(epackage)».eNS_URI, «id.EPackageFactoryImpl(epackage)».eINSTANCE);
 				}
-				*/
+				
 				
 				public static init():«id.EPackagePackage(epackage)»
 				{

@@ -30,7 +30,7 @@ import org.eclipse.emf.ecore.EcorePackage
 
 class FactoryImplGenerator extends EcoreVisitor{
 	
-	IdentifierProvider id = new TypeScriptIdentifier();
+	TypeScriptIdentifier id = new TypeScriptIdentifier();
 	//private TypeTranslator t = new TypeScriptTypeTranslator(id);
 	TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2();
 	//private ImportManager imports = new ImportManager(t);
@@ -46,7 +46,7 @@ class FactoryImplGenerator extends EcoreVisitor{
 		var eclasses = epackage.EClassifiers.filter[c|c instanceof EClass].map[c|c as EClass].filter[c|!c.interface && !c.abstract];
 		var edatatypes = epackage.EClassifiers.filter[c|c instanceof EDataType && (c as EDataType).serializable].map[c|c as EDataType];//TODO propagate serializable check
 		tt.import_(epackage, id.EPackageFactory(epackage));
-		tt.import_(epackage, id.EPackagePackageImpl(epackage));
+		tt.import_(epackage, id.EPackagePackageLiterals(epackage));
 		tt.import_(EcorePackage.eINSTANCE, "EFactoryImpl");
 		
 		var body = '''
@@ -67,11 +67,7 @@ class FactoryImplGenerator extends EcoreVisitor{
 			public create(eClass:EClass):EObject {
 				switch (eClass.getClassifierID()) {
 					«FOR EClass c:eclasses»
-						«IF Utils.isEcoreEPackage(epackage)»
-						case «c.classifierID»: return this.«id.createEClass(c)»();
-						«ELSE»
-						case «id.EPackagePackageImpl(epackage)».«id.literal(c)»: return this.«id.createEClass(c)»();
-						«ENDIF»
+						case «id.EPackagePackageLiterals(epackage)».«id.literal(c)»: return this.«id.createEClass(c)»();
 					«ENDFOR»
 					default:
 						throw new Error("The class '" + eClass.name + "' is not a valid classifier");
@@ -86,13 +82,8 @@ class FactoryImplGenerator extends EcoreVisitor{
 				switch (eDataType.getClassifierID()) {
 				«FOR EDataType e : edatatypes»
 				«{tt.import_(e)}»
-				«IF Utils.isEcoreEPackage(epackage)»
-				case «e.classifierID»: //«id.EPackagePackageImpl(epackage)».«id.literal(e)»
-					return this.«id.createEDataTypeFromString(e)»(eDataType, initialValue);				
-				«ELSE»
-				case «id.EPackagePackageImpl(epackage)».«id.literal(e)»:
+				case «id.EPackagePackageLiterals(epackage)».«id.literal(e)»:
 					return this.«id.createEDataTypeFromString(e)»(eDataType, initialValue);
-				«ENDIF»
 				«ENDFOR»
 				default:
 					throw new Error("The datatype '" + eDataType.name + "' is not a valid classifier");
@@ -101,13 +92,8 @@ class FactoryImplGenerator extends EcoreVisitor{
 			public convertToString(eDataType:EDataType, instanceValue:any):string {
 				switch (eDataType.getClassifierID()) {
 				«FOR EDataType e : edatatypes»
-				«IF Utils.isEcoreEPackage(epackage)»
-				case «e.classifierID»: //«id.EPackagePackageImpl(epackage)».«id.literal(e)»
-					return this.«id.convertEDataTypeToString(e)»(eDataType, instanceValue);				
-				«ELSE»
-				case «id.EPackagePackageImpl(epackage)».«id.literal(e)»:
+				case «id.EPackagePackageLiterals(epackage)».«id.literal(e)»:
 					return this.«id.convertEDataTypeToString(e)»(eDataType, instanceValue);
-				«ENDIF»
 				«ENDFOR»
 				default:
 					throw new Error("The datatype '" + eDataType.name + "' is not a valid classifier");
@@ -157,10 +143,6 @@ class FactoryImplGenerator extends EcoreVisitor{
 			tt.import_(e);
 			tt.import_(e.EPackage, id.EClassImpl(e));
 			
-			if(!Utils.isEcoreEPackage(e.EPackage)){
-				//prevent cyclic dependency
-				tt.import_(e.EPackage, id.EPackagePackageImpl(e.EPackage));
-			}
 			
 			'''
 				public «id.createEClass(e)» = () : «id.doSwitch(e)» => {
