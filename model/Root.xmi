@@ -10,13 +10,15 @@
     manyReference="/"
     boolean="true"
     char="38"
-    date="2021-03-08T21:33:50.000+0100"
+    date="2021-03-09T21:33:50.001+0100"
     double="1.0"
     float="1.0"
     int="1"
     long="1"
     short="1"
-    string="string">
+    string="string"
+    integerObject="44"
+    bigint="22">
   <manyAttribute>1</manyAttribute>
   <manyAttribute>2</manyAttribute>
   <manyAttribute>3</manyAttribute>
