@@ -67,6 +67,7 @@ class PackageImplGenerator extends EcoreVisitor{
 		
 		tt.import_(EcorePackage.eINSTANCE, "EPackageImpl");
 		tt.import_(EcorePackage.eINSTANCE, "EFactory");
+		tt.import_(EcorePackage.eINSTANCE, "EPackageRegistryImpl");
 		tt.import_(epackage, id.EPackageFactoryImpl(epackage));
 		tt.import_(epackage, id.EPackagePackage(epackage));
 		if(!Utils.isEcoreEPackage(epackage)){
@@ -83,7 +84,8 @@ class PackageImplGenerator extends EcoreVisitor{
 				
 				public static eNS_PREFIX:string = "«epackage.nsPrefix»";
 				
-				
+				private static isInited:boolean = false;
+						
 				constructor(){
 					super(«id.EPackagePackageImpl(epackage)».eNS_URI, «id.EPackageFactoryImpl(epackage)».eINSTANCE);
 				}
@@ -91,6 +93,9 @@ class PackageImplGenerator extends EcoreVisitor{
 				
 				public static init():«id.EPackagePackage(epackage)»
 				{
+					if(this.isInited) return EPackageRegistryImpl.INSTANCE.getEPackage(this.eNS_URI) as «id.EPackagePackage(epackage)»
+					
+					this.isInited = true;
 
 			        // Obtain or create and register package
 			        let the«id.EPackagePackage(epackage)» = new «id.EPackagePackageImpl(epackage)»();
