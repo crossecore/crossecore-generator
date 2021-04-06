@@ -321,53 +321,43 @@ class TypeScriptTypeTranslator2 {
 
 	def String defaultValue(EClassifier type) {
 
-		if (type.defaultValue !== null) {
 
-			if (type instanceof EEnum) {
-
-				var literal = type.defaultValue as EEnumLiteral;
-				return type.name + "." + literal.name.toUpperCase;
-			} else {
-				return type.defaultValue.toString;
-			}
-
-		} else {
-
-			switch type.instanceClassName {
+		if(type instanceof EEnum){
+			var literal = type.defaultValue as EEnumLiteral;
+			return type.name + "." + literal.name.toUpperCase;	
+		}
+		else{
+			
+			
+			switch(type.instanceClassName){
 				case 'java.math.BigDecimal': return '0'
 				case 'java.math.BigInteger': return '0'
-				case 'boolean': return 'false'
-				case 'java.lang.Boolean': return 'false'
-				case 'byte': return '0'
 				case 'byte[]': return 'null'
-				case 'java.lang.Byte': return '0'
 				case 'char': return "''"
-				case 'java.lang.Character': return "''"
-				case 'java.util.Date': return 'null'
+				case 'int': return type.defaultValue.toString ?: '0'
+				case 'double': return type.defaultValue.toString ?: '0'
+				case 'float': return type.defaultValue.toString ?: '0'
+				case 'long': return type.defaultValue.toString ?: '0'
+				case 'short': return type.defaultValue.toString ?: '0'
+				case 'boolean': return type.defaultValue.toString ?: 'false'
+				case 'java.lang.Integer': return type?.defaultValue?.toString ?: '0'
+				case 'java.lang.Character': return "''" //TODO check for defaultValue
+				case 'java.util.Date': return 'null' //TODO check for defaultValue
 				case 'org.eclipse.emf.common.util.DiagnosticChain': return 'null'
-				case 'double': return '0'
-				case 'java.lang.Double': return '0'
 				case 'org.eclipse.emf.common.util.EList': return 'null'
 				case 'org.eclipse.emf.common.util.Enumerator': return 'null'
 				case 'org.eclipse.emf.ecore.util.FeatureMap': return 'null'
 				case 'org.eclipse.emf.ecore.util.FeatureMap$Entry': return 'null'
-				case 'float': return '0'
-				case 'java.lang.Float': return '0'
-				case 'int': return '0'
-				case 'java.lang.Integer': return '0'
 				case 'java.lang.Class': return 'null'
 				case 'java.lang.Object': return 'null'
-				case 'long': return '0'
-				case 'java.lang.Long': return '0'
 				case 'java.util.Map': return 'null'
 				case 'java.util.Map$Entry': return 'null'
 				case 'org.eclipse.emf.ecore.resource.Resource': return 'null'
 				case 'org.eclipse.emf.ecore.resource.ResourceSet': return 'null'
-				case 'short': return '0'
-				case 'java.lang.Short': return '0'
 				case 'java.lang.String': return "''"
 				case 'org.eclipse.emf.common.util.TreeIterator': return 'null'
 				case 'java.lang.reflect.InvocationTargetException': return 'null'
+				default: return type.defaultValue.toString	
 			}
 
 		}
