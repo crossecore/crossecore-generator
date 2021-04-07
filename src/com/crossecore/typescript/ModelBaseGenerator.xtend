@@ -55,7 +55,7 @@ class ModelBaseGenerator extends EcoreVisitor{
 		
 	
 	override caseEPackage (EPackage epackage){
-		var List<EClass> sortedEClasses = DependencyManager.sortEClasses(epackage);
+		var List<EClass> sortedEClasses = DependencyManager.sortEClasses(epackage).filter[c|!c.interface].toList
 		
 		for(EClass eclass : sortedEClasses){
 			tt.clearImports;
@@ -96,277 +96,276 @@ class ModelBaseGenerator extends EcoreVisitor{
 		var invariants = if(eAnnotation!==null) eAnnotation.getDetails() else new BasicEMap();
 		
 
-		if(!e.interface){
+		
+		var allAttributes = new BasicEList<EAttribute>();
+		var allReferences = new BasicEList<EReference>();
+		var allEStructuralFeatures = new BasicEList<EStructuralFeature>();
+		var allOperations = new HashSet<EOperation>();
+		var referencesSingle = new HashSet<EReference>();
+		var referencesWithOpposite = new HashSet<EReference>();
+		var referencesWithOppositeNonMany = new HashSet<EReference>();
+		
+		allReferences = new BasicEList<EReference>(e.EAllReferences);
+		if(e.ESuperTypes.length>0 && !e.ESuperTypes.get(0).interface){
 			
-			var allAttributes = new BasicEList<EAttribute>();
-			var allReferences = new BasicEList<EReference>();
-			var allEStructuralFeatures = new BasicEList<EStructuralFeature>();
-			var allOperations = new HashSet<EOperation>();
-			var referencesSingle = new HashSet<EReference>();
-			var referencesWithOpposite = new HashSet<EReference>();
-			var referencesWithOppositeNonMany = new HashSet<EReference>();
-			
-			allReferences = new BasicEList<EReference>(e.EAllReferences);
-			if(e.ESuperTypes.length>0){
-				
-				var minus = e.ESuperTypes.get(0).EAllReferences;
-				allReferences.removeAll(minus); 
-			}
-			
-			allAttributes = new BasicEList<EAttribute>(e.EAllAttributes);
-			if(e.ESuperTypes.length>0){
-				
-				var minus = e.ESuperTypes.get(0).EAllAttributes;
-				allAttributes.removeAll(minus); 
-			}
-
-			
-			var nonDirectSupertypes = new BasicEList<EClass>();
-			
-			if(e.ESuperTypes.size>1){
-				
-
-				nonDirectSupertypes.addAll(e.ESuperTypes.subList(1, e.ESuperTypes.size).filter[c | !c.abstract && !c.interface])
-			}
-			
-			allEStructuralFeatures.addAll(allAttributes);
-			allEStructuralFeatures.addAll(allReferences);
-			
-			
-			for(EReference ref:allReferences){
-				
-				if(!ref.many && ref.changeable){
-					referencesSingle.add(ref);
-				}
-				
-				if(ref.EOpposite!==null){
-					referencesWithOpposite.add(ref);
-					
-					if(!ref.many){
-						referencesWithOppositeNonMany.add(ref);	
-					}
-				}
-			}
-			
-			
-			if(!e.ESuperTypes.empty && !e.ESuperTypes.get(0).interface){
-				
-
-				
-				//allAttributes.addAll(e.EAttributes);
-				//allReferences.addAll(e.EReferences);
-				
-				allOperations = new HashSet<EOperation>(e.EAllOperations);
-				allOperations.removeAll(Utils.getInheritedOperations(e));
-			}
-			else{
-				//EClass inherits from EObject, but do want to exclude the EOperations from EObject, because we want to use the implementation from BasicEObjectImpl
-				//allAttributes = Utils.nonEObjectEAttributes(e.EAllAttributes);
-				//allReferences = Utils.nonEObjectEReferences(e.EAllReferences);
-				allOperations = Utils.nonEObjectEOperations(e.EAllOperations);
-	
-			}
-
-			var overloading = new HashMap<String, List<EOperation>>();
-			
-			for(EOperation op : allOperations){
-				
-				var overloaded = overloading.get(op.name);
-				if(overloaded===null){
-					overloaded = new ArrayList<EOperation>();
-				}
-				overloaded.add(op);
-				overloading.put(op.name, overloaded);
-						
-			}
-			
-			return
-			'''
-			
-				export class «id.EClassBase(e)»«FOR ETypeParameter param : e.ETypeParameters BEFORE '<' SEPARATOR ',' AFTER '>'»«id.doSwitch(param)»«ENDFOR»
-				extends «IF e.ESuperTypes.isEmpty || e.ESuperTypes.get(0).interface»BasicEObjectImpl«tt.import_(EcorePackage.eINSTANCE, "BasicEObjectImpl")»«ELSE»«id.EClassImpl(e.ESuperTypes.get(0))»«tt.import_(e.EPackage, id.EClassImpl(e.ESuperTypes.get(0)))»«ENDIF»
-				implements «id.doSwitch(e)»«tt.import_(e.EPackage, id.doSwitch(e))»
-				{
-					«FOR EAttribute feature:allAttributes»«doSwitch(feature)»«ENDFOR»
-					«FOR EReference feature:allReferences»«doSwitch(feature)»«ENDFOR»
-	
-					«FOR String name : overloading.keySet»
-						«IF overloading.get(name).size > 1»
-							«operationSplit(overloading.get(name))»
-						«ENDIF»
-						
-						«FOR EOperation eoperation : overloading.get(name)»
-							«IF overloading.get(name).size > 1»
-								«caseEOperation(eoperation, true)»
-							«ELSE»
-								«caseEOperation(eoperation)»
-							«ENDIF»
-						«ENDFOR»
-					«ENDFOR»
-				
-					public static eStaticClass:EClass;
-					
-					protected eStaticClass():EClass{
-						
-						return «id.EClassBase(e)».eStaticClass;
-					}
-				
-					«IF !referencesWithOpposite.empty»
-					public eInverseAdd(otherEnd:InternalEObject, featureID:number, msgs:NotificationChain): NotificationChain{
-						switch (featureID) {
-							«FOR EReference ref:referencesWithOpposite»
-								case «id.literalRef(e, ref)»:
-									«IF !ref.many»
-										«IF ref.EOpposite.containment»
-										if (this.eInternalContainer() != null) {
-											msgs = this.eBasicRemoveFromContainer(msgs);
-										}
-										«ELSE»
-										if (this.«ref.name» != null){
-											msgs = this.«ref.name».eInverseRemove(this, «id.literalRef(ref)», /*«id.doSwitch(ref.EType)»*/ null, msgs);
-										}
-										«ENDIF»
-										return this.«id.basicSetEReference(ref)»(otherEnd as «id.doSwitch(ref.EType)», msgs);
-									«ELSE»								
-										return this.«id.doSwitch(ref)».basicAdd(otherEnd as «id.doSwitch(ref.EType)», msgs);
-									«ENDIF»
-							«ENDFOR»
-						}
-						return super.eInverseAdd(otherEnd, featureID, msgs);
-					}
-					
-					public eInverseRemove(otherEnd:InternalEObject, featureID:number, msgs:NotificationChain):NotificationChain{
-						switch (featureID) {
-							«FOR EReference ref:referencesWithOpposite»
-								case «id.literalRef(e, ref)»:
-									«IF !ref.many»
-										return this.«id.basicSetEReference(ref)»(null, msgs);
-									«ELSE»
-										return this.«id.doSwitch(ref)».basicRemove(otherEnd as «id.doSwitch(ref.EType)», msgs);
-									«ENDIF»
-							«ENDFOR»
-						}
-						return super.eInverseRemove(otherEnd, featureID, msgs);
-					}
-					
-					«ENDIF»
-				
-					«IF !referencesSingle.empty»
-						«FOR EReference ref:referencesSingle»
-							«IF ref.EOpposite !== null && ref.EOpposite.containment»
-							public «id.basicSetEReference(ref)»(newobj:«id.doSwitch(ref.EType)», msgs:NotificationChain):NotificationChain {
-									msgs = this.eBasicSetContainer(newobj, «id.literalRef(ref)», msgs);
-									return msgs;
-							}
-							«ELSE»
-							public «id.basicSetEReference(ref)»(newobj:«id.doSwitch(ref.EType)», msgs:NotificationChain):NotificationChain {
-								const oldobj = this.«id.privateEStructuralFeature(ref)»;
-								this.«id.privateEStructuralFeature(ref)» = newobj;
-								if (this.eNotificationRequired()) {
-									let notification = new ENotificationImpl(this, NotificationImpl.SET, «id.literalRef(ref)», oldobj, newobj);
-									if (msgs == null){
-										msgs = notification;
-									}
-									else{
-										msgs.add(notification);
-									}
-								}
-								return msgs;
-							}
-							«ENDIF»
-						«ENDFOR»
-						
-					«ENDIF»
-				
-					public eGet_number_boolean_boolean(featureID:number, resolve:boolean, coreType:boolean):any{
-						«IF !e.EAllStructuralFeatures.empty»
-						switch (featureID) {
-							«FOR EStructuralFeature feature:e.EAllStructuralFeatures»
-							«tt.import_(feature.EContainingClass.EPackage, id.EPackagePackageLiterals(feature.EContainingClass.EPackage))»
-							case «id.literalRef(e, feature)»:
-								return this.«id.doSwitch(feature)»;
-							«ENDFOR»
-						}
-						«ENDIF»
-						//return this.«id.super_eGetRef(e)»(featureID, resolve, coreType);
-						return super.eGet(featureID, resolve, coreType);
-					}
-					
-					public eSet_number_any(featureID:number, newValue:any):void {
-						switch (featureID) {
-							«FOR EStructuralFeature feature:allEStructuralFeatures»
-								«IF !feature.derived && feature.changeable»
-								case «id.literalRef(e, feature)»:
-									«IF feature instanceof EReference && (feature as EReference)?.containment && feature?.EType?.instanceClassName?.equals("java.util.Map$Entry")»
-									(<EcoreEMap<«tt.translateType((feature.EType as EClass).getEStructuralFeature("key").EGenericType)», «tt.translateType((feature.EType as EClass).getEStructuralFeature("value").EGenericType)»>>this.«id.doSwitch(feature)»).set(newValue);
-									return;
-									«ELSEIF feature.many»
-										this.«id.doSwitch(feature)».clear();
-										«tt.import_(EcorePackage.eINSTANCE, "AbstractCollection")»
-										this.«id.doSwitch(feature)».addAll(newValue);
-										return;
-									«ELSE»
-										this.«id.doSwitch(feature)» = <«tt.translateType(feature.EGenericType)»> newValue;
-										return;
-									«ENDIF»
-								«ENDIF»
-							«ENDFOR»
-						}
-						super.eSet_number_any(featureID, newValue);
-					}
-	
-					«IF nonDirectSupertypes.size()>0»
-					public eBaseStructuralFeatureID(derivedFeatureID:number, baseClass:Function):number {
-						«FOR parent:nonDirectSupertypes»
-						«IF !parent.interface»
-						«tt.import_(e.EPackage, id.EClassImpl(parent))»
-						if (baseClass === «id.EClassImpl(parent)») {
-							switch (derivedFeatureID) {
-								«FOR feature:parent.EStructuralFeatures»
-								case «id.EPackagePackageLiterals(e.EPackage)».«id.literal(e, feature)»: return «id.EPackagePackageLiterals(e.EPackage)».«id.literal(parent, feature)»;
-								«ENDFOR»
-								default: return -1;
-							}
-						}
-						«ENDIF»
-						«ENDFOR»
-						return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
-					}
-					
-					public eDerivedStructuralFeatureID_number_Function(baseFeatureID:number, baseClass:Function):number {
-						«FOR parent:nonDirectSupertypes»
-						«IF !parent.interface»
-						«tt.import_(e.EPackage, id.EClassImpl(parent))»
-						if (baseClass === «id.EClassImpl(parent)») {
-							switch (baseFeatureID) {
-								«FOR feature:parent.EStructuralFeatures»
-								case «id.EPackagePackageLiterals(e.EPackage)».«id.literal(parent, feature)»: return «id.EPackagePackageLiterals(e.EPackage)».«id.literal(e, feature)»;
-								«ENDFOR»
-								default: return -1;
-							}
-						}
-						«ENDIF»
-						«ENDFOR»
-						return super.eDerivedStructuralFeatureID_number_Function(baseFeatureID, baseClass);
-					}
-					«ENDIF»	
-					
-					«FOR String invariant:invariants.keySet»
-					«tt.import_(EcorePackage.eINSTANCE, "DiagnosticChain")»
-					//TODO context is map<object, object>
-					public «invariant»(diagnostics:DiagnosticChain, context:any):boolean
-					{
-						/*
-						«invariants.get(invariant)»;
-						*/
-						return true;«/*TODO OCL Translator*/»
-					}
-		        	«ENDFOR»
-				}
-				
-			'''
-			
+			var minus = e.ESuperTypes.get(0).EAllReferences;
+			allReferences.removeAll(minus); 
 		}
+		
+		allAttributes = new BasicEList<EAttribute>(e.EAllAttributes);
+		if(e.ESuperTypes.length>0 && !e.ESuperTypes.get(0).interface){
+			
+			var minus = e.ESuperTypes.get(0).EAllAttributes;
+			allAttributes.removeAll(minus); 
+		}
+
+		
+		var nonDirectSupertypes = new BasicEList<EClass>();
+		
+		if(e.ESuperTypes.size>1){
+			
+			//TODO should abstract really be filtered out?
+			nonDirectSupertypes.addAll(e.ESuperTypes.subList(1, e.ESuperTypes.size).filter[c | !c.abstract && !c.interface])
+		}
+		
+		allEStructuralFeatures.addAll(allAttributes);
+		allEStructuralFeatures.addAll(allReferences);
+		
+		
+		for(EReference ref:allReferences){
+			
+			if(!ref.many && ref.changeable){
+				referencesSingle.add(ref);
+			}
+			
+			if(ref.EOpposite!==null){
+				referencesWithOpposite.add(ref);
+				
+				if(!ref.many){
+					referencesWithOppositeNonMany.add(ref);	
+				}
+			}
+		}
+		
+		
+		if(!e.ESuperTypes.empty && !e.ESuperTypes.get(0).interface){
+			
+
+			
+			//allAttributes.addAll(e.EAttributes);
+			//allReferences.addAll(e.EReferences);
+			
+			allOperations = new HashSet<EOperation>(e.EAllOperations);
+			allOperations.removeAll(Utils.getInheritedOperations(e));
+		}
+		else{
+			//EClass inherits from EObject, but do want to exclude the EOperations from EObject, because we want to use the implementation from BasicEObjectImpl
+			//allAttributes = Utils.nonEObjectEAttributes(e.EAllAttributes);
+			//allReferences = Utils.nonEObjectEReferences(e.EAllReferences);
+			allOperations = Utils.nonEObjectEOperations(e.EAllOperations);
+
+		}
+
+		var overloading = new HashMap<String, List<EOperation>>();
+		
+		for(EOperation op : allOperations){
+			
+			var overloaded = overloading.get(op.name);
+			if(overloaded===null){
+				overloaded = new ArrayList<EOperation>();
+			}
+			overloaded.add(op);
+			overloading.put(op.name, overloaded);
+					
+		}
+		
+		return
+		'''
+		
+			export class «id.EClassBase(e)»«FOR ETypeParameter param : e.ETypeParameters BEFORE '<' SEPARATOR ',' AFTER '>'»«id.doSwitch(param)»«ENDFOR»
+			extends «IF e.ESuperTypes.isEmpty || e.ESuperTypes.get(0).interface»BasicEObjectImpl«tt.import_(EcorePackage.eINSTANCE, "BasicEObjectImpl")»«ELSE»«id.EClassImpl(e.ESuperTypes.get(0))»«tt.import_(e.EPackage, id.EClassImpl(e.ESuperTypes.get(0)))»«ENDIF»
+			implements «id.doSwitch(e)»«tt.import_(e.EPackage, id.doSwitch(e))»
+			{
+				«FOR EAttribute feature:allAttributes»«doSwitch(feature)»«ENDFOR»
+				«FOR EReference feature:allReferences»«doSwitch(feature)»«ENDFOR»
+
+				«FOR String name : overloading.keySet»
+					«IF overloading.get(name).size > 1»
+						«operationSplit(overloading.get(name))»
+					«ENDIF»
+					
+					«FOR EOperation eoperation : overloading.get(name)»
+						«IF overloading.get(name).size > 1»
+							«caseEOperation(eoperation, true)»
+						«ELSE»
+							«caseEOperation(eoperation)»
+						«ENDIF»
+					«ENDFOR»
+				«ENDFOR»
+			
+				public static eStaticClass:EClass;
+				
+				protected eStaticClass():EClass{
+					
+					return «id.EClassBase(e)».eStaticClass;
+				}
+			
+				«IF !referencesWithOpposite.empty»
+				public eInverseAdd(otherEnd:InternalEObject, featureID:number, msgs:NotificationChain): NotificationChain{
+					switch (featureID) {
+						«FOR EReference ref:referencesWithOpposite»
+							case «id.literalRef(e, ref)»:
+								«IF !ref.many»
+									«IF ref.EOpposite.containment»
+									if (this.eInternalContainer() != null) {
+										msgs = this.eBasicRemoveFromContainer(msgs);
+									}
+									«ELSE»
+									if (this.«ref.name» != null){
+										msgs = this.«ref.name».eInverseRemove(this, «id.literalRef(ref)», /*«id.doSwitch(ref.EType)»*/ null, msgs);
+									}
+									«ENDIF»
+									return this.«id.basicSetEReference(ref)»(otherEnd as «id.doSwitch(ref.EType)», msgs);
+								«ELSE»								
+									return this.«id.doSwitch(ref)».basicAdd(otherEnd as «id.doSwitch(ref.EType)», msgs);
+								«ENDIF»
+						«ENDFOR»
+					}
+					return super.eInverseAdd(otherEnd, featureID, msgs);
+				}
+				
+				public eInverseRemove(otherEnd:InternalEObject, featureID:number, msgs:NotificationChain):NotificationChain{
+					switch (featureID) {
+						«FOR EReference ref:referencesWithOpposite»
+							case «id.literalRef(e, ref)»:
+								«IF !ref.many»
+									return this.«id.basicSetEReference(ref)»(null, msgs);
+								«ELSE»
+									return this.«id.doSwitch(ref)».basicRemove(otherEnd as «id.doSwitch(ref.EType)», msgs);
+								«ENDIF»
+						«ENDFOR»
+					}
+					return super.eInverseRemove(otherEnd, featureID, msgs);
+				}
+				
+				«ENDIF»
+			
+				«IF !referencesSingle.empty»
+					«FOR EReference ref:referencesSingle»
+						«IF ref.EOpposite !== null && ref.EOpposite.containment»
+						public «id.basicSetEReference(ref)»(newobj:«id.doSwitch(ref.EType)», msgs:NotificationChain):NotificationChain {
+								msgs = this.eBasicSetContainer(newobj, «id.literalRef(ref)», msgs);
+								return msgs;
+						}
+						«ELSE»
+						public «id.basicSetEReference(ref)»(newobj:«id.doSwitch(ref.EType)», msgs:NotificationChain):NotificationChain {
+							const oldobj = this.«id.privateEStructuralFeature(ref)»;
+							this.«id.privateEStructuralFeature(ref)» = newobj;
+							if (this.eNotificationRequired()) {
+								let notification = new ENotificationImpl(this, NotificationImpl.SET, «id.literalRef(ref)», oldobj, newobj);
+								if (msgs == null){
+									msgs = notification;
+								}
+								else{
+									msgs.add(notification);
+								}
+							}
+							return msgs;
+						}
+						«ENDIF»
+					«ENDFOR»
+					
+				«ENDIF»
+			
+				public eGet_number_boolean_boolean(featureID:number, resolve:boolean, coreType:boolean):any{
+					«IF !e.EAllStructuralFeatures.empty»
+					switch (featureID) {
+						«FOR EStructuralFeature feature:e.EAllStructuralFeatures»
+						«tt.import_(feature.EContainingClass.EPackage, id.EPackagePackageLiterals(feature.EContainingClass.EPackage))»
+						case «id.literalRef(e, feature)»:
+							return this.«id.doSwitch(feature)»;
+						«ENDFOR»
+					}
+					«ENDIF»
+					//return this.«id.super_eGetRef(e)»(featureID, resolve, coreType);
+					return super.eGet(featureID, resolve, coreType);
+				}
+				
+				public eSet_number_any(featureID:number, newValue:any):void {
+					switch (featureID) {
+						«FOR EStructuralFeature feature:allEStructuralFeatures»
+							«IF !feature.derived && feature.changeable»
+							case «id.literalRef(e, feature)»:
+								«IF feature instanceof EReference && (feature as EReference)?.containment && feature?.EType?.instanceClassName?.equals("java.util.Map$Entry")»
+								(<EcoreEMap<«tt.translateType((feature.EType as EClass).getEStructuralFeature("key").EGenericType)», «tt.translateType((feature.EType as EClass).getEStructuralFeature("value").EGenericType)»>>this.«id.doSwitch(feature)»).set(newValue);
+								return;
+								«ELSEIF feature.many»
+									this.«id.doSwitch(feature)».clear();
+									«tt.import_(EcorePackage.eINSTANCE, "AbstractCollection")»
+									this.«id.doSwitch(feature)».addAll(newValue);
+									return;
+								«ELSE»
+									this.«id.doSwitch(feature)» = <«tt.translateType(feature.EGenericType)»> newValue;
+									return;
+								«ENDIF»
+							«ENDIF»
+						«ENDFOR»
+					}
+					super.eSet_number_any(featureID, newValue);
+				}
+
+				«IF nonDirectSupertypes.size()>0»
+				public eBaseStructuralFeatureID(derivedFeatureID:number, baseClass:Function):number {
+					«FOR parent:nonDirectSupertypes»
+					«IF !parent.interface»
+					«tt.import_(e.EPackage, id.EClassImpl(parent))»
+					if (baseClass === «id.EClassImpl(parent)») {
+						switch (derivedFeatureID) {
+							«FOR feature:parent.EStructuralFeatures»
+							case «id.EPackagePackageLiterals(e.EPackage)».«id.literal(e, feature)»: return «id.EPackagePackageLiterals(e.EPackage)».«id.literal(parent, feature)»;
+							«ENDFOR»
+							default: return -1;
+						}
+					}
+					«ENDIF»
+					«ENDFOR»
+					return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+				}
+				
+				public eDerivedStructuralFeatureID_number_Function(baseFeatureID:number, baseClass:Function):number {
+					«FOR parent:nonDirectSupertypes»
+					«IF !parent.interface»
+					«tt.import_(e.EPackage, id.EClassImpl(parent))»
+					if (baseClass === «id.EClassImpl(parent)») {
+						switch (baseFeatureID) {
+							«FOR feature:parent.EStructuralFeatures»
+							case «id.EPackagePackageLiterals(e.EPackage)».«id.literal(parent, feature)»: return «id.EPackagePackageLiterals(e.EPackage)».«id.literal(e, feature)»;
+							«ENDFOR»
+							default: return -1;
+						}
+					}
+					«ENDIF»
+					«ENDFOR»
+					return super.eDerivedStructuralFeatureID_number_Function(baseFeatureID, baseClass);
+				}
+				«ENDIF»	
+				
+				«FOR String invariant:invariants.keySet»
+				«tt.import_(EcorePackage.eINSTANCE, "DiagnosticChain")»
+				//TODO context is map<object, object>
+				public «invariant»(diagnostics:DiagnosticChain, context:any):boolean
+				{
+					/*
+					«invariants.get(invariant)»;
+					*/
+					return true;«/*TODO OCL Translator*/»
+				}
+	        	«ENDFOR»
+			}
+			
+		'''
+		
+	
 	
 	}
 	

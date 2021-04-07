@@ -40,7 +40,7 @@ class ModelImplGenerator extends EcoreVisitor{
 	}
 	
 	override caseEPackage (EPackage epackage){
-		var List<EClass> sortedEClasses = DependencyManager.sortEClasses(epackage);
+		var List<EClass> sortedEClasses = DependencyManager.sortEClasses(epackage).filter[c|!c.interface].toList
 		
 		for(EClass eclass : sortedEClasses){
 			
@@ -67,24 +67,23 @@ class ModelImplGenerator extends EcoreVisitor{
 	
 	override caseEClass(EClass e){
 
-		if(!e.interface){
 			
-			//TODO what about allInstances on interfaces?
-			
-			tt.import_(EcorePackage.eINSTANCE, "Set")
-			tt.import_(e);
-			tt.import_(e.EPackage, id.EClassBase(e));
-			
-			//TODO use importmanager
-			'''
-			export class «id.EClassImpl(e)»«FOR ETypeParameter param : e.ETypeParameters BEFORE '<' SEPARATOR ',' AFTER '>'»«id.doSwitch(param)»«ENDFOR»
-			extends «id.EClassBase(e)»«FOR ETypeParameter param : e.ETypeParameters BEFORE '<' SEPARATOR ',' AFTER '>'»«id.doSwitch(param)»«ENDFOR»
-			{
-				//implement your generated class here
-			}
-			'''
+		//TODO what about allInstances on interfaces?
 		
+		tt.import_(EcorePackage.eINSTANCE, "Set")
+		tt.import_(e);
+		tt.import_(e.EPackage, id.EClassBase(e));
+		
+		//TODO use importmanager
+		'''
+		export class «id.EClassImpl(e)»«FOR ETypeParameter param : e.ETypeParameters BEFORE '<' SEPARATOR ',' AFTER '>'»«id.doSwitch(param)»«ENDFOR»
+		extends «id.EClassBase(e)»«FOR ETypeParameter param : e.ETypeParameters BEFORE '<' SEPARATOR ',' AFTER '>'»«id.doSwitch(param)»«ENDFOR»
+		{
+			//implement your generated class here
 		}
+		'''
+		
+		
 	
 	}
 
