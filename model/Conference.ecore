@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ecore:EPackage [
+<!ENTITY _0 "http://www.eclipse.org/emf/2002/Ecore">
+]>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="conference" nsURI="conference" nsPrefix="conference">
+  <eAnnotations source="http://www.eclipse.org/OCL/Import">
+    <details key="ecore" value="http://www.eclipse.org/emf/2002/Ecore"/>
+  </eAnnotations>
+  <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+    <details key="invocationDelegates" value="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot"/>
+    <details key="settingDelegates" value="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot"/>
+    <details key="validationDelegates" value="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot"/>
+  </eAnnotations>
+  <eClassifiers xsi:type="ecore:EClass" name="Room" eSuperTypes="#//NamedElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Person">
+    <eOperations name="meetsPersonAt" ordered="false" upperBound="-1" eType="#//Talk">
+      <eParameters name="other" eType="#//Person"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="worksFor" eType="#//Organization"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="firstName" eType="ecore:EDataType &_0;#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="lastName" eType="ecore:EDataType &_0;#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="gives" upperBound="-1"
+        eType="#//Talk" eOpposite="#//Talk/speakers"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attends" upperBound="-1"
+        eType="#//Talk" eOpposite="#//Talk/attendees"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Organization" eSuperTypes="#//NamedElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Track" eSuperTypes="#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="talks" upperBound="-1"
+        eType="#//Talk" derived="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
+        <details key="derivation" value="self.conference.talks->select(t:Talk|t.track = self)"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="conference" eType="#//Conference"
+        eOpposite="#//Conference/tracks"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Talk">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="title" eType="ecore:EDataType &_0;#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="timeBegin" eType="ecore:EDataType &_0;#//EDate"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="timeEnd" eType="ecore:EDataType &_0;#//EDate"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="track" eType="#//Track"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="room" eType="#//Room"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="speakers" upperBound="-1"
+        eType="#//Person" eOpposite="#//Person/gives"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attendees" upperBound="-1"
+        eType="#//Person" eOpposite="#//Person/attends"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Conference" eSuperTypes="#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="venue" eType="#//Venue"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="talks" upperBound="-1"
+        eType="#//Talk" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attendees" upperBound="-1"
+        eType="#//Person" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tracks" upperBound="-1"
+        eType="#//Track" containment="true" eOpposite="#//Track/conference"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="organizations" upperBound="-1"
+        eType="#//Organization" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Venue" eSuperTypes="#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rooms" upperBound="-1"
+        eType="#//Room" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NamedElement" abstract="true" interface="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType &_0;#//EString"/>
+  </eClassifiers>
+</ecore:EPackage>
