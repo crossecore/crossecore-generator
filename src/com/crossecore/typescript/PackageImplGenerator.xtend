@@ -28,7 +28,6 @@ import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EDataType
 import org.eclipse.emf.ecore.EEnum
-import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EOperation
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EParameter
@@ -47,7 +46,6 @@ class PackageImplGenerator extends EcoreVisitor{
 	
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);
-		
 
 	}
 	
@@ -212,11 +210,9 @@ class PackageImplGenerator extends EcoreVisitor{
 						«ENDFOR»
 						
 						«FOR EOperation o:e.EOperations»
-						//TODO add initEOperation to EPackageImpl
 						op = this.initEOperation_3(this.«id.getEOperation(o)»(), «IF o.EType===null»null«ELSEIF Utils.isEcoreEPackage(o.EType.EPackage)»this.ecorePackage.«id.getEClassifier(o.EType)»()«ELSE»this.«id.getEClassifier(o.EType)»()«ENDIF», "«o.name»", «o.lowerBound», «o.upperBound», «IF !o.unique»!«ENDIF»EPackageImpl.IS_UNIQUE, «IF !o.ordered»!«ENDIF»EPackageImpl.IS_ORDERED);
 						«FOR EParameter p:o.EParameters»
-						//TODO add addEParameter to EPackageImpl
-						//this.addEParameter_3(op, this.«id.getEClass(o.EContainingClass)»(), "«p.name»", «p.lowerBound», «p.upperBound», «IF !p.unique»!«ENDIF»EPackageImpl.IS_UNIQUE, «IF !p.ordered»!«ENDIF»EPackageImpl.IS_ORDERED);
+						this.addEParameter(op, this.«id.getEClass(o.EContainingClass)»(), "«p.name»", «p.lowerBound», «p.upperBound», «IF !p.unique»!«ENDIF»EPackageImpl.IS_UNIQUE, «IF !p.ordered»!«ENDIF»EPackageImpl.IS_ORDERED);
 						«ENDFOR»
 						«ENDFOR»
 						
