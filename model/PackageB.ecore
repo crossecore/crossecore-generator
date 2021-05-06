@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="packageb" nsURI="packageb" nsPrefix="packageb">
+  <eClassifiers xsi:type="ecore:EClass" name="MyClass" eSuperTypes="PackageA.ecore#//MyClass">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="reference" eType="ecore:EClass PackageA.ecore#//Reference"
+        containment="true"/>
+  </eClassifiers>
+</ecore:EPackage>

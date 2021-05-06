@@ -66,6 +66,11 @@ abstract class EcoreVisitor extends EcoreSwitch<CharSequence>{
 		var targetFile = sb.toString;
 		var x = new File(this.path+targetFile);
 		
+		if(!x.exists){
+			
+			x.parentFile.mkdirs()
+		}
+		
 		if(!override_ && x.exists){
 			return;
 		}

@@ -39,6 +39,8 @@ import org.eclipse.emf.ecore.EPackage
 import com.crossecore.csharp.VisualStudioProjectGenerator
 import org.apache.log4j.Logger
 import org.apache.log4j.LogManager
+import org.eclipse.emf.ecore.util.EcoreValidator
+import org.eclipse.emf.ecore.util.Diagnostician
 
 class CrossEcore {
 	
@@ -79,11 +81,11 @@ class CrossEcore {
 						     .required(false)
 						     .hasArg()
 						     .argName("boolean")
-						     .desc("boolean=0 skips generation of html documentation. boolean=1 enables generation of html documentation. Default is 1.")
+						     .desc("boolean=0 skips generation of html documentation. boolean=1 enables generation of html documentation. Default is 0.")
 						     .build();
 		
-                               
-		
+        
+        
 		options.addOption(ecorefile);
 		options.addOption(language);
 		options.addOption(path);
@@ -145,7 +147,7 @@ class CrossEcore {
 		try{
 			
 			if(_documentation===null){
-				generateDocumentation = true;
+				generateDocumentation = false;
 			}
 			else{
 				generateDocumentation = if(Integer.parseInt(_documentation)==1) true else false;
@@ -161,7 +163,7 @@ class CrossEcore {
 		if(errors.size() ==0 ){
 			
 			if(_language.equals("typescript")){
-				createTypeScript(_ecorefile, _path);
+				createTypeScript(_ecorefile, _path+"/");
 			}
 			else if(_language.equals("java")){
 				createJava(_ecorefile, _path+"/");
@@ -278,23 +280,32 @@ class CrossEcore {
 	}
 	
 	
+	private static def loadAndValidate(String ecorefile, String base){
 		
-	
-	private static def createTypeScript(String ecorefile, String base){
 		val ecoremodel = new File(ecorefile);
 		
 		var mypackage = new EcoreLoader().load(ecoremodel) as EPackage;
+        val diagnostics = Diagnostician.INSTANCE.validate(mypackage)
+        
+        
+		return mypackage
+        
+
+	}
+	
+	private static def createTypeScript(String ecorefile, String base){
 		
+		var mypackage = loadAndValidate(ecorefile, base);
 		
-		new com.crossecore.typescript.ModelGenerator(base, "%s.ts", mypackage).write();
-		new com.crossecore.typescript.ModelBaseGenerator(base, "%sBase.ts", mypackage).write();	
-		new com.crossecore.typescript.ModelImplGenerator(base, "%sImpl.ts", mypackage).write();
-		new com.crossecore.typescript.PackageGenerator(base, "%sPackage.ts", mypackage).write();
-		new com.crossecore.typescript.PackageImplGenerator(base, "%sPackageImpl.ts", mypackage).write();
-		new com.crossecore.typescript.PackageLiteralsGenerator(base, "%sPackageLiterals.ts", mypackage).write();
-		new com.crossecore.typescript.SwitchGenerator(base, "%sSwitch.ts", mypackage).write();
-		new com.crossecore.typescript.FactoryGenerator(base, "%sFactory.ts", mypackage).write();
-		new com.crossecore.typescript.FactoryImplGenerator(base, "%sFactoryImpl.ts", mypackage).write();
+		new com.crossecore.typescript.ModelGenerator(base, "src/%s.ts", mypackage).write();
+		new com.crossecore.typescript.ModelBaseGenerator(base, "src/%sBase.ts", mypackage).write();	
+		new com.crossecore.typescript.ModelImplGenerator(base, "src/%sImpl.ts", mypackage).write();
+		new com.crossecore.typescript.PackageGenerator(base, "src/%sPackage.ts", mypackage).write();
+		new com.crossecore.typescript.PackageImplGenerator(base, "src/%sPackageImpl.ts", mypackage).write();
+		new com.crossecore.typescript.PackageLiteralsGenerator(base, "src/%sPackageLiterals.ts", mypackage).write();
+		new com.crossecore.typescript.SwitchGenerator(base, "src/%sSwitch.ts", mypackage).write();
+		new com.crossecore.typescript.FactoryGenerator(base, "src/%sFactory.ts", mypackage).write();
+		new com.crossecore.typescript.FactoryImplGenerator(base, "src/%sFactoryImpl.ts", mypackage).write();
 		new com.crossecore.typescript.NpmPackageGenerator(base, "package.json", mypackage).write();
 		new com.crossecore.typescript.TSConfigGenerator(base, "tsconfig.json", mypackage).write();
 		

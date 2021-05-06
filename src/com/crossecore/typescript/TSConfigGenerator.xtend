@@ -20,6 +20,7 @@ package com.crossecore.typescript;
 
 import org.eclipse.emf.ecore.EPackage
 import com.crossecore.EcoreVisitor
+import com.crossecore.Utils
 
 class TSConfigGenerator extends EcoreVisitor{
 	
@@ -33,6 +34,10 @@ class TSConfigGenerator extends EcoreVisitor{
 	
 	override caseEPackage(EPackage epackage){
 		
+
+		
+		val dependencies = Utils.getDependencies(epackage)
+		
 		return 
 		'''
 		{
@@ -40,20 +45,15 @@ class TSConfigGenerator extends EcoreVisitor{
 		  "compilerOptions": {
 		    "baseUrl": "./",
 		    "paths": {
-		      "ecore/*": ["node_modules/crossecore/lib/*"],
-		      "«epackage.name»/*": ["./*"]
+		      "ecore/*": ["node_modules/crossecore/typings/*"],
+		      «FOR EPackage d : dependencies»
+		      "«d.name»/*": ["node_modules/«d.name»/typings/*"],
+		      «ENDFOR»
+		      "«epackage.name»/*": ["./src/*"]
 		    },    
-		    "outDir": "./dist/out-tsc",
 		    "sourceMap": true,
-		    "declaration": false,
-		    "module": "es2015",
-		    "moduleResolution": "node",
-		    "emitDecoratorMetadata": true,
-		    "experimentalDecorators": true,
+		    "module": "ESNext",
 		    "target": "es5",
-		    "typeRoots": [
-		      "node_modules/@types"
-		    ],
 		    "lib": [
 		      "es2017",
 		      "dom"

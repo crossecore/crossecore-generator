@@ -20,6 +20,7 @@ package com.crossecore.typescript;
 
 import com.crossecore.EcoreVisitor
 import org.eclipse.emf.ecore.EPackage
+import com.crossecore.Utils
 
 class NpmPackageGenerator extends EcoreVisitor{
 	
@@ -33,23 +34,34 @@ class NpmPackageGenerator extends EcoreVisitor{
 	
 	override caseEPackage(EPackage epackage){
 		
+		val dependencies = Utils.getDependencies(epackage)
 		return 
 		'''
 		{
 		  "name": "«epackage.name»",
 		  "version": "1.0.0",
 		  "scripts": {
-		    "build": "tsc -p .",
-		    "test": "jest"
+		    "build": "yarn run declaration && rollup --config rollup.config.js",
+		    "test": "jest",
+		    "postinstall": "cti create ./src",
+		    "declaration": "tsc -p . --emitDeclarationOnly --declaration true --declarationDir ./typings",
+			"linking": "«FOR EPackage d:dependencies SEPARATOR " && "»yarn link «d.name»«ENDFOR»"
 		  },
-		  "main": "lib/index.js",
+		  "files": ["dist", "typings"],
+		  "main": "dist/«epackage.name».cjs.min.js",
 		  "private": true,
 		  "dependencies": {
-		  	"crossecore": "^0.1.0"
+		  	"crossecore": "^0.3.0"
 		  },
 		  "devDependencies": {
-		    "typescript": "~3.5.2",
-		  	"jest": "^24.8.0"
+		    "@rollup/plugin-typescript": "^8.2.1",
+		    "create-ts-index": "^1.13.6",
+		    "rollup": "^2.47.0",
+		    "rollup-plugin-cleanup": "^3.2.1",
+		    "rollup-plugin-terser": "^7.0.2",
+		    "ts-jest": "^26.5.6",
+		    "tslib": "^2.2.0",
+		    "typescript": "4.2.4"
 		  }
 		}
 		'''

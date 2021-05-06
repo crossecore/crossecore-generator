@@ -147,6 +147,19 @@ class Utils {
 		
 	}
 	
+	static def getDependencies(EPackage epackage){
+		return epackage
+					.eResource
+					.resourceSet
+					.resources
+					.map[r|r.contents]
+					.flatten
+					.filter[c|c instanceof EPackage]
+					.map[o| o as EPackage]
+					.filter[p|!(p as EPackage).nsURI.equals(epackage.nsURI)]
+					.toList
+	}
+	
 
 
 
