@@ -34,14 +34,6 @@ class GradleGenerator extends EcoreVisitor{
 		'''
 		apply plugin: 'java'
 		
-		sourceSets {
-		    main {
-		        java {
-		            srcDir '.'
-		        }
-		    }
-		}
-		
 		repositories {
 		  jcenter()
 		  maven{

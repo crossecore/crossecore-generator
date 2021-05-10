@@ -27,6 +27,7 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.impl.EcorePackageImpl
 import org.eclipse.emf.ecore.EPackage
+import org.eclipse.emf.common.util.EList
 
 class EcoreLoader {
 
@@ -43,15 +44,14 @@ class EcoreLoader {
 	    m.put("ecore", new XMIResourceFactoryImpl());
 	    m.put("xmi", new XMIResourceFactoryImpl());
 	}
-	def EObject load(File ecoreFile){
+	def EList<EObject> load(File ecoreFile){
 		
 
 		var resource = resourceSet.getResource(URI.createFileURI(ecoreFile.absolutePath), true);
 		
 		resourceSet.getResource(URI.createFileURI(ecoreFile.absolutePath), true);
 		
-	    var eobject = resource.getContents().get(0);
-		return eobject;
+		return resource.getContents();
 	}
 	
 	def void registerURI(String nsURI, EPackage instance){
