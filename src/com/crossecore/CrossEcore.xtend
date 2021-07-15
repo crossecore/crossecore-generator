@@ -142,11 +142,14 @@ class CrossEcore {
 					var valid = true;
 					for(EPackage p:pks){
 						val diagnostics = Diagnostician.INSTANCE.validate(p)
-						
-						if(diagnostics.severity===Diagnostic.ERROR){
-							errors.add('''EPackage «p.nsURI» has error: «diagnostics.message»''');
-							valid = false
+						valid = diagnostics.severity < Diagnostic.ERROR
+						for(Diagnostic d : diagnostics.children){
+							if(diagnostics.severity>=Diagnostic.ERROR){
+								
+								errors.add('''EPackage «p.nsURI» has error: «d.message»''');
+							}
 						}
+						
 					}
 					
 					if(valid){
