@@ -39,11 +39,23 @@ import org.eclipse.ocl.ecore.SetType
 import org.eclipse.emf.ecore.EDataType
 
 class TypeScriptTypeTranslator2 {
+	
+	// the classifier, which the code is currently generated for
+	EClassifier currentClassifier = null;
 
 	HashMap<EPackage, Set<String>> packages2 = new HashMap<EPackage, Set<String>>();
 
 	def clearImports() {
 		packages2.clear;
+	}
+	
+	
+	def clearCurrentClassifier() {
+		currentClassifier = null;
+	}
+
+	def setCurrentClassifier(EClassifier classifier){
+		currentClassifier = classifier;
 	}
 
 	def void import_(EPackage context, EPackage epackage, String name) {
@@ -82,8 +94,10 @@ class TypeScriptTypeTranslator2 {
 			Arrays.sort(list);
 
 			for (String name : list) {
-				
-				result.append('''import {«name»} from "«epackage.name»/«name»";'''+"\n");
+				// add import only iff the TypeScript class which is currently under construction does not match the class, which is to be imported
+				if(!name.equals(currentClassifier === null ? null : currentClassifier.name)){
+					result.append('''import {«name»} from "«epackage.name»/«name»";'''+"\n");
+				}
 				
 				/*
 				if(!Utils.isEqual(epackage,self_) && Utils.isEcoreEPackage(epackage)){
