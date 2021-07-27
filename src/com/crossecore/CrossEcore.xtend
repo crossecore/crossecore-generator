@@ -47,6 +47,7 @@ import org.eclipse.emf.common.util.Diagnostic
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.util.Diagnostician
+import com.crossecore.typescript.RollupConfigGenerator
 
 class CrossEcore {
 	
@@ -319,6 +320,7 @@ class CrossEcore {
 			new com.crossecore.typescript.FactoryImplGenerator(base, '''«mypackage.name»/src/%sFactoryImpl.ts''', mypackage).write();
 			new NpmPackageGenerator(base, '''«mypackage.name»/package.json''', mypackage).write();
 			new TSConfigGenerator(base, '''«mypackage.name»/tsconfig.json''', mypackage).write();
+			new RollupConfigGenerator(base, '''«mypackage.name»/rollup.config.js''', mypackage).write();
 			
 			if(generateDocumentation){
 				
