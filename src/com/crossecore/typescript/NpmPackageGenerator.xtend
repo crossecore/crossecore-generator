@@ -41,7 +41,7 @@ class NpmPackageGenerator extends EcoreVisitor{
 		  "name": "«epackage.name»",
 		  "version": "1.0.0",
 		  "scripts": {
-		    "build": "yarn run declaration && rollup --config rollup.config.js",
+		    "build": "rimraf typings && yarn run declaration && rollup --config rollup.config.js",
 		    "test": "jest",
 		    "postinstall": "cti create ./src",
 		    "declaration": "tsc -p . --emitDeclarationOnly --declaration true --declarationDir ./typings",
@@ -61,7 +61,8 @@ class NpmPackageGenerator extends EcoreVisitor{
 		    "rollup-plugin-terser": "^7.0.2",
 		    "ts-jest": "^26.5.6",
 		    "tslib": "^2.2.0",
-		    "typescript": "4.2.4"
+		    "typescript": "4.2.4",
+		    "rimraf": "^3.0.2"
 		  }
 		}
 		'''
