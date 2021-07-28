@@ -20,9 +20,8 @@ package com.crossecore.typescript;
 
 import com.crossecore.EcoreVisitor
 import org.eclipse.emf.ecore.EPackage
-import com.crossecore.Utils
 
-class NpmPackageGenerator extends EcoreVisitor{
+class WebpackConfigGenerator extends EcoreVisitor{
 	
 	
 	
@@ -33,40 +32,32 @@ class NpmPackageGenerator extends EcoreVisitor{
 
 	
 	override caseEPackage(EPackage epackage){
+		return
+		'''
+		const path = require('path');
+		const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 		
-		val dependencies = Utils.getDependencies(epackage)
-		return 
+		module.exports = {
+		    entry: './src/index.ts',
+		    module: {
+		        rules: [
+		            {
+		                test: /\.tsx?$/,
+		                use: 'ts-loader',
+		                exclude: /node_modules/,
+		            },
+		        ],
+		    },
+		    resolve: {
+		        extensions: ['.ts', '.tsx', '.js'],
+		        plugins: [new TsconfigPathsPlugin({})]
+		    },
+		    output: {
+		        filename: '«epackage.name».js',
+		        path: path.resolve(__dirname, 'dist'),
+		    },
+		};
 		'''
-		{
-		  "name": "«epackage.name»",
-		  "version": "1.0.0",
-		  "scripts": {
-		  	"postinstall": "cti create ./src",
-		    "test": "jest",
-		    "build": "webpack"
-		  },
-		  "files": ["dist"],
-		  "main": "dist/«epackage.name».js",
-		  "private": true,
-		  "dependencies": {
-		  	"crossecore": "^0.3.0"
-		  },
-		  "devDependencies": {
-		    "crossecore": "^0.3.0",
-		    "rimraf": "^3.0.2",
-		    "create-ts-index": "^1.13.6",
-		    "ts-jest": "^26.5.6",
-		    "ts-loader": "^9.2.4",
-		    "tslib": "^2.2.0",
-		    "typescript": "^4.2.4",
-		    "webpack": "^5.47.0",
-		    "webpack-cli": "^4.7.2",
-		    "tsconfig-paths-webpack-plugin": "^3.5.1",
-		    "xmldom": "^0.6.0"
-		  }
-		}
-		'''
-
 	}
 	
 
