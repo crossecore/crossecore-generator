@@ -41,7 +41,7 @@ class NpmPackageGenerator extends EcoreVisitor{
 		  "name": "«epackage.name»",
 		  "version": "1.0.0",
 		  "scripts": {
-		  	"postinstall": "cti create ./src",
+		  	"postinstall": "nodetouch src/index.ts",
 		    "test": "jest",
 		    "build": "webpack"
 		  },
@@ -53,8 +53,6 @@ class NpmPackageGenerator extends EcoreVisitor{
 		  },
 		  "devDependencies": {
 		    "crossecore": "^0.3.0",
-		    "rimraf": "^3.0.2",
-		    "create-ts-index": "^1.13.6",
 		    "ts-jest": "^26.5.6",
 		    "ts-loader": "^9.2.4",
 		    "tslib": "^2.2.0",
@@ -62,7 +60,8 @@ class NpmPackageGenerator extends EcoreVisitor{
 		    "webpack": "^5.47.0",
 		    "webpack-cli": "^4.7.2",
 		    "tsconfig-paths-webpack-plugin": "^3.5.1",
-		    "xmldom": "^0.6.0"
+		    "xmldom": "^0.6.0",
+		    "touch": "^3.1.0"
 		  }
 		}
 		'''
