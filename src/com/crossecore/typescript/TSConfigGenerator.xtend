@@ -45,7 +45,6 @@ class TSConfigGenerator extends EcoreVisitor{
 		  "compilerOptions": {
 		    "baseUrl": "./",
 		    "paths": {
-		      "ecore/*": ["node_modules/crossecore/typings/*"],
 		      «FOR EPackage d : dependencies»
 		      "«d.name»/*": ["node_modules/«d.name»/typings/*"],
 		      «ENDFOR»

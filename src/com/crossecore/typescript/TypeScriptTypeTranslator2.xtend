@@ -37,6 +37,7 @@ import org.eclipse.ocl.ecore.PrimitiveType
 import org.eclipse.ocl.ecore.SequenceType
 import org.eclipse.ocl.ecore.SetType
 import org.eclipse.emf.ecore.EDataType
+import com.crossecore.Utils
 
 class TypeScriptTypeTranslator2 {
 	
@@ -96,19 +97,15 @@ class TypeScriptTypeTranslator2 {
 			for (String name : list) {
 				// add import only iff the TypeScript class which is currently under construction does not match the class, which is to be imported
 				if(!name.equals(currentClassifier === null ? null : currentClassifier.name)){
-					result.append('''import {«name»} from "«epackage.name»/«name»";'''+"\n");
-				}
-				
-				/*
-				if(!Utils.isEqual(epackage,self_) && Utils.isEcoreEPackage(epackage)){
-					result.append('''import {«name»} from "crossecore";''');
-					result.append("\n");
-				}else{
-					result.append('''import {«name»} from "«epackage.name»/«name»";''');
-					result.append("\n");	
-				}
-				*/
-					
+					// if the package which is to be imported is part of the crossecore-lib, import it directly from node_modules
+					if(Utils.isEcoreEPackage(epackage)){
+						result.append('''import {«name»} from "crossecore";'''+"\n");
+					}
+					// otherwise, resolve it via tsconfig/paths
+					else{
+						result.append('''import {«name»} from "«epackage.name»/«name»";'''+"\n");
+					}
+				}					
 			}
 
 		}
