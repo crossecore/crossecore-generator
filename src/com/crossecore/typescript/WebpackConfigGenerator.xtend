@@ -36,6 +36,7 @@ class WebpackConfigGenerator extends EcoreVisitor{
 		'''
 		const path = require('path');
 		const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+		const HtmlWebpackPlugin = require('html-webpack-plugin');
 		
 		module.exports = {
 		    entry: './src/index.ts',
@@ -56,6 +57,17 @@ class WebpackConfigGenerator extends EcoreVisitor{
 		        filename: '«epackage.name».js',
 		        path: path.resolve(__dirname, 'dist'),
 		    },
+		    devServer: {
+		        contentBase: path.join(__dirname, 'dist'),
+		        compress: true,
+		        port: 9000,
+		    },
+			plugins: [
+			    new HtmlWebpackPlugin({
+			        title: 'Title',
+			        template: './src/editorMarkup/index.html',
+			    })
+			    ]        
 		};
 		'''
 	}

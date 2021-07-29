@@ -43,7 +43,8 @@ class NpmPackageGenerator extends EcoreVisitor{
 		  "scripts": {
 		  	"postinstall": "nodetouch src/index.ts",
 		    "test": "jest",
-		    "build": "webpack"
+		    "build": "webpack",
+		    "start:dev": "webpack serve --open",
 		  },
 		  "files": ["dist"],
 		  "main": "dist/«epackage.name».js",
@@ -59,6 +60,7 @@ class NpmPackageGenerator extends EcoreVisitor{
 		    "typescript": "^4.2.4",
 		    "webpack": "^5.47.0",
 		    "webpack-cli": "^4.7.2",
+		    "webpack-dev-server": "^3.11.2",
 		    "tsconfig-paths-webpack-plugin": "^3.5.1",
 		    "xmldom": "^0.6.0",
 		    "touch": "^3.1.0"
