@@ -62,6 +62,7 @@ class WebpackConfigGenerator extends EcoreVisitor{
 		        compress: true,
 		        port: 9000,
 		    },
+		    devtool: "source-map",
 			plugins: [
 			    new HtmlWebpackPlugin({
 			        title: 'Title',
