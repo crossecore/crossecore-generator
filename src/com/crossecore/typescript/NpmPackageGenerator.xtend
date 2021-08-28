@@ -41,10 +41,9 @@ class NpmPackageGenerator extends EcoreVisitor{
 		  "name": "«epackage.name»",
 		  "version": "1.0.0",
 		  "scripts": {
-		  	"postinstall": "nodetouch src/index.ts",
 		    "test": "jest",
 		    "build": "webpack",
-		    "start:dev": "webpack serve --open",
+		    "start:dev": "webpack serve --open"
 		  },
 		  "files": ["dist"],
 		  "main": "dist/«epackage.name».js",
