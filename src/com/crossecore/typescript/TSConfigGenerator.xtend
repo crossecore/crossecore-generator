@@ -53,6 +53,7 @@ class TSConfigGenerator extends EcoreVisitor{
 		    "sourceMap": true,
 		    "module": "ESNext",
 		    "moduleResolution": "Node",
+		    "esModuleInterop": true,
 		    "target": "es5",
 		    "lib": [
 		      "es2017",
