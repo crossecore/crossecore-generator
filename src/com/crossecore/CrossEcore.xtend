@@ -310,19 +310,19 @@ class CrossEcore {
 		
 		for(EPackage mypackage:packages){
 			
-			new com.crossecore.typescript.ModelGenerator(base, '''«mypackage.name»/src/%s.ts''', mypackage).write();
-			new com.crossecore.typescript.ModelBaseGenerator(base, '''«mypackage.name»/src/%sBase.ts''', mypackage).write();	
-			new com.crossecore.typescript.ModelImplGenerator(base, '''«mypackage.name»/src/%sImpl.ts''', mypackage).write();
-			new com.crossecore.typescript.PackageGenerator(base, '''«mypackage.name»/src/%sPackage.ts''', mypackage).write();
-			new com.crossecore.typescript.PackageImplGenerator(base, '''«mypackage.name»/src/%sPackageImpl.ts''', mypackage).write();
-			new PackageLiteralsGenerator(base, '''«mypackage.name»/src/%sPackageLiterals.ts''', mypackage).write();
-			new com.crossecore.typescript.SwitchGenerator(base, '''«mypackage.name»/src/%sSwitch.ts''', mypackage).write();
-			new com.crossecore.typescript.FactoryGenerator(base, '''«mypackage.name»/src/%sFactory.ts''', mypackage).write();
-			new com.crossecore.typescript.FactoryImplGenerator(base, '''«mypackage.name»/src/%sFactoryImpl.ts''', mypackage).write();
-			new NpmPackageGenerator(base, '''«mypackage.name»/package.json''', mypackage).write();
-			new TSConfigGenerator(base, '''«mypackage.name»/tsconfig.json''', mypackage).write();
-			new WebpackConfigGenerator(base, '''«mypackage.name»/webpack.config.js''', mypackage).write();
-			new JestConfigGenerator(base, '''«mypackage.name»/jest.config.js''', mypackage).write();
+			new com.crossecore.typescript.ModelGenerator(base, '''/src/%s.ts''', mypackage).write();
+			new com.crossecore.typescript.ModelBaseGenerator(base, '''/src/%sBase.ts''', mypackage).write();	
+			new com.crossecore.typescript.ModelImplGenerator(base, '''/src/%sImpl.ts''', mypackage).write();
+			new com.crossecore.typescript.PackageGenerator(base, '''/src/%sPackage.ts''', mypackage).write();
+			new com.crossecore.typescript.PackageImplGenerator(base, '''/src/%sPackageImpl.ts''', mypackage).write();
+			new PackageLiteralsGenerator(base, '''/src/%sPackageLiterals.ts''', mypackage).write();
+			new com.crossecore.typescript.SwitchGenerator(base, '''/src/%sSwitch.ts''', mypackage).write();
+			new com.crossecore.typescript.FactoryGenerator(base, '''/src/%sFactory.ts''', mypackage).write();
+			new com.crossecore.typescript.FactoryImplGenerator(base, '''/src/%sFactoryImpl.ts''', mypackage).write();
+			new NpmPackageGenerator(base, '''/package.json''', mypackage).write();
+			new TSConfigGenerator(base, '''/tsconfig.json''', mypackage).write();
+			new WebpackConfigGenerator(base, '''/webpack.config.js''', mypackage).write();
+			new JestConfigGenerator(base, '''/jest.config.js''', mypackage).write();
 			
 			if(generateDocumentation){
 				
