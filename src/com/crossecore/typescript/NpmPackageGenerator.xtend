@@ -43,7 +43,7 @@ class NpmPackageGenerator extends EcoreVisitor{
 		  "scripts": {
 		    "test": "jest",
 		    "build": "webpack",
-		    "start:dev": "webpack serve --open --mode production"
+		    "start:dev": "webpack serve --open --mode development"
 		  },
 		  "files": ["dist"],
 		  "main": "dist/morecomplexmodel.js",
