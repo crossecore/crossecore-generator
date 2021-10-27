@@ -71,8 +71,7 @@ class TypeScriptTypeTranslator2 {
 		for (EPackage epackage : packages2.keySet) {
 
 			var list = new ArrayList<String>(packages2.get(epackage));
-			val x = (Object[]) list
-			Arrays.sort(list);
+			//Arrays.sort(list);
 
 			for (String name : list) {
 				

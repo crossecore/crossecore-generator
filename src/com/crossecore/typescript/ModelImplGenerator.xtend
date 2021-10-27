@@ -26,8 +26,6 @@ import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.ETypeParameter
 import org.eclipse.emf.ecore.EcorePackage
 import java.util.ArrayList
-import java.util.Formatter
-import java.util.Locale
 
 class ModelImplGenerator extends EcoreVisitor{ 
 	
@@ -50,10 +48,7 @@ class ModelImplGenerator extends EcoreVisitor{
 		val result = new ArrayList<String>()
 		for(EClass eclass:sortedEClasses){
 			
-			val sb = new StringBuilder();
-			val formatter = new Formatter(sb, Locale.US);
-			val item = formatter.format(this.filenamePattern, this.epackage.name.toFirstUpper);
-			result.add(item.toString)
+			result.add(this.filenamePattern.replace("%s", this.epackage.name.toFirstUpper))
 		}
 		return result;
 		

@@ -34,15 +34,17 @@ import java.util.List
 import org.eclipse.emf.ecore.EPackage
 import com.google.gwt.core.client.EntryPoint
 import jsinterop.annotations.JsType
+import jsinterop.annotations.JsMethod
+import org.eclipse.emf.ecore.impl.EcorePackageImpl
 
 @JsType
 class CrossEcore implements EntryPoint{
 	
-
+	@JsMethod
 	def boolean aisjdajsdoiasjoaijdofjaifj(){
 		return false;
 	}
-	
+	@JsMethod
 	def List<String> index(EPackage epackage, String language){
 		val result = new ArrayList<String>()
 		var item = #[]
@@ -76,7 +78,7 @@ class CrossEcore implements EntryPoint{
 		
 		return result;
 	}
-	
+	@JsMethod
 	def String generate(EPackage epackage, String language, String path){
 		if(language.equals("typescript")){
 			
@@ -145,6 +147,9 @@ class CrossEcore implements EntryPoint{
 	}
 	
 	override onModuleLoad() {
+		val x = new CrossEcore()
+		x.index(EcorePackageImpl.eINSTANCE, "typescript")
+		x.generate(EcorePackageImpl.eINSTANCE, "typescript", "x.ts")
 	}
 	
 

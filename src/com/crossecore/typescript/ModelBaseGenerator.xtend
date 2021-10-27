@@ -36,8 +36,6 @@ import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.ETypeParameter
 import org.eclipse.emf.ecore.EcorePackage
-import java.util.Formatter
-import java.util.Locale
 
 class ModelBaseGenerator extends EcoreVisitor{ 
 	
@@ -54,20 +52,17 @@ class ModelBaseGenerator extends EcoreVisitor{
 	}
 	
 	override List<String> index(){
-		
 		var List<EClass> sortedEClasses = DependencyManager.sortEClasses(epackage);
 		
 		val result = new ArrayList<String>()
 		for(EClass eclass:sortedEClasses){
 			
-			val sb = new StringBuilder();
-			val formatter = new Formatter(sb, Locale.US);
-			val item = formatter.format(this.filenamePattern, this.epackage.name.toFirstUpper);
-			result.add(item.toString)
+			result.add(this.filenamePattern.replace("%s", this.epackage.name.toFirstUpper))
 		}
 		return result;
 		
 	}
+	
 	
 	override matches(String path){
 		val name = path.replace(this.path, "").replace(this.filenamePattern.replace("%s", ""), "")
@@ -129,14 +124,14 @@ class ModelBaseGenerator extends EcoreVisitor{
 			var referencesWithOppositeNonMany = new HashSet<EReference>();
 			
 			allReferences = new BasicEList<EReference>(e.EAllReferences);
-			if(e.ESuperTypes.length>0){
+			if(e.ESuperTypes.size>0){
 				
 				var minus = e.ESuperTypes.get(0).EAllReferences;
 				allReferences.removeAll(minus); 
 			}
 			
 			allAttributes = new BasicEList<EAttribute>(e.EAllAttributes);
-			if(e.ESuperTypes.length>0){
+			if(e.ESuperTypes.size>0){
 				
 				var minus = e.ESuperTypes.get(0).EAllAttributes;
 				allAttributes.removeAll(minus); 

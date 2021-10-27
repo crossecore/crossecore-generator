@@ -18,19 +18,10 @@
  */
 package com.crossecore;
 
-import java.io.File
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.OutputStreamWriter
-import java.nio.charset.Charset
-import java.util.Formatter
 import java.util.List
-import java.util.Locale
 import org.eclipse.emf.ecore.ENamedElement
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.util.EcoreSwitch
-import java.util.regex.Pattern
 
 abstract class EcoreVisitor extends EcoreSwitch<CharSequence>{
 	
@@ -54,10 +45,7 @@ abstract class EcoreVisitor extends EcoreSwitch<CharSequence>{
 	
 	def List<String> index(){
 		
-		val sb = new StringBuilder();
-		val formatter = new Formatter(sb, Locale.US);
-		val item = formatter.format(this.filenamePattern, this.epackage.name.toFirstUpper);
-		return #[item.toString]
+		return #[this.filenamePattern.replace("%s", this.epackage.name.toFirstUpper)]
 			
 	}
 	
@@ -65,45 +53,14 @@ abstract class EcoreVisitor extends EcoreSwitch<CharSequence>{
 		return path.endsWith(this.filenamePattern.replace("%s", this.epackage.name.toFirstUpper))
 	}
 	
-	
 	def write(){
 		write(epackage, this.doSwitch(epackage).toString);
 	}
 	
 	def write(ENamedElement element, String contents, Boolean override_){
-		
-		
-		var sb = new StringBuilder();
-		
-		var formatter = new Formatter(sb, Locale.US);
-		
-		formatter.format(this.filenamePattern, element.name.toFirstUpper);
-		
-		var targetFile = sb.toString;
-		var x = new File(this.path+targetFile);
-		
-		if(!override_ && x.exists){
-			return;
-		}
-		
-		try {
-			val char_output = new OutputStreamWriter(
-				     new FileOutputStream(this.path+targetFile),
-				     Charset.forName("UTF-8").newEncoder() 
-				 );
-			
-			char_output.write(contents);
-			char_output.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
 
 	}
-	
 	def write(ENamedElement element, String contents){
 		write(element, contents, true);
 	}
