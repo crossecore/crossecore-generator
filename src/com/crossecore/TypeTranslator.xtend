@@ -23,13 +23,6 @@ import org.eclipse.emf.ecore.EDataType
 import org.eclipse.emf.ecore.EcorePackage
 import org.eclipse.emf.ecore.EClassifier
 import com.crossecore.Utils
-import org.eclipse.ocl.ecore.SequenceType
-import org.eclipse.ocl.ecore.CollectionType
-import org.eclipse.ocl.ecore.BagType
-import org.eclipse.ocl.ecore.OrderedSetType
-import org.eclipse.ocl.ecore.SetType
-import org.eclipse.ocl.ecore.AnyType
-import org.eclipse.ocl.ecore.PrimitiveType
 import org.eclipse.emf.ecore.EEnum
 import org.eclipse.emf.ecore.EEnumLiteral
 
@@ -83,37 +76,12 @@ abstract class TypeTranslator {
 		
 		if(type.EClassifier !== null){
 			
-			if(type.ERawType instanceof CollectionType){
-				
-				if(type.ERawType instanceof SequenceType){
-					result.append("Sequence");
-				}
-				else if(type.ERawType instanceof BagType){
-					result.append("Bag");
-				}
-				else if(type.ERawType instanceof OrderedSetType){
-					result.append("OrderedSet");
-				}
-				else if(type.ERawType instanceof SetType){
-					result.append("Set");	
-				}
-				
-				//FIXME elementType can be a complex EClassifier
-				//TODO < > characters for generics are platform dependent and should be moved to the platform specific type translator or these character should be configurable
-				var elementtype = (type.ERawType as CollectionType).elementType;
-				
-				if(elementtype instanceof AnyType){
-					result.append('''<object>''');	
-				}
-				else if(elementtype instanceof PrimitiveType){
-					result.append('''<«mapPrimitiveType(elementtype)»>''');
-				}
-				
-			}
+		
+
 //			else if(type.ERawType.instanceClassName!==null){
 //				result.append('''Map.Entry<String, String>''');
 //			}
-			else if(type.EClassifier.name.equals(EcorePackage.Literals.ESTRING_TO_STRING_MAP_ENTRY.name)){
+			 if(type.EClassifier.name.equals(EcorePackage.Literals.ESTRING_TO_STRING_MAP_ENTRY.name)){
 				result.append('''Map.Entry<String, String>''');
 			}
 			else if(type.EClassifier instanceof EDataType){

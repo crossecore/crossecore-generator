@@ -35,6 +35,8 @@ import org.eclipse.emf.ecore.EParameter
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EcorePackage
 import com.crossecore.EcoreVisitor
+import java.util.Formatter
+import java.util.Locale
 
 class ModelGenerator extends EcoreVisitor{ 
 	
@@ -47,6 +49,24 @@ class ModelGenerator extends EcoreVisitor{
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);
 
+	}
+	override List<String> index(){
+		
+		var Set<EClassifier> eclassifiers = new LinkedHashSet<EClassifier>();
+		eclassifiers.addAll(epackage.EClassifiers.filter[e|e instanceof EClass]);
+		eclassifiers.addAll(epackage.EClassifiers.filter[e|e instanceof EEnum]);
+		
+		
+		val result = new ArrayList<String>()
+		for(EClassifier eclass:eclassifiers){
+			
+			val sb = new StringBuilder();
+			val formatter = new Formatter(sb, Locale.US);
+			val item = formatter.format(this.filenamePattern, this.epackage.name.toFirstUpper);
+			result.add(item.toString)
+		}
+		return result;
+		
 	}
 	
 	override write(){

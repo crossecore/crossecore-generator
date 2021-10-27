@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.5.1//EN" "http://google-web-toolkit.googlecode.com/svn/tags/2.5.1/distro-source/core/src/gwt-module.dtd">
+<module rename-to='CrossEcore'>
+  <!-- EMF -->
+  <inherits name="org.eclipse.emf.common.Common" />
+  <inherits name="org.eclipse.emf.ecore.Ecore" />
+
+  <!-- Xtend -->
+  <inherits name="org.eclipse.xtext.xbase.lib.Lib" />
+  <inherits name="org.eclipse.xtend.lib.Lib" />
+
+  <!-- Specify the app entry point class.                         -->
+  <entry-point class="com.crossecore.CrossEcore" />
+	<source path=''/>
+
+</module>

@@ -40,7 +40,6 @@ class ModelBaseGenerator extends EcoreVisitor{
 	JavaIdentifier id = new JavaIdentifier();
 	TypeTranslator t = new JavaTypeTranslator(id);
 
-	JavaOCLVisitor ocl2csharp = new JavaOCLVisitor();
 	
 	
 	
@@ -341,7 +340,7 @@ class ModelBaseGenerator extends EcoreVisitor{
 				«FOR String invariant:invariants.keySet»
 				public boolean «invariant»(org.eclipse.emf.common.util.DiagnosticChain diagnostics, java.util.Map<Object, Object> context)
 				{
-					return «ocl2csharp.translate(invariants.get(invariant), e)»;
+					return null;
 				}
 	        	«ENDFOR»
 				
@@ -367,7 +366,7 @@ class ModelBaseGenerator extends EcoreVisitor{
 				
 				oclDeriveExpr = eAnnotation.getDetails().get("derivation");
 				if(oclDeriveExpr!==null){
-					deriveExpr = ocl2csharp.translate(oclDeriveExpr, eattribute.EContainingClass);
+					deriveExpr = "null"
 					//deriveExpr = "null"; //FIXME enable OCL to C# translation
 					isOcl= true;
 				}		
@@ -452,7 +451,7 @@ class ModelBaseGenerator extends EcoreVisitor{
 				
 				oclDeriveExpr = eAnnotation.getDetails().get("derivation");
 				if(oclDeriveExpr!==null){
-					deriveExpr = ocl2csharp.translate(oclDeriveExpr, ereference.EContainingClass);
+					deriveExpr = "null"
 					isOcl= true;
 				}
 			}
@@ -565,7 +564,7 @@ class ModelBaseGenerator extends EcoreVisitor{
 				/*
 				«body_»
 				*/
-				return «ocl2csharp.translate(body_, e.EContainingClass)»;
+				return null;
 				''';
 			}
 		}

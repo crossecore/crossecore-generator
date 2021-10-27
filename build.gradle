@@ -2,12 +2,6 @@
 
 import java.text.SimpleDateFormat;
 
-def buildTime() {
-    def df = new SimpleDateFormat("yyyyMMdd-HHmm") // you can change it
-    df.setTimeZone(TimeZone.getTimeZone("UTC"))
-    return df.format(new Date())
-}
-
 plugins {
   id "org.xtext.xtend" version "2.0.8"
   id 'jacoco'
@@ -16,6 +10,20 @@ plugins {
   //id 'antlr'
   id "org.sonarqube" version "3.0"
 }
+
+def buildTime() {
+    def df = new SimpleDateFormat("yyyyMMdd-HHmm") // you can change it
+    df.setTimeZone(TimeZone.getTimeZone("UTC"))
+    return df.format(new Date())
+}
+
+ext.versions = [
+  emfGwt: '2.12.4',
+  gwt:    '2.9.0',
+  xtext:  '2.20.0',
+]
+
+
 
 sonarqube {
   properties {
@@ -52,6 +60,7 @@ sourceSets {
         }
         //antlr.srcDirs = ['test/antlr']
     }
+
      
 }
 
@@ -82,7 +91,16 @@ task customFatJar(type: Jar) {
     with jar
 }
 
+def srcDir = "src"
+def distDir = "${buildDir}/js"
+
+def gwtModule = "com.crossecore.CrossEcore"
+
 repositories.jcenter()
+
+configurations {
+    gwt
+}
 
 task downloadFiles(type: Download) {
     src([
@@ -93,42 +111,65 @@ task downloadFiles(type: Download) {
     overwrite true
 }
 
+def gwtClasspath = [
+      // gwt requires the folder structure to equal the package structure
+      "$srcDir",
+      "$buildDir/xtend/main",
+      sourceSets.main.output.classesDirs,
+
+      configurations.gwt
+    ]
 
 dependencies {
 
-	compile group: 'org.eclipse.platform', name: 'org.eclipse.core.runtime', version: '3.20.0'
+	compile "org.eclipse.platform:org.eclipse.core.runtime:3.20.0"
 	    
-	compile group: 'org.eclipse.xtext', name: 'org.eclipse.xtext.xbase.lib', version: '2.24.0'
-    compile group: 'org.eclipse.xtext', name: 'org.eclipse.xtext', version: '2.24.0'
-    compile group: 'org.eclipse.xtend', name: 'org.eclipse.xtend.lib.macro', version: '2.24.0'
+	compile "org.eclipse.xtext:org.eclipse.xtext.xbase.lib:$versions.xtext"
+    compile "org.eclipse.xtext:org.eclipse.xtext:$versions.xtext"
+    compile "org.eclipse.xtend:org.eclipse.xtend.lib.macro:$versions.xtext"
 
-    
-    compile group: 'org.eclipse.emf', name: 'org.eclipse.emf.ecore', version: '2.23.0'
-    compile group: 'org.eclipse.emf', name: 'org.eclipse.emf.ecore.xmi', version: '2.16.0'
-    compile group: 'org.eclipse.emf', name: 'org.eclipse.emf.common', version: '2.21.0'
-    compile group: 'org.eclipse.emf', name: 'org.eclipse.emf.edit', version: '2.16.0'
-    
-    compile group: 'commons-cli', name: 'commons-cli', version: '1.4'
-    
+    compile "com.genmymodel.emf.gwt:emf-ecore:$versions.emfGwt:sources"
+    compile "com.genmymodel.emf.gwt:emf-common:$versions.emfGwt:sources"
+    compile "com.genmymodel.emf.gwt:emf-edit:$versions.emfGwt:sources"
 
-    //https://ci.eclipse.org/ocl/job/ocl-master/lastSuccessfulBuild/artifact/targetPlatform/plugins/
-  
-    compile files('lib/org.eclipse.ocl_3.15.200.v20210117-0741.jar')
-    compile files('lib/org.eclipse.ocl.common_1.8.600.v20210117-0741.jar')
-    compile files('lib/org.eclipse.ocl.ecore_3.15.200.v20210117-0741.jar')
-    compile files('lib/org.eclipse.ocl.pivot_1.14.0.v20210117-0741.jar')
-    compile files('lib/org.eclipse.ocl.xtext.base_1.14.0.v20210117-0741.jar')
-    compile files('lib/org.eclipse.ocl.xtext.completeocl_1.14.0.v20210117-0741.jar')
-    compile files('lib/org.eclipse.ocl.xtext.essentialocl_1.14.0.v20210117-0741.jar')
-    compile files('lib/org.eclipse.ocl.xtext.oclinecore_1.14.0.v20210117-0741.jar')
-    compile files('lib/org.eclipse.ocl.xtext.oclstdlib_1.14.0.v20210117-0741.jar')
-    
-    compile group: 'lpg.runtime', name: 'java', version: '2.0.17-v201004271640'
+    compile "com.google.gwt:gwt-user:$versions.gwt"
+    compile "com.google.gwt:gwt-dev:$versions.gwt"
 
-	compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.14.0'
-	compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.14.0'
-    
-    testImplementation 'junit:junit:4.13.1'
-    compile group: 'org.antlr', name: 'antlr4-runtime', version: '4.8'
+    testImplementation "junit:junit:4.13.1"
+    testImplementation "org.antlr:antlr4-runtime:4.8"
+
+
+    gwt "com.google.gwt:gwt:$versions.gwt"
+    gwt "com.google.gwt:gwt-dev:$versions.gwt"
+    gwt "com.google.gwt:gwt-user:$versions.gwt"
+    //gwt "com.google.gwt:gwt-servlet:$versions.gwt"
+
+    gwt "com.genmymodel.emf.gwt:emf-common:$versions.emfGwt:sources"
+    gwt "com.genmymodel.emf.gwt:emf-ecore:$versions.emfGwt:sources"
+
+    // the xtext/xtend gwt plugins only contain the '.gwt.xml' files
+    // thus the source code has to be retrieved separately
+    gwt "org.eclipse.xtext:org.eclipse.xtext.xbase.lib.gwt:$versions.xtext"
+    gwt "org.eclipse.xtext:org.eclipse.xtext.xbase.lib:$versions.xtext:sources"
+    gwt "org.eclipse.xtend:org.eclipse.xtend.lib.gwt:$versions.xtext"    
+    gwt "org.eclipse.xtend:org.eclipse.xtend.lib:$versions.xtext:sources"
+    gwt "org.eclipse.xtend:org.eclipse.xtend.lib.macro:$versions.xtext:sources"
     
 }
+
+def gwtInputs = [
+  fileTree(srcDir),
+  sourceSets.main.output.classesDirs
+]
+
+task gwtc (type: JavaExec) {
+  main = 'com.google.gwt.dev.Compiler'
+  classpath { gwtClasspath }
+  args = [ gwtModule, '-war', "$buildDir/dist", '-style', 'PRETTY', '-logLevel', 'DEBUG' ]
+  maxHeapSize = '2G'
+
+  inputs.files(gwtInputs)
+  outputs.dir("$buildDir/dist/js")
+}
+
+gwtc.dependsOn compileJava

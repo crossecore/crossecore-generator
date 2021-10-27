@@ -29,13 +29,6 @@ import org.eclipse.emf.ecore.EEnumLiteral
 import org.eclipse.emf.ecore.EGenericType
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EcorePackage
-import org.eclipse.ocl.ecore.AnyType
-import org.eclipse.ocl.ecore.BagType
-import org.eclipse.ocl.ecore.CollectionType
-import org.eclipse.ocl.ecore.OrderedSetType
-import org.eclipse.ocl.ecore.PrimitiveType
-import org.eclipse.ocl.ecore.SequenceType
-import org.eclipse.ocl.ecore.SetType
 import org.eclipse.emf.ecore.EDataType
 
 class TypeScriptTypeTranslator2 {
@@ -78,7 +71,7 @@ class TypeScriptTypeTranslator2 {
 		for (EPackage epackage : packages2.keySet) {
 
 			var list = new ArrayList<String>(packages2.get(epackage));
-
+			val x = (Object[]) list
 			Arrays.sort(list);
 
 			for (String name : list) {
@@ -105,44 +98,8 @@ class TypeScriptTypeTranslator2 {
 	
 	def String translateType(EClassifier eClassifier) {
 		if (eClassifier !== null) {
-			if (eClassifier instanceof CollectionType) {
-
-				var listtype = "";
-				if (eClassifier instanceof SequenceType) {
-					import_(EcorePackage.eINSTANCE, "Sequence");
-					listtype = "Sequence";
-				} else if (eClassifier instanceof BagType) {
-					import_(EcorePackage.eINSTANCE, "Bag");
-					listtype = "Bag";
-				} else if (eClassifier instanceof OrderedSetType) {
-					import_(EcorePackage.eINSTANCE, "OrderedSet");
-					listtype = "OrderedSet";
-				} else if (eClassifier instanceof SetType) {
-					import_(EcorePackage.eINSTANCE, "Set");
-					listtype = "Set";
-				}
-
-				var elementtype = (eClassifier as CollectionType).elementType;
-
-				if (elementtype instanceof AnyType) {
-					return '''«listtype»<any>''';
-				} else if (elementtype instanceof PrimitiveType) {
-
-					switch (elementtype.name) {
-						case "Integer": return '''«listtype»<number>'''
-						case "String": return '''«listtype»<string>'''
-						case "Real": return '''«listtype»<number>'''
-						case "Boolean": return '''«listtype»<boolean>'''
-					}
-				} else {
-					// TODO import if from different package	
-					return '''«listtype»<«elementtype.name»>'''
-				}
-
-			// TODO other types possible here like ocl's TypeType, InvalidType, VoidType etc.?
-			}
-
-			else if (eClassifier.instanceClassName !== null && !eClassifier.instanceClassName.isEmpty) {
+			
+			if (eClassifier.instanceClassName !== null && !eClassifier.instanceClassName.isEmpty) {
 
 				switch eClassifier.instanceClassName {
 					case 'java.math.BigDecimal':

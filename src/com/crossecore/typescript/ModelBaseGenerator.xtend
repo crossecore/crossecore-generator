@@ -21,7 +21,6 @@ package com.crossecore.typescript;
 import com.crossecore.DependencyManager
 import com.crossecore.EcoreVisitor
 import com.crossecore.Utils
-import com.crossecore.csharp.CSharpOCLVisitor
 import java.util.ArrayList
 import java.util.HashMap
 import java.util.HashSet
@@ -37,12 +36,13 @@ import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.ETypeParameter
 import org.eclipse.emf.ecore.EcorePackage
+import java.util.Formatter
+import java.util.Locale
 
 class ModelBaseGenerator extends EcoreVisitor{ 
 	
 
 	TypeScriptIdentifier id = new TypeScriptIdentifier();
-	CSharpOCLVisitor ocl2csharp = new CSharpOCLVisitor();
 	
 	TypeScriptTypeTranslator2 tt = new TypeScriptTypeTranslator2();
 	//private ImportManager imports = new ImportManager(t);
@@ -51,6 +51,28 @@ class ModelBaseGenerator extends EcoreVisitor{
 	new(String path, String filenamePattern, EPackage epackage){
 		super(path, filenamePattern, epackage);
 
+	}
+	
+	override List<String> index(){
+		
+		var List<EClass> sortedEClasses = DependencyManager.sortEClasses(epackage);
+		
+		val result = new ArrayList<String>()
+		for(EClass eclass:sortedEClasses){
+			
+			val sb = new StringBuilder();
+			val formatter = new Formatter(sb, Locale.US);
+			val item = formatter.format(this.filenamePattern, this.epackage.name.toFirstUpper);
+			result.add(item.toString)
+		}
+		return result;
+		
+	}
+	
+	override matches(String path){
+		val name = path.replace(this.path, "").replace(this.filenamePattern.replace("%s", ""), "")
+		
+		return epackage.EClassifiers.exists[e|e.name.equals(name)]
 	}
 		
 	
@@ -422,7 +444,7 @@ class ModelBaseGenerator extends EcoreVisitor{
 				
 				oclDeriveExpr = eAnnotation.getDetails().get("derivation");
 				if(oclDeriveExpr !== null){
-					deriveExpr = ocl2csharp.translate(oclDeriveExpr, eattribute.EContainingClass);
+					deriveExpr = "null"
 					isOcl= true;
 				}
 				
@@ -499,7 +521,7 @@ class ModelBaseGenerator extends EcoreVisitor{
 				
 				oclDeriveExpr = eAnnotation.getDetails().get("derivation");
 				if(oclDeriveExpr!==null){
-					deriveExpr = ocl2csharp.translate(oclDeriveExpr, ereference.EContainingClass);
+					deriveExpr = "null"
 					isOcl= true;
 				}
 				

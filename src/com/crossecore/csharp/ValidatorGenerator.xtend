@@ -27,7 +27,6 @@ import org.eclipse.emf.common.util.BasicEMap
 class ValidatorGenerator extends CSharpVisitor{
 	
 	IdentifierProvider id = new CSharpIdentifier();
-	CSharpOCLVisitor ocl2csharp = new CSharpOCLVisitor();
 	
 	String header = '''
 	/* CrossEcore is a cross-platform modeling framework that generates C#, TypeScript, 
@@ -120,7 +119,7 @@ class ValidatorGenerator extends CSharpVisitor{
 			             context,
 			             "http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot",
 			             "«invariant»",
-			             «ocl2csharp.translate(invariants.get(invariant), eclass)»,
+			             null,
 			             DiagnosticImpl.ERROR,
 			             DIAGNOSTIC_SOURCE,
 			             0);

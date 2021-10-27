@@ -21,7 +21,6 @@ package com.crossecore.swift;
 import com.crossecore.DependencyManager
 import com.crossecore.EcoreVisitor
 import com.crossecore.Utils
-import com.crossecore.csharp.CSharpOCLVisitor
 import java.util.HashSet
 import java.util.List
 import org.eclipse.emf.ecore.EAttribute
@@ -39,7 +38,6 @@ class ModelBaseGenerator extends EcoreVisitor{
 	SwiftIdentifier id = new SwiftIdentifier();
 	SwiftTypeTranslator t = new SwiftTypeTranslator(id);
 
-	CSharpOCLVisitor ocl2csharp = new CSharpOCLVisitor();
 	
 	
 	new(String path, String filenamePattern, EPackage epackage){
@@ -280,7 +278,7 @@ class ModelBaseGenerator extends EcoreVisitor{
 				
 				oclDeriveExpr = eAnnotation.getDetails().get("derivation");
 				if(oclDeriveExpr!==null){
-					deriveExpr = ocl2csharp.translate(oclDeriveExpr, eattribute.EContainingClass);
+					deriveExpr = "null"
 					//deriveExpr = "null"; //FIXME enable OCL to C# translation
 					isOcl= true;
 				}		
@@ -353,7 +351,7 @@ class ModelBaseGenerator extends EcoreVisitor{
 				
 				oclDeriveExpr = eAnnotation.getDetails().get("derivation");
 				if(oclDeriveExpr!==null){
-					deriveExpr = ocl2csharp.translate(oclDeriveExpr, ereference.EContainingClass);
+					deriveExpr = "null"
 					isOcl= true;
 				}
 			}
@@ -510,7 +508,7 @@ class ModelBaseGenerator extends EcoreVisitor{
 			var body_ = eAnnotation.getDetails().get("body");
 			
 			if(body_!==null){
-				body = '''return «ocl2csharp.translate(body_, e.EContainingClass)»;''';
+				body = '''return null;''';
 			}
 		}
 		

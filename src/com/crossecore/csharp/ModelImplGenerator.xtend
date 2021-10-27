@@ -29,7 +29,6 @@ class ModelImplGenerator extends CSharpVisitor{
 	
 	CSharpIdentifier id = new CSharpIdentifier();
 	//private CSharpLiteralIdentifier literalId = new CSharpLiteralIdentifier();
-	CSharpOCLVisitor ocl2csharp = new CSharpOCLVisitor();
 	String header = '''
 	/* CrossEcore is a cross-platform modeling framework that generates C#, TypeScript, 
 	 * JavaScript, Swift code from Ecore models with embedded OCL (http://www.crossecore.org/).

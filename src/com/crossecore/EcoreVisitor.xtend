@@ -25,28 +25,44 @@ import java.io.IOException
 import java.io.OutputStreamWriter
 import java.nio.charset.Charset
 import java.util.Formatter
+import java.util.List
 import java.util.Locale
 import org.eclipse.emf.ecore.ENamedElement
-import org.eclipse.emf.ecore.util.EcoreSwitch
 import org.eclipse.emf.ecore.EPackage
+import org.eclipse.emf.ecore.util.EcoreSwitch
+import java.util.regex.Pattern
 
 abstract class EcoreVisitor extends EcoreSwitch<CharSequence>{
 	
 	protected String filenamePattern = "%s.cs";
 	protected String path = "";
 	protected EPackage epackage = null;
-	
+	protected boolean multi = false;
 	
 	
 	new(EPackage epackage){
 		this.epackage = epackage
 	}
 	
+	
 	new(String path, String filenamePattern, EPackage epackage){
 		super();
 		this.path = path;
 		this.filenamePattern = filenamePattern;
 		this.epackage = epackage;
+	}
+	
+	def List<String> index(){
+		
+		val sb = new StringBuilder();
+		val formatter = new Formatter(sb, Locale.US);
+		val item = formatter.format(this.filenamePattern, this.epackage.name.toFirstUpper);
+		return #[item.toString]
+			
+	}
+	
+	def boolean matches(String path){
+		return path.endsWith(this.filenamePattern.replace("%s", this.epackage.name.toFirstUpper))
 	}
 	
 	

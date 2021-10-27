@@ -38,6 +38,8 @@ class FactoryGenerator extends EcoreVisitor{
 		super(path, filenamePattern, epackage);
 
 	}
+	
+	
 
 	override caseEPackage (EPackage epackage){
 		
