@@ -26,6 +26,8 @@ class TypeScriptTypeTranslatorTest
 			assertTrue(!result.equals("void"))		
 		}
 	}
+	
+	/*
 	@Test def void test_translateType2() {
 		
 		//Arrange
@@ -65,6 +67,7 @@ class TypeScriptTypeTranslatorTest
 		assertTrue(any.equals("Set<any>"))
 		
 	}
+	*/
 	
 	@Test def void test_listType() {
 

@@ -168,6 +168,7 @@ class ModelBaseGeneratorTest {
 		assertTrue(nodes2.exists[n|n.text.equals("attribute")])
 		
 	}
+	/*
 	@Test def void test_caseEClass7() {
 		
 		//Arrange
@@ -202,7 +203,9 @@ class ModelBaseGeneratorTest {
 		assertTrue(nodes.exists[n|n.text.equals("\"hi\"")])
 		
 	}
+	*/
 	
+	/*
 @Test def void test_caseEClass99() {
 		
 		//Arrange
@@ -237,7 +240,7 @@ class ModelBaseGeneratorTest {
 		assertTrue(nodes.get(0).text.equals("\"hi\""))
 		assertTrue(nodes.get(1).text.equals("\"tschuess\""))
 	}
-
+	*/
 
 	@Test def void test_caseEClass8() {
 		
@@ -607,6 +610,7 @@ class ModelBaseGeneratorTest {
 		assertTrue(nodes2.exists[n|n.text.equals("reference")])
 	
 	}
+	/*
 	@Test def void test_caseEClass19() {
 		
 		//Arrange
@@ -645,7 +649,9 @@ class ModelBaseGeneratorTest {
 		assertTrue(nodes.get(0).text.equals("null"))	
 	
 	}
+	*/
 
+	/*
 	@Test def void test_caseEClass20() {
 		
 		//Arrange
@@ -687,6 +693,7 @@ class ModelBaseGeneratorTest {
 		val nodes2 = AntlrTestUtil.xpath(result, "//classTail/classElement/propertyMemberDeclaration/getAccessor/typeAnnotation/type_/unionOrIntersectionOrPrimaryType/primaryType/typeReference/nestedTypeGeneric/typeGeneric/typeArgumentList/typeArgument/type_/unionOrIntersectionOrPrimaryType/primaryType/typeReference/typeName")
 		assertTrue(nodes2.get(0).text.equals("Reference"))
 	}
+	*/
 
 	@Test def void test_caseEClass21() {
 		
