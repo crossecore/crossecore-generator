@@ -1,7 +1,5 @@
 
 
-import java.text.SimpleDateFormat;
-
 
 plugins {
   id "org.xtext.xtend" version "2.0.8"
@@ -33,6 +31,7 @@ jacocoTestReport {
 apply plugin: 'java'
 apply plugin: 'eclipse'
 
+version = "0.1.0"
 
 sourceSets {
     main {
