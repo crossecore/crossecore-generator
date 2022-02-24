@@ -29,15 +29,9 @@ jobs:
         run: grep -Po 'version\s*=\s*"\K.*?(?=")' build.gradle
         id: version
       - name: release
-        uses: actions/create-release@v1
-        id: create_release
+        uses: ncipollo/release-action@v1.9.0
         with:
-          draft: false
           prerelease: true
-          release_name: ${{ steps.version.outputs.version }}
-          tag_name: ${{ github.ref }}
-        env:
-          GITHUB_TOKEN: ${{ github.token }}          
       - name: upload
         uses: actions/upload-artifact@v2.3.1
         with:
