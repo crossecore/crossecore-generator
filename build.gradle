@@ -1,12 +1,5 @@
 
 
-import java.text.SimpleDateFormat;
-
-def buildTime() {
-    def df = new SimpleDateFormat("yyyyMMdd-HHmm") // you can change it
-    df.setTimeZone(TimeZone.getTimeZone("UTC"))
-    return df.format(new Date())
-}
 
 plugins {
   id "org.xtext.xtend" version "2.0.8"
@@ -38,6 +31,7 @@ jacocoTestReport {
 apply plugin: 'java'
 apply plugin: 'eclipse'
 
+version = "0.1.0"
 
 sourceSets {
     main {
@@ -74,7 +68,7 @@ task customFatJar(type: Jar) {
     manifest {
         attributes 'Main-Class': 'com.crossecore.CrossEcore'
     }
-    baseName = "crossecore-generator_${buildTime()}"
+    baseName = "crossecore-generator"
     doFirst {
         from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } } 
     }
