@@ -32,10 +32,11 @@ jobs:
       - name: release
         uses: actions/create-release@v1
         with:
-          draft: false
           prerelease: true
           release_name: Version ${{ steps.version.outputs.version }}
           tag_name: ${{ github.ref }}
+        env:
+          GITHUB_TOKEN: ${{ github.token }}          
       - name: upload
         uses: actions/upload-artifact@v2.3.1
         with:
