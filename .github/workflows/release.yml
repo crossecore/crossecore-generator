@@ -34,7 +34,7 @@ jobs:
         with:
           draft: false
           prerelease: true
-          release_name: ${{ steps.version.outputs.version }}
+          release_name: Version ${{ steps.version.outputs.version }}
           tag_name: ${{ github.ref }}
       - name: upload
         uses: actions/upload-artifact@v2.3.1
