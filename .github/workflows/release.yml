@@ -26,14 +26,11 @@ jobs:
         run: chmod +x gradlew
       - name: Build
         run: ./gradlew customFatJar
-      - name: Versioning
-        run: grep -Po 'version\s*=\s*"\K.*?(?=")' build.gradle
-        id: version
       - name: release
         uses: actions/create-release@v1
         with:
           prerelease: true
-          release_name: Version ${{ steps.version.outputs.version }}
+          release_name: ${{ github.ref }}
           tag_name: ${{ github.ref }}
         env:
           GITHUB_TOKEN: ${{ github.token }}          
