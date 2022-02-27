@@ -31,7 +31,6 @@ jacocoTestReport {
 apply plugin: 'java'
 apply plugin: 'eclipse'
 
-version = "0.1.0"
 
 sourceSets {
     main {
