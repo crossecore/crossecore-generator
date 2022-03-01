@@ -26,7 +26,8 @@ jobs:
         run: chmod +x gradlew
       - name: Build
         run: ./gradlew customFatJar
-      - name: release
+      - name: Create release
+        id: create_release
         uses: actions/create-release@v1
         with:
           prerelease: true
@@ -34,10 +35,15 @@ jobs:
           tag_name: ${{ github.ref }}
         env:
           GITHUB_TOKEN: ${{ github.token }}          
-      - name: upload
-        uses: actions/upload-artifact@v2.3.1
+      - name: Upload release asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: crossecore-generator.jar
-          path: build/libs/crossecore-generator.jar         
+          upload_url: ${{ steps.create_release.outputs.upload_url }} 
+          asset_path: ./build/libs/crossecore-generator.jar
+          asset_name: crossecore-generator.jar
+          asset_content_type: application/java-archive    
        
    
