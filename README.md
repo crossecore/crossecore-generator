@@ -29,10 +29,10 @@ usage: crossecore
 ## Build Antlr Parsers and Lexers
 
 Download 
-* https://github.com/antlr/grammars-v4/blob/master/typescript/TypeScriptLexer.g4
-* https://github.com/antlr/grammars-v4/blob/master/typescript/TypeScriptParser.g4
-* https://github.com/antlr/grammars-v4/blob/master/typescript/Java/TypeScriptLexerBase.java
-* https://github.com/antlr/grammars-v4/blob/master/typescript/Java/TypeScriptParserBase.java
+* https://github.com/antlr/grammars-v4/blob/master/javascript/typescript/TypeScriptLexer.g4
+* https://github.com/antlr/grammars-v4/blob/master/javascript/typescript/TypeScriptParser.g4
+* https://github.com/antlr/grammars-v4/blob/master/javascript/typescript/Java/TypeScriptLexerBase.java
+* https://github.com/antlr/grammars-v4/blob/master/javascript/typescript/Java/TypeScriptParserBase.java
 
 Run the following command
 ```bash
