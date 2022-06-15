@@ -45,7 +45,7 @@ class NpmPackageGenerator extends EcoreVisitor{
 		  "main": "lib/index.js",
 		  "private": true,
 		  "dependencies": {
-		  	"crossecore": "^0.1.0"
+		  	"crossecore": "^0.3.0"
 		  },
 		  "devDependencies": {
 		    "typescript": "~3.5.2",
