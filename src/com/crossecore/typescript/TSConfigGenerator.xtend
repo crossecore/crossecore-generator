@@ -40,7 +40,7 @@ class TSConfigGenerator extends EcoreVisitor{
 		  "compilerOptions": {
 		    "baseUrl": "./",
 		    "paths": {
-		      "ecore/*": ["node_modules/crossecore/lib/*"],
+		      "ecore/*": ["node_modules/crossecore/typings/*"],
 		      "«epackage.name»/*": ["./*"]
 		    },    
 		    "outDir": "./dist/out-tsc",
